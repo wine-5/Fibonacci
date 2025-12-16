@@ -9,11 +9,13 @@
 ## チーム名
 - Fibonacci
 
-## 開発環境
-- 使用言語: C#
-- 開発ツール: Unity
+## 技術スタック
+![Unity](https://img.shields.io/badge/Unity-2023.3-black?style=for-the-badge&logo=unity)
+![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white)
+![Visual Studio](https://img.shields.io/badge/Visual%20Studio-5C2D91?style=for-the-badge&logo=visual-studio)
+![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 
-## 👥 参加メンバー
+## 参加メンバー
 
 <table>
   <tr>
