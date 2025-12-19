@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BorderLine
+namespace Fibonacci.InGame.BorderLine
 {
     /// <summary>
     /// 2点を通る直線でプレイ領域(矩形)を2分割するための純粋ロジック。

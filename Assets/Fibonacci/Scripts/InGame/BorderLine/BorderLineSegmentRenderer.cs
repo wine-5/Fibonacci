@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BorderLine
+namespace Fibonacci.InGame.BorderLine
 {
     /// <summary>
     /// LineRendererを使って「2点間の1本の線分」を描画/非表示する責務だけを持つクラス。
@@ -14,8 +14,6 @@ namespace BorderLine
         {
             this.lineRenderer = lineRenderer;
         }
-
-        public bool IsValid => lineRenderer != null;
 
         public void Hide()
         {
@@ -31,6 +29,24 @@ namespace BorderLine
             lineRenderer.positionCount = 2;
             lineRenderer.SetPosition(0, startPos);
             lineRenderer.SetPosition(1, endPos);
+        }
+
+        public void DrawSplitOrSegment(
+            Vector3 segmentStart,
+            Vector3 segmentEnd,
+            Vector2 intersection0,
+            Vector2 intersection1,
+            bool extendToBounds,
+            float z = 0f)
+        {
+            if (extendToBounds)
+            {
+                Draw(new Vector3(intersection0.x, intersection0.y, z), new Vector3(intersection1.x, intersection1.y, z));
+            }
+            else
+            {
+                Draw(segmentStart, segmentEnd);
+            }
         }
     }
 }

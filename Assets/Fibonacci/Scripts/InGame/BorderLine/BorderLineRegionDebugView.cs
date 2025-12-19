@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BorderLine
+namespace Fibonacci.InGame.BorderLine
 {
     /// <summary>
     /// 領域分割のデバッグ可視化専用。
@@ -27,7 +27,7 @@ namespace BorderLine
             this.debugDrawDuration = debugDrawDuration;
         }
 
-        public void EnsureMarkers()
+        private void EnsureMarkers()
         {
             if (regionMarker1 == null)
             {
@@ -39,17 +39,38 @@ namespace BorderLine
             }
         }
 
-        public void SetMarkerPositions(Vector2 c1, Vector2 c2)
+        private void SetMarkerPositions(Vector2 c1, Vector2 c2)
         {
             if (regionMarker1 != null) regionMarker1.transform.position = new Vector3(c1.x, c1.y, worldZ);
             if (regionMarker2 != null) regionMarker2.transform.position = new Vector3(c2.x, c2.y, worldZ);
         }
 
-        public void DrawPolygons(BorderLineRegionSplitter.SplitResult split)
+        private void DrawPolygons(BorderLineRegionSplitter.SplitResult split)
         {
             DrawPolygonDebug(split.Polygon1, Color.cyan);
             DrawPolygonDebug(split.Polygon2, Color.magenta);
             Debug.DrawLine(split.Intersection0, split.Intersection1, Color.white, debugDrawDuration);
+        }
+
+        public void Render(BorderLineRegionSplitter.SplitResult split, bool showMarkers, bool drawOutlines)
+        {
+            if (showMarkers)
+            {
+                EnsureMarkers();
+                if (regionMarker1 != null) regionMarker1.SetActive(true);
+                if (regionMarker2 != null) regionMarker2.SetActive(true);
+                SetMarkerPositions(split.Centroid1, split.Centroid2);
+            }
+            else
+            {
+                if (regionMarker1 != null) regionMarker1.SetActive(false);
+                if (regionMarker2 != null) regionMarker2.SetActive(false);
+            }
+
+            if (drawOutlines)
+            {
+                DrawPolygons(split);
+            }
         }
 
         private GameObject CreateTextMarker(string name, string text, Color color)
