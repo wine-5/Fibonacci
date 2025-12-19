@@ -30,6 +30,9 @@ namespace Fibonacci.InGame.BorderLine
         private BorderLineSegmentRenderer lineDrawer;
         private BorderLineRegionDebugView regionDebugView;
 
+        [Header("Selection Highlight")]
+        [SerializeField, Label("1つ目選択のハイライト表示")] private BorderLineSelectionHighlightView selectionHighlightView;
+
         [Header("Region Debug")]
         [SerializeField,Label("領域の数字デバッグ")] private bool showRegionMarkers = true;
         [SerializeField,Label("領域の囲いデバッグ")] private bool drawRegionOutlines = true;
@@ -47,6 +50,11 @@ namespace Fibonacci.InGame.BorderLine
             lineDrawer.Hide();
 
             regionDebugView = new BorderLineRegionDebugView(transform, worldZ, markerTextSize, debugDrawDuration);
+
+            if (selectionHighlightView == null)
+            {
+                selectionHighlightView = GetComponent<BorderLineSelectionHighlightView>();
+            }
         }
 
         private void OnEnable()
@@ -65,6 +73,8 @@ namespace Fibonacci.InGame.BorderLine
 
         private void OnDisable()
         {
+            selectionHighlightView?.Clear();
+
             if (clickAction != null && clickAction.action != null)
             {
                 clickAction.action.performed -= OnClickPerformed;
@@ -161,6 +171,7 @@ namespace Fibonacci.InGame.BorderLine
             {
                 // 1つ目の玉を選択
                 firstSelectedBall = clickedObject;
+                selectionHighlightView?.SetTarget(firstSelectedBall);
             }
             else
             {
@@ -170,12 +181,14 @@ namespace Fibonacci.InGame.BorderLine
                     // 領域分割（矩形外枠ベース）
                     if (!BorderLineRegionSplitter.TryGetPlayAreaRectFromTargets(targetTag, out var rect))
                     {
+                        selectionHighlightView?.Clear();
                         firstSelectedBall = null;
                         return;
                     }
 
                     if (!BorderLineRegionSplitter.TrySplitRectByLine(rect, firstSelectedBall.position, clickedObject.position, out var split))
                     {
+                        selectionHighlightView?.Clear();
                         firstSelectedBall = null;
                         return;
                     }
@@ -192,6 +205,7 @@ namespace Fibonacci.InGame.BorderLine
                     regionDebugView.Render(split, showRegionMarkers, drawRegionOutlines);
 
                     // 選択状態をリセット
+                    selectionHighlightView?.Clear();
                     firstSelectedBall = null;
                 }
             }

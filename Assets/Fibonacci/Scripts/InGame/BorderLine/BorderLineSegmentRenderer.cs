@@ -22,7 +22,7 @@ namespace Fibonacci.InGame.BorderLine
             lineRenderer.enabled = false;
         }
 
-        public void Draw(Vector3 startPos, Vector3 endPos)
+        private void Draw(Vector3 startPos, Vector3 endPos)
         {
             if (lineRenderer == null) return;
             lineRenderer.enabled = true;

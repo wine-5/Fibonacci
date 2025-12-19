@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 9164758199431274297}
   - component: {fileID: 861468770892815570}
   - component: {fileID: 7754729491834672639}
+  - component: {fileID: 3436017770186840745}
   m_Layer: 0
   m_Name: BorderLineManager
   m_TagString: Untagged
@@ -160,7 +161,23 @@ MonoBehaviour:
   targetTag: LineTarget
   extendLineToBounds: 1
   lineRenderer: {fileID: 861468770892815570}
+  selectionHighlightView: {fileID: 3436017770186840745}
   showRegionMarkers: 1
   drawRegionOutlines: 1
   debugDrawDuration: 2
   markerTextSize: 0.25
+--- !u!114 &3436017770186840745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1329423704766539081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66811829c3beeb2448ab8cefabd4cfd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.BorderLine.BorderLineSelectionHighlightView
+  enableHighlight: 1
+  blinkPeriod: 0.35
+  tint: {r: 1, g: 1, b: 0.2, a: 1}

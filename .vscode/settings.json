@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "ImoGameJam.slnx"
+    "dotnet.defaultSolution": "Fibonacci.slnx"
 }
