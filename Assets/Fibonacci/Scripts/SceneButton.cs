@@ -17,14 +17,9 @@ public class SceneButton : MonoBehaviour
     public void OnClick()
     {
         if (SceneController.Instance != null)
-        {
-            Debug.Log($"Scene transition button clicked: {targetScene}");
             SceneController.Instance.LoadScene(targetScene);
-        }
         else
-        {
-            Debug.LogError("SceneController instance not found! Make sure it's attached in Title scene.");
-        }
+            Debug.LogError("SceneControllerのインスタンスが見つかりません！Titleシーンにアタッチされているか確認してください。");
     }
     
     /// <summary>
@@ -34,13 +29,8 @@ public class SceneButton : MonoBehaviour
     public void LoadScene(SceneName sceneName)
     {
         if (SceneController.Instance != null)
-        {
-            Debug.Log($"Programmatic scene transition: {sceneName}");
             SceneController.Instance.LoadScene(sceneName);
-        }
         else
-        {
-            Debug.LogError("SceneController instance not found! Make sure it's attached in Title scene.");
-        }
+            Debug.LogError("SceneControllerのインスタンスが見つかりません！Titleシーンにアタッチされているか確認してください。");
     }
 }

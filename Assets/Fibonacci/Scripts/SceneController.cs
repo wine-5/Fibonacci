@@ -29,7 +29,6 @@ namespace Fibonacci.Scene
         public void LoadScene(SceneName sceneName)
         {
             string sceneNameStr = sceneName.ToString();
-            Debug.Log($"Loading scene: {sceneNameStr}");
             SceneManager.LoadScene(sceneNameStr);
         }
 
@@ -39,21 +38,7 @@ namespace Fibonacci.Scene
         public void ReloadCurrentScene()
         {
             string currentSceneName = SceneManager.GetActiveScene().name;
-            Debug.Log($"Reloading current scene: {currentSceneName}");
             SceneManager.LoadScene(currentSceneName);
-        }
-
-        /// <summary>
-        /// アプリケーションを終了
-        /// </summary>
-        public void QuitGame()
-        {
-            Debug.Log("Quitting game...");
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit();
-#endif
         }
     }
 }
