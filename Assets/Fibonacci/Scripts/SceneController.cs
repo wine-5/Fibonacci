@@ -1,17 +1,35 @@
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Fibonacci.Scene
 {
+    /// <summary>
+    /// ゲーム内のシーン名を定義するenum
+    /// </summary>
+    public enum SceneName
+    {
+        Title,
+        StageSelect,
+        InGame,
+        Result
+    }
+
+    /// <summary>
+    /// シーン遷移を管理するSingletonクラス
+    /// Titleシーンで一度生成されれば、他のシーンでも利用可能
+    /// </summary>
     public class SceneController : Singleton<SceneController>
     {
         protected override bool UseDontDestroyOnLoad => true;
 
         /// <summary>
-        /// シーン名でシーンを切り替え
+        /// enumで指定されたシーンに切り替え
         /// </summary>
-        public void LoadScene(string sceneName)
+        /// <param name="sceneName">遷移先のシーン</param>
+        public void LoadScene(SceneName sceneName)
         {
-            SceneManager.LoadScene(sceneName);
+            string sceneNameStr = sceneName.ToString();
+            SceneManager.LoadScene(sceneNameStr);
         }
 
         /// <summary>
@@ -19,19 +37,8 @@ namespace Fibonacci.Scene
         /// </summary>
         public void ReloadCurrentScene()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
-
-        /// <summary>
-        /// アプリケーションを終了
-        /// </summary>
-        public void QuitGame()
-        {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit();
-#endif
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(currentSceneName);
         }
     }
 }
