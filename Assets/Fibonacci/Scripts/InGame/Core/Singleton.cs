@@ -32,7 +32,11 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
             {
                 if (instance == null)
                 {
+#if UNITY_2023_1_OR_NEWER
+                    instance = FindFirstObjectByType<T>();
+#else
                     instance = FindObjectOfType<T>();
+#endif
 
                     if (instance == null)
                     {
