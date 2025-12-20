@@ -27,6 +27,7 @@ namespace Fibonacci.InGame.BorderLine
         [SerializeField, Label("色を表示する板")] private SpriteRenderer displayRenderer;
         [SerializeField, Label("解像度")] private int textureResolution = 1024;
         private BorderLineColorMap colorMap; 
+        public BorderLineColorMap GetColorMap() => colorMap;
         // ----------------------------
 
         private Transform firstSelectedBall;
