@@ -1,5 +1,6 @@
 # wine-5のやること
 
-## GameManagerの作成
-
-## GameStateを管理する
+- AudioをTitleから制御する
+- リザルト画面（クリア画面）を作る
+- タイトルの背景の生成
+- BGMの追加
