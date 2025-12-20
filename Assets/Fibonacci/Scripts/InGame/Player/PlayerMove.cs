@@ -113,6 +113,7 @@ namespace Fibonacci.Player
         /// <returns>地面に接地していれば true</returns>
         private bool CheckIsGrounded()
         {
+            Debug.Log("A");
             // Physics2D.Raycastを使用
             // 2DのRaycastは「衝突結果」を返すため、コライダーが存在するかで判定します
             RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, groundLayer);
