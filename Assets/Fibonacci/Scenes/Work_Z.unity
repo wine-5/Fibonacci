@@ -119,6 +119,34 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &499506904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Player/Move
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: c8503dea8d63fc64a947832749700d9c, type: 3}
+  m_ActionId: 7761a769-7684-47b9-9245-dc046ea913de
+--- !u!114 &705291033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Player/Jump
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: c8503dea8d63fc64a947832749700d9c, type: 3}
+  m_ActionId: fa0604cf-df69-406e-8010-11e0b7b3aba5
 --- !u!1001 &6252453248528380881
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -127,6 +155,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1426963140804937086, guid: fa1d2f583fe9bfa4ebd78bf59d006677, type: 3}
+      propertyPath: jumpActionRef
+      value: 
+      objectReference: {fileID: 705291033}
+    - target: {fileID: 1426963140804937086, guid: fa1d2f583fe9bfa4ebd78bf59d006677, type: 3}
+      propertyPath: moveActionRef
+      value: 
+      objectReference: {fileID: 499506904}
     - target: {fileID: 4873048127903736618, guid: fa1d2f583fe9bfa4ebd78bf59d006677, type: 3}
       propertyPath: m_LocalPosition.x
       value: 40.43239
