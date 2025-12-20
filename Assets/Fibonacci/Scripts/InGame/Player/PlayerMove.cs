@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Fibonacci.Event;
 
 namespace Fibonacci.Player
 {
@@ -20,6 +21,9 @@ namespace Fibonacci.Player
         [Header("Input System設定")]
         [SerializeField] private InputActionReference moveActionRef;
         [SerializeField] private InputActionReference jumpActionRef;
+        
+        [Header("リスタート設定")]
+        [SerializeField] private Vector3 startPosition;
 
         // === プライベート変数 ===
         private Rigidbody2D rb; // 2D用に変更
@@ -30,6 +34,8 @@ namespace Fibonacci.Player
         {
             // Rigidbody2Dコンポーネントの参照を取得
             rb = GetComponent<Rigidbody2D>();
+            // 初期位置を保存
+            startPosition = transform.position;
         }
 
         // === Input System の有効化/無効化 ===
@@ -40,6 +46,9 @@ namespace Fibonacci.Player
 
             // ジャンプアクションの登録をコメントアウト
             // jumpActionRef.action.performed += OnJump;
+            
+            // リスタートイベントを購読
+            GameEvents.OnRestart += OnRestart;
         }
 
         void OnDisable()
@@ -49,6 +58,9 @@ namespace Fibonacci.Player
             
             moveActionRef.action.Disable();
             jumpActionRef.action.Disable();
+            
+            // リスタートイベントの購読を解除
+            GameEvents.OnRestart -= OnRestart;
         }
 
         // === 毎フレームの処理 ===
@@ -117,6 +129,21 @@ namespace Fibonacci.Player
             // 2DのRaycastは「衝突結果」を返すため、コライダーが存在するかで判定します
             RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, groundLayer);
             return hit.collider != null;
+        }
+
+        /// <summary>
+        /// リスタートイベント受信時の処理
+        /// </summary>
+        private void OnRestart()
+        {
+            Debug.Log("PlayerMove: Restart event received - resetting player position and velocity");
+            
+            // 位置をリセット
+            transform.position = startPosition;
+            
+            // 速度をリセット
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
         }
     }
 }

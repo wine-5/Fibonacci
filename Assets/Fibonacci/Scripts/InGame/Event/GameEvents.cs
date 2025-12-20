@@ -1,19 +1,27 @@
 using UnityEngine;
+using System;
 
-namespace Fibonacci
+namespace Fibonacci.Event
+
 {
-    public class GameEvents : MonoBehaviour
+    /// <summary>
+    /// リスタート専用のシンプルなイベントシステム
+    /// GameJam用の軽量実装
+    /// </summary>
+    public static class GameEvents
     {
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
-        {
-        
-        }
+        /// <summary>
+        /// Rキーでリスタートが実行された時のイベント
+        /// プレイヤー位置リセット、UI更新などに使用
+        /// </summary>
+        public static event Action OnRestart;
 
-        // Update is called once per frame
-        void Update()
+        /// <summary>
+        /// リスタートイベントを発火
+        /// </summary>
+        public static void TriggerRestart()
         {
-        
+            OnRestart?.Invoke();
         }
     }
 }
