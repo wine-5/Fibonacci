@@ -58,7 +58,7 @@ namespace Fibonacci
         {
             if (enableDebugLog)
             {
-                Debug.Log("ResetInputManager: Restart key pressed");
+                // TODO：ここにPlayerの位置をリスポーンするメソッドを呼ぶ
             }
             
             RestartCurrentStage();
