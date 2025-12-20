@@ -12,4 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6155ad71facf6d43b047df64f0b88d5, type: 3}
   m_Name: AudioData
   m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.Audio.AudioDataSO
-  audioDataList: []
+  audioDataList:
+  - audioName: Button
+    audioClip: {fileID: 8300000, guid: 16d7b64836e8a734aa81c97b26949903, type: 3}
+    volumeMultiplier: 0
+  - audioName: Border
+    audioClip: {fileID: 8300000, guid: 52ae38a6dba28d5499906c09d92e9e20, type: 3}
+    volumeMultiplier: 0
