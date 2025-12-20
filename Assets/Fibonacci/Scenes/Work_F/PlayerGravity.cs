@@ -12,10 +12,9 @@ namespace Fibonacci.Player
             rb = GetComponent<Rigidbody2D>();
         }
 
-        void Start()
+        public float GetGravityScale()
         {
-            // テスト用：開始時に一度反転させてみる
-            //ReverseGravity();
+            return rb != null ? rb.gravityScale : 1f;
         }
 
         /// <summary>
@@ -26,15 +25,32 @@ namespace Fibonacci.Player
             if (rb != null)
             {
                 // 現在の重力スケールをプラスマイナス逆転させる
-                rb.gravityScale *= -1;
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
 
                 // プレイヤーの向き（上下）も反転させる
                 Vector3 scale = transform.localScale;
                 scale.y *= -1;
                 transform.localScale = scale;
-
-                Debug.Log($"重力を反転しました。現在のScale: {rb.gravityScale}");
             }
+        }
+        public void SetGravityScale(float scale)
+        {
+            if (rb == null) return;
+
+            rb.gravityScale = scale;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0); // 慣性リセット
+
+            // 見た目の向きを重力に合わせる
+            Vector3 localScale = transform.localScale;
+            // 重力がマイナスならキャラも逆さま(-1)、プラスならそのまま(1)
+            localScale.y = (scale < 0) ? -Mathf.Abs(localScale.y) : Mathf.Abs(localScale.y);
+            transform.localScale = localScale;
+        }
+
+        // 正常な重力に戻す専用のショートカット
+        public void SetNormalGravity()
+        {
+            SetGravityScale(1f);
         }
     }
 }

@@ -21,15 +21,18 @@ namespace Fibonacci.InGame.Player
 
             int currentAreaIndex = colorMap.GetAreaIndex(transform.position);
 
-            if (currentAreaIndex == -1) return;
-
             if (currentAreaIndex != lastAreaIndex)
             {
-                // 1. デバッグログ（エリア変更の通知）
-                LogAreaChange(currentAreaIndex);
-
-                // 2. ★ Controllerに「エリアが変わったよ」と伝え、重力判定を行わせる
-                playerController.OnAreaChanged(currentAreaIndex);
+                if (currentAreaIndex == 0 || currentAreaIndex == 1)
+                {
+                    LogAreaChange(currentAreaIndex);
+                    playerController.OnAreaChanged(currentAreaIndex);
+                }
+                else
+                {
+                    // ★追加点：エリア外（-1）になったらリセットを呼ぶ
+                    playerController.ResetGravity();
+                }
 
                 lastAreaIndex = currentAreaIndex;
             }
@@ -39,11 +42,11 @@ namespace Fibonacci.InGame.Player
         {
             if (index == 1)
             {
-                Debug.Log("<color=green>【エリア変更】緑エリアに入りました</color>");
+                
             }
             else if (index == 0)
             {
-                Debug.Log("<color=blue>【エリア変更】青エリアに入りました</color>");
+                
             }
         }
     }

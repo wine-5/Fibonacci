@@ -50,7 +50,7 @@ namespace Fibonacci.Player
             if (def == null) return;
 
             // 1. ログを出力
-            Debug.Log($"<color=yellow>【UI選択】エリア {regionId} に効果「{def.Id}」が設定されました</color>");
+            //Debug.Log($"<color=yellow>【UI選択】エリア {regionId} に効果「{def.Id}」が設定されました</color>");
 
             // 2. 効果を保持
             if (regionId == 0) EffectIdArea0 = def.Id;
@@ -96,18 +96,29 @@ namespace Fibonacci.Player
             EffectIdArea0 = "";
             EffectIdArea1 = "";
         }
-        
+
         public void OnAreaChanged(int newAreaIndex)
         {
             string currentEffect = (newAreaIndex == 0) ? EffectIdArea0 : EffectIdArea1;
 
             if (currentEffect == "ZeroGravity")
             {
-                if (playerGravity != null)
-                {
-                    playerGravity.ReverseGravity();
-                    Debug.Log($"<color=cyan>効果発動：{currentEffect} により重力を反転しました</color>");
-                }
+                // ZeroGravityエリアなら、強制的に重力をマイナス（反転）にする
+                playerGravity.SetGravityScale(-1f);
+            }
+            else
+            {
+                // それ以外（効果なし、または別の効果）なら、重力をプラス（正常）に戻す
+                playerGravity.SetNormalGravity();
+            }
+        }
+        public void ResetGravity()
+        {
+            // もし今、重力が反転（マイナス）しているなら、ReverseGravityを呼んでプラスに戻す
+            if (playerGravity != null && playerGravity.GetGravityScale() < 0)
+            {
+                playerGravity.ReverseGravity();
+                Debug.Log("<color=white>エリア外に出たため重力を元に戻しました</color>");
             }
         }
     }

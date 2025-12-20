@@ -904,7 +904,7 @@ PrefabInstance:
     - target: {fileID: 1129225640453530446, guid: 9642415863345644999f100032ce848e, type: 3}
       propertyPath: playerGravity
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1785309918}
     - target: {fileID: 1129225640453530446, guid: 9642415863345644999f100032ce848e, type: 3}
       propertyPath: drawBorderLine
       value: 
@@ -948,6 +948,10 @@ PrefabInstance:
     - target: {fileID: 3708983746114596251, guid: 9642415863345644999f100032ce848e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6832308342231051713, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -48.1
       objectReference: {fileID: 0}
     - target: {fileID: 7406381650257207826, guid: 9642415863345644999f100032ce848e, type: 3}
       propertyPath: m_Size.y
