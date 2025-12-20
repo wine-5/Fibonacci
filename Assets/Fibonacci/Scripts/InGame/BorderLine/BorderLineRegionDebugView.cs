@@ -16,8 +16,7 @@ namespace Fibonacci.InGame.BorderLine
         private readonly float markerTextSize;
         private readonly float debugDrawDuration;
 
-        private GameObject regionMarker1;
-        private GameObject regionMarker2;
+        private readonly System.Collections.Generic.List<GameObject> regionMarkers = new();
 
         public BorderLineRegionDebugView(Transform parent, float worldZ, float markerTextSize, float debugDrawDuration)
         {
@@ -27,49 +26,69 @@ namespace Fibonacci.InGame.BorderLine
             this.debugDrawDuration = debugDrawDuration;
         }
 
-        private void EnsureMarkers()
+        private void EnsureMarkerCount(int count)
         {
-            if (regionMarker1 == null)
+            while (regionMarkers.Count < count)
             {
-                regionMarker1 = CreateTextMarker("RegionMarker1", "1", Color.cyan);
-            }
-            if (regionMarker2 == null)
-            {
-                regionMarker2 = CreateTextMarker("RegionMarker2", "2", Color.magenta);
+                int idx = regionMarkers.Count + 1;
+                var go = CreateTextMarker($"RegionMarker{idx}", idx.ToString(), GetRegionColor(idx));
+                regionMarkers.Add(go);
             }
         }
 
-        private void SetMarkerPositions(Vector2 c1, Vector2 c2)
+        private void SetMarkerPositions(System.Collections.Generic.IReadOnlyList<BorderLineRegionSplitter.Region> regions)
         {
-            if (regionMarker1 != null) regionMarker1.transform.position = new Vector3(c1.x, c1.y, worldZ);
-            if (regionMarker2 != null) regionMarker2.transform.position = new Vector3(c2.x, c2.y, worldZ);
+            for (int i = 0; i < regions.Count; i++)
+            {
+                var go = regionMarkers[i];
+                if (go == null) continue;
+                Vector2 c = regions[i].Centroid;
+                go.transform.position = new Vector3(c.x, c.y, worldZ);
+            }
         }
 
-        private void DrawPolygons(BorderLineRegionSplitter.SplitResult split)
+        private void DrawPolygons(BorderLineRegionSplitter.PartitionResult partition)
         {
-            DrawPolygonDebug(split.Polygon1, Color.cyan);
-            DrawPolygonDebug(split.Polygon2, Color.magenta);
-            Debug.DrawLine(split.Intersection0, split.Intersection1, Color.white, debugDrawDuration);
+            if (partition.Regions != null)
+            {
+                for (int i = 0; i < partition.Regions.Count; i++)
+                {
+                    var poly = partition.Regions[i].Polygon;
+                    DrawPolygonDebug(poly, GetRegionColor(i + 1));
+                }
+            }
+
+            Debug.DrawLine(partition.Intersection0, partition.Intersection1, Color.white, debugDrawDuration);
         }
 
-        public void Render(BorderLineRegionSplitter.SplitResult split, bool showMarkers, bool drawOutlines)
+        public void Render(BorderLineRegionSplitter.PartitionResult partition, bool showMarkers, bool drawOutlines)
         {
             if (showMarkers)
             {
-                EnsureMarkers();
-                if (regionMarker1 != null) regionMarker1.SetActive(true);
-                if (regionMarker2 != null) regionMarker2.SetActive(true);
-                SetMarkerPositions(split.Centroid1, split.Centroid2);
+                int count = partition.Regions != null ? partition.Regions.Count : 0;
+                EnsureMarkerCount(count);
+
+                for (int i = 0; i < regionMarkers.Count; i++)
+                {
+                    if (regionMarkers[i] != null) regionMarkers[i].SetActive(i < count);
+                }
+
+                if (partition.Regions != null && partition.Regions.Count > 0)
+                {
+                    SetMarkerPositions(partition.Regions);
+                }
             }
             else
             {
-                if (regionMarker1 != null) regionMarker1.SetActive(false);
-                if (regionMarker2 != null) regionMarker2.SetActive(false);
+                for (int i = 0; i < regionMarkers.Count; i++)
+                {
+                    if (regionMarkers[i] != null) regionMarkers[i].SetActive(false);
+                }
             }
 
             if (drawOutlines)
             {
-                DrawPolygons(split);
+                DrawPolygons(partition);
             }
         }
 
@@ -87,6 +106,13 @@ namespace Fibonacci.InGame.BorderLine
             tm.fontSize = 64;
 
             return go;
+        }
+
+        private static Color GetRegionColor(int index)
+        {
+            // 1..N を想定。HSVで見分けやすい色を生成。
+            float hue = Mathf.Repeat((index - 1) * 0.18f, 1f);
+            return Color.HSVToRGB(hue, 0.85f, 1f);
         }
 
         private void DrawPolygonDebug(System.Collections.Generic.List<Vector2> poly, Color color)
