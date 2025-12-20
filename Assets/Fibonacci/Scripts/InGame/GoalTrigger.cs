@@ -1,3 +1,4 @@
+using Fibonacci.Scene;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,22 +9,25 @@ public class GoalTrigger : MonoBehaviour
 {
     [Header("ゴールの設定")]
     [SerializeField] private string targetSceneName = "Title";
-    
-    // TODO: Playerの当たり判定が2Dになったらここも2Dに変更する
-    private void OnTriggerEnter(Collider other)
+
+    /// <summary>
+    /// プレイヤーがゴールに到達した時の判定とシーン遷移を管理するクラス
+    /// </summary>
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("A");
+        Debug.Log("Goal Trigger 2D activated");
         // Playerタグのオブジェクトと接触したかチェック
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Goal reached! Loading Title scene...");
-            LoadTargetScene();
+            Debug.Log("Goal reached! Loading Result scene...");
+            LoadResultScene();
         }
     }
-    
-    private void LoadTargetScene()
+
+    private void LoadResultScene()
     {
-        // Unity標準のSceneManagerを使用してシーン切り替え
-        SceneManager.LoadScene(targetSceneName);
+        // SceneControllerのインスタンスを経由してリザルト画面に移動
+        if (SceneController.Instance != null)
+            SceneController.Instance.LoadScene(SceneName.Result);
     }
 }
