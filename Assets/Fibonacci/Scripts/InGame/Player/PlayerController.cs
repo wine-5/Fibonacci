@@ -13,6 +13,7 @@ namespace Fibonacci.Player
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private BorderLineEffectUI effectUI;
+        [SerializeField] private PlayerGravity playerGravity;
         private PlayerMove playerMove;
 
         public string EffectIdArea0 { get; private set; } = "";
@@ -21,6 +22,7 @@ namespace Fibonacci.Player
         void Awake()
         {
             playerMove = GetComponent<PlayerMove>();
+            if (playerGravity == null) playerGravity = GetComponent<PlayerGravity>();
         }
 
         void OnEnable()
@@ -90,9 +92,23 @@ namespace Fibonacci.Player
         {
             if (playerMove != null)
                 playerMove.ResetPosition();
-                
+
             EffectIdArea0 = "";
             EffectIdArea1 = "";
+        }
+        
+        public void OnAreaChanged(int newAreaIndex)
+        {
+            string currentEffect = (newAreaIndex == 0) ? EffectIdArea0 : EffectIdArea1;
+
+            if (currentEffect == "ZeroGravity")
+            {
+                if (playerGravity != null)
+                {
+                    playerGravity.ReverseGravity();
+                    Debug.Log($"<color=cyan>効果発動：{currentEffect} により重力を反転しました</color>");
+                }
+            }
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Fibonacci.Player
         void Start()
         {
             // テスト用：開始時に一度反転させてみる
-            ReverseGravity();
+            //ReverseGravity();
         }
 
         /// <summary>

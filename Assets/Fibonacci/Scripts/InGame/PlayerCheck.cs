@@ -1,35 +1,36 @@
 using UnityEngine;
 using Fibonacci.InGame.BorderLine;
+using Fibonacci.Player;
 
 namespace Fibonacci.InGame.Player
 {
     public class PlayerCheck : MonoBehaviour
     {
         [SerializeField] private DrawBorderLine drawBorderLine;
+        [SerializeField] private PlayerController playerController;
 
         // 前回のエリア番号を保持（-1: 未確定, 0: 青, 1: 緑）
         private int lastAreaIndex = -1;
 
         void Update()
         {
-            if (drawBorderLine == null) return;
+            if (drawBorderLine == null || playerController == null) return;
 
             var colorMap = drawBorderLine.GetColorMap();
             if (colorMap == null) return;
 
-            // 現在のエリアを取得
             int currentAreaIndex = colorMap.GetAreaIndex(transform.position);
 
-            // 判定不能（エリア外）の場合は無視
             if (currentAreaIndex == -1) return;
 
-            // 初回判定時、または前回とエリアが変わった場合のみ実行
             if (currentAreaIndex != lastAreaIndex)
             {
-                // ログを出力
+                // 1. デバッグログ（エリア変更の通知）
                 LogAreaChange(currentAreaIndex);
 
-                // 現在の状態を保存
+                // 2. ★ Controllerに「エリアが変わったよ」と伝え、重力判定を行わせる
+                playerController.OnAreaChanged(currentAreaIndex);
+
                 lastAreaIndex = currentAreaIndex;
             }
         }
