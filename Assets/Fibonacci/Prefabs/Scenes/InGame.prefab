@@ -381,6 +381,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4873048127903736618}
+  - component: {fileID: 1445270468257016253}
   m_Layer: 0
   m_Name: InGame
   m_TagString: Untagged
@@ -407,6 +408,20 @@ Transform:
   - {fileID: 6823357960116346682}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1445270468257016253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6434142614247889949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf97e5a9ff0ae394f8d598bff67a3696, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.ResetInputManager
+  restartAction: {fileID: 0}
+  enableDebugLog: 1
 --- !u!1 &6793647259099205549
 GameObject:
   m_ObjectHideFlags: 0
