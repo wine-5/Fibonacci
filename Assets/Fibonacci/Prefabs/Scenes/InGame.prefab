@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3708983746114596251}
-  - component: {fileID: 167877935548681814}
   m_Layer: 0
   m_Name: InGame
   m_TagString: Untagged
@@ -36,19 +35,6 @@ Transform:
   - {fileID: 29426670248730427}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &167877935548681814
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 877297230197825460}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf97e5a9ff0ae394f8d598bff67a3696, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.ResetInputManager
-  restartAction: {fileID: 0}
 --- !u!1 &1467716919710694859
 GameObject:
   m_ObjectHideFlags: 0
@@ -726,7 +712,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1080248329955955408, guid: 9a2fcb35bc92e5b4499442630a138bb2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -30.802387
+      value: -31.36
       objectReference: {fileID: 0}
     - target: {fileID: 1080248329955955408, guid: 9a2fcb35bc92e5b4499442630a138bb2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -848,6 +834,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 29426670248730427}
     m_Modifications:
+    - target: {fileID: 1721923738563521551, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
+      propertyPath: m_Size.y
+      value: 0.31624472
+      objectReference: {fileID: 0}
+    - target: {fileID: 1721923738563521551, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.012401722
+      objectReference: {fileID: 0}
     - target: {fileID: 7490017549848532587, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
       propertyPath: m_Name
       value: Player
@@ -899,6 +893,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7490017549848532587, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3861745823570855299}
+    - targetCorrespondingSourceObject: {fileID: 7490017549848532587, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1129225640453530446}
+    - targetCorrespondingSourceObject: {fileID: 7490017549848532587, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3762552001858236543}
   m_SourcePrefab: {fileID: 100100000, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
 --- !u!1 &5204657233798859872 stripped
 GameObject:
@@ -927,11 +927,101 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1129225640453530446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5204657233798859872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b81958ec003ace45a7044cdd1692090, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.Player.PlayerController
+  playerMove: {fileID: 8667137706381586179}
+--- !u!114 &3762552001858236543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5204657233798859872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+  m_Actions: {fileID: -944628639613478452, guid: c8503dea8d63fc64a947832749700d9c, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1129225640453530446}
+        m_TargetAssemblyTypeName: Fibonacci.Player.PlayerController, Assembly-CSharp
+        m_MethodName: OnMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7761a769-7684-47b9-9245-dc046ea913de
+    m_ActionName: 'Player/Move[/Keyboard/leftArrow,/Keyboard/rightArrow,/Keyboard/a,/Keyboard/d]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fa0604cf-df69-406e-8010-11e0b7b3aba5
+    m_ActionName: 'Player/Jump[/Keyboard/space]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1129225640453530446}
+        m_TargetAssemblyTypeName: Fibonacci.Player.PlayerController, Assembly-CSharp
+        m_MethodName: OnRestart
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 6dc7372c-9a0e-484c-9e13-390d2441bd14
+    m_ActionName: 'Player/Restart[/Keyboard/r]'
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!4 &6832308342231051713 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8149957688349489098, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
   m_PrefabInstance: {fileID: 3443929261412866571}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8667137706381586179 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6308576299905643784, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
+  m_PrefabInstance: {fileID: 3443929261412866571}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5204657233798859872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e28ee7e36eb6f843b0f45efc37e8b12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.Player.PlayerMove
 --- !u!1001 &3640153683567875117
 PrefabInstance:
   m_ObjectHideFlags: 0
