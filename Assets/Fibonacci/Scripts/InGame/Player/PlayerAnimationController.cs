@@ -1,19 +1,19 @@
 using UnityEngine;
 
-namespace Fibonacci
+namespace Fibonacci.Player
 {
+    /// <summary>
+    /// プレイヤーのアニメーション制御を管理するクラス
+    /// アニメーションの切り替えや状態管理を担当
+    /// </summary>
     public class PlayerAnimationController : MonoBehaviour
-    {
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+    {  
+        //TODO:Animationの制御はまだ書いていない
+        private Animator animator;      
+        void Awake()
         {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
+            if (animator == null)
+                animator = GetComponent<Animator>();
         }
     }
 }

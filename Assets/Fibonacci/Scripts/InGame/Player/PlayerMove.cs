@@ -47,7 +47,7 @@ namespace Fibonacci.Player
 
         /// <summary>
         /// 入力を受け取って移動処理を行う
-        /// PlayerInputSystemからUnityEvent経由で呼び出される
+        /// PlayerControllerから直接呼び出される
         /// </summary>
         public void OnMoveInput(Vector2 input)
         {

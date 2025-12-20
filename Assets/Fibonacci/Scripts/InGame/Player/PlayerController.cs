@@ -11,13 +11,10 @@ namespace Fibonacci.Player
     [RequireComponent(typeof(PlayerInput))]
     public class PlayerController : MonoBehaviour
     {
-        [Header("Player Components")]
-        [SerializeField] private PlayerMove playerMove;
-
+        private PlayerMove playerMove;
         void Awake()
         {
-            if (playerMove == null)
-                playerMove = GetComponent<PlayerMove>();
+            playerMove = GetComponent<PlayerMove>();
         }
 
         void OnEnable()
@@ -63,10 +60,5 @@ namespace Fibonacci.Player
             if (playerMove != null)
                 playerMove.ResetPosition();
         }
-
-        /// <summary>
-        /// プレイヤーの接地状態を取得
-        /// </summary>
-        public bool IsGrounded => playerMove?.IsGrounded ?? false;
     }
 }
