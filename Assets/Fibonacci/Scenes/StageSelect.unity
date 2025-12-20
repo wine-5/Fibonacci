@@ -119,6 +119,50 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &155382214 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4979578769111462298, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
+  m_PrefabInstance: {fileID: 7625405198198969994}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &155382218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155382214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfa0301ecb4681444bff35a14b41165a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.UI.ButtonHoverEffect
+  hoverScale: 1.1
+  animationDuration: 0.2
+  easeType: 27
+  enableColorChange: 0
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!1 &1523874676 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6687834691428137896, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
+  m_PrefabInstance: {fileID: 7625405198198969994}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1523874680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1523874676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfa0301ecb4681444bff35a14b41165a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.UI.ButtonHoverEffect
+  hoverScale: 1.1
+  animationDuration: 0.2
+  easeType: 27
+  enableColorChange: 0
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &7625405198198969994
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -142,6 +186,10 @@ PrefabInstance:
     - target: {fileID: 827201987799633112, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
       propertyPath: m_PixelsPerUnitMultiplier
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 879746370780822075, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
+      propertyPath: targetScene
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1831056262038191217, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
       propertyPath: m_Type
@@ -426,6 +474,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6233468256468047328, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7625405198198969996}
+    - targetCorrespondingSourceObject: {fileID: 6687834691428137896, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1523874680}
+    - targetCorrespondingSourceObject: {fileID: 4979578769111462298, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 155382218}
   m_SourcePrefab: {fileID: 100100000, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
 --- !u!1 &7625405198198969995 stripped
 GameObject:

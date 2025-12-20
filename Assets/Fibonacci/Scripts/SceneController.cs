@@ -51,6 +51,23 @@ namespace Fibonacci.Scene
         }
 
         /// <summary>
+        /// 現在のステージを再開（Rキー用）
+        /// ゲームステージでのみ有効
+        /// </summary>
+        public void RestartCurrentStage()
+        {
+            if (IsGameStage())
+            {
+                LoadScene(CurrentStage);
+                Debug.Log($"Restarting stage: {CurrentStage}");
+            }
+            else
+            {
+                Debug.LogWarning("Cannot restart: Current scene is not a game stage");
+            }
+        }
+
+        /// <summary>
         /// 次のステージに進む
         /// </summary>
         public void LoadNextStage()
@@ -63,22 +80,6 @@ namespace Fibonacci.Scene
             else
             {
                 LoadScene(SceneName.Result);
-            }
-        }
-
-        /// <summary>
-        /// 前のステージに戻る
-        /// </summary>
-        public void LoadPreviousStage()
-        {
-            SceneName previousStage = GetPreviousStage(CurrentStage);
-            if (previousStage != SceneName.Title)
-            {
-                LoadScene(previousStage);
-            }
-            else
-            {
-                LoadScene(SceneName.StageSelect);
             }
         }
 
@@ -101,26 +102,6 @@ namespace Fibonacci.Scene
                     return SceneName.Result;
                 default:
                     return SceneName.Result;
-            }
-        }
-
-        /// <summary>
-        /// 指定したステージの前のステージを取得
-        /// </summary>
-        /// <param name="currentStage">現在のステージ</param>
-        /// <returns>前のステージ、最初の場合はTitle</returns>
-        private SceneName GetPreviousStage(SceneName currentStage)
-        {
-            switch (currentStage)
-            {
-                case SceneName.Stage1_2:
-                    return SceneName.Stage1_1;
-                case SceneName.Stage2_1:
-                    return SceneName.Stage1_2;
-                case SceneName.Stage2_2:
-                    return SceneName.Stage2_1;
-                default:
-                    return SceneName.Title;
             }
         }
 
