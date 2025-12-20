@@ -1040,7 +1040,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7754729491834672639, guid: accebced7f778604189b9ad6f179e072, type: 3}
       propertyPath: textureResolution
-      value: 10000
+      value: 1024
       objectReference: {fileID: 0}
     - target: {fileID: 7754729491834672639, guid: accebced7f778604189b9ad6f179e072, type: 3}
       propertyPath: drawRegionOutlines
