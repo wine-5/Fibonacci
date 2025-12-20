@@ -87,7 +87,6 @@ namespace Fibonacci.InGame.BorderLine.UI
 
             decided = true;
 
-            Debug.Log("[BorderLineSelectedEffect] DECIDED");
             for (int i = 0; i < need; i++)
             {
                 effectUI.SetPaletteVisible(i, false);
