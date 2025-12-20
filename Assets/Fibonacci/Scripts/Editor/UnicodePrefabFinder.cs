@@ -66,9 +66,18 @@ namespace Fibonacci.Editor
                 GUILayout.Label("検索結果（プレハブ一覧）:", EditorStyles.boldLabel);
 
                 scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, GUILayout.Height(300));
-                foreach (var prefab in foundPrefabs)
+                for (int i = foundPrefabs.Count - 1; i >= 0; i--)
                 {
-                    EditorGUILayout.ObjectField(prefab.name, prefab, typeof(GameObject), false);
+                    var prefab = foundPrefabs[i];
+                    if (prefab != null)
+                    {
+                        EditorGUILayout.ObjectField(prefab.name, prefab, typeof(GameObject), false);
+                    }
+                    else
+                    {
+                        // nullになったオブジェクトをリストから削除
+                        foundPrefabs.RemoveAt(i);
+                    }
                 }
                 EditorGUILayout.EndScrollView();
             }

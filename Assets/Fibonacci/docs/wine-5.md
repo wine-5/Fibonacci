@@ -1,5 +1,3 @@
 # wine-5のやること
 
-## GameManagerの作成
-
-## GameStateを管理する
+- リザルト画面（クリア画面）を作る

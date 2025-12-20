@@ -19,3 +19,6 @@ MonoBehaviour:
   - audioName: Border
     audioClip: {fileID: 8300000, guid: 52ae38a6dba28d5499906c09d92e9e20, type: 3}
     volumeMultiplier: 1
+  - audioName: GameBGM
+    audioClip: {fileID: 8300000, guid: c400cea17c6ab294b84abd5bfc8e453a, type: 3}
+    volumeMultiplier: 1
