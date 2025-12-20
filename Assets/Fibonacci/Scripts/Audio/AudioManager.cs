@@ -38,13 +38,9 @@ namespace Fibonacci.Audio
                             if (audioData != null && !string.IsNullOrEmpty(audioData.AudioName))
                             {
                                 if (audioDictionary.ContainsKey(audioData.AudioName))
-                                {
-                                    Debug.LogWarning($"Duplicate audio name found: {audioData.AudioName}. Skipping...");
-                                }
+                                    Debug.LogError($"Duplicate audio name found: {audioData.AudioName}. Skipping...");
                                 else
-                                {
                                     audioDictionary[audioData.AudioName] = audioData;
-                                }
                             }
                         }
                     }
@@ -81,41 +77,30 @@ namespace Fibonacci.Audio
                         audioSource.clip = audioData.AudioClip;
                         audioSource.volume = audioData.VolumeMultiplier;
                         audioSource.Play();
-                        Debug.Log($"Playing audio: {audioName} with volume: {audioData.VolumeMultiplier}");
                         
                         StartCoroutine(ReturnAudioSourceWhenFinished(audioSource));
                     }
                     else
-                    {
-                        Debug.LogWarning("No available AudioSource to play the audio");
-                    }
+                        Debug.LogError("No available AudioSource to play the audio");
                 }
                 else
-                {
-                    Debug.LogWarning($"AudioClip is null for audio: {audioName}");
-                }
+                    Debug.LogError($"AudioClip is null for audio: {audioName}");
             }
             else
-            {
-                Debug.LogWarning($"Audio not found: {audioName}");
-            }
+                Debug.LogError($"Audio not found: {audioName}");
         }
 
         private AudioSource GetAvailableAudioSource()
         {
             // 利用可能なAudioSourceがあればそれを返す
             if (availableAudioSources.Count > 0)
-            {
                 return availableAudioSources.Dequeue();
-            }
 
             // なければ再生していないAudioSourceを探す
             foreach (var audioSource in audioSourcePool)
             {
                 if (!audioSource.isPlaying)
-                {
                     return audioSource;
-                }
             }
 
             return null;
