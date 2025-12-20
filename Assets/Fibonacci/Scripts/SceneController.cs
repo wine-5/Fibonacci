@@ -10,7 +10,10 @@ namespace Fibonacci.Scene
     {
         Title,
         StageSelect,
-        InGame,
+        Stage1_1,
+        Stage1_2,
+        Stage2_1,
+        Stage2_2,
         Result
     }
 
@@ -23,11 +26,17 @@ namespace Fibonacci.Scene
         protected override bool UseDontDestroyOnLoad => true;
 
         /// <summary>
+        /// 現在のステージ情報
+        /// </summary>
+        public SceneName CurrentStage { get; private set; } = SceneName.Title;
+
+        /// <summary>
         /// enumで指定されたシーンに切り替え
         /// </summary>
         /// <param name="sceneName">遷移先のシーン</param>
         public void LoadScene(SceneName sceneName)
         {
+            CurrentStage = sceneName;
             string sceneNameStr = sceneName.ToString();
             SceneManager.LoadScene(sceneNameStr);
         }
@@ -39,6 +48,89 @@ namespace Fibonacci.Scene
         {
             string currentSceneName = SceneManager.GetActiveScene().name;
             SceneManager.LoadScene(currentSceneName);
+        }
+
+        /// <summary>
+        /// 現在のステージを再開（Rキー用）
+        /// ゲームステージでのみ有効
+        /// </summary>
+        public void RestartCurrentStage()
+        {
+            if (IsGameStage())
+            {
+                LoadScene(CurrentStage);
+                Debug.Log($"Restarting stage: {CurrentStage}");
+            }
+            else
+            {
+                Debug.LogWarning("Cannot restart: Current scene is not a game stage");
+            }
+        }
+
+        /// <summary>
+        /// 次のステージに進む
+        /// </summary>
+        public void LoadNextStage()
+        {
+            SceneName nextStage = GetNextStage(CurrentStage);
+            if (nextStage != SceneName.Result)
+            {
+                LoadScene(nextStage);
+            }
+            else
+            {
+                LoadScene(SceneName.Result);
+            }
+        }
+
+        /// <summary>
+        /// 指定したステージの次のステージを取得
+        /// </summary>
+        /// <param name="currentStage">現在のステージ</param>
+        /// <returns>次のステージ、最後の場合はResult</returns>
+        private SceneName GetNextStage(SceneName currentStage)
+        {
+            switch (currentStage)
+            {
+                case SceneName.Stage1_1:
+                    return SceneName.Stage1_2;
+                case SceneName.Stage1_2:
+                    return SceneName.Stage2_1;
+                case SceneName.Stage2_1:
+                    return SceneName.Stage2_2;
+                case SceneName.Stage2_2:
+                    return SceneName.Result;
+                default:
+                    return SceneName.Result;
+            }
+        }
+
+        /// <summary>
+        /// 現在のステージがゲームステージかどうかを判定
+        /// </summary>
+        /// <returns>ゲームステージの場合true</returns>
+        public bool IsGameStage()
+        {
+            return CurrentStage == SceneName.Stage1_1 || 
+                   CurrentStage == SceneName.Stage1_2 || 
+                   CurrentStage == SceneName.Stage2_1 || 
+                   CurrentStage == SceneName.Stage2_2;
+        }
+
+        /// <summary>
+        /// ステージ選択画面に戻る
+        /// </summary>
+        public void LoadStageSelect()
+        {
+            LoadScene(SceneName.StageSelect);
+        }
+
+        /// <summary>
+        /// タイトル画面に戻る
+        /// </summary>
+        public void LoadTitle()
+        {
+            LoadScene(SceneName.Title);
         }
     }
 }

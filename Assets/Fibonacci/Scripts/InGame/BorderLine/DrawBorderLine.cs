@@ -5,11 +5,6 @@ using System;
 
 namespace Fibonacci.InGame.BorderLine
 {
-    /// <summary>
-    /// 入力から2つのターゲット(球)を選択し、
-    /// 線の描画と領域分割の処理を各責務クラスへ委譲するコーディネータ。
-    /// （描画: BorderLineSegmentRenderer / 領域計算: BorderLineRegionSplitter / デバッグ表示: BorderLineRegionDebugView）
-    /// </summary>
     public class DrawBorderLine : MonoBehaviour
     {
         [Header("Input System (Actions)")]
@@ -25,8 +20,15 @@ namespace Fibonacci.InGame.BorderLine
 
         [Header("Line")]
         [SerializeField] private bool extendLineToBounds = true;
-
         [SerializeField] private LineRenderer lineRenderer;
+
+        // --- [ADD] Color Map 設定 ---
+        [Header("Color Map")]
+        [SerializeField, Label("色を表示する板")] private SpriteRenderer displayRenderer;
+        [SerializeField, Label("解像度")] private int textureResolution = 1024;
+        private BorderLineColorMap colorMap; 
+        // ----------------------------
+
         private Transform firstSelectedBall;
         private BorderLineSegmentRenderer lineDrawer;
         private BorderLineRegionDebugView regionDebugView;
@@ -45,8 +47,8 @@ namespace Fibonacci.InGame.BorderLine
         [SerializeField, Label("1つ目選択のハイライト表示")] private BorderLineSelectionHighlightView selectionHighlightView;
 
         [Header("Region Debug")]
-        [SerializeField,Label("領域の数字デバッグ")] private bool showRegionMarkers = true;
-        [SerializeField,Label("領域の囲いデバッグ")] private bool drawRegionOutlines = true;
+        [SerializeField, Label("領域の数字デバッグ")] private bool showRegionMarkers = true;
+        [SerializeField, Label("領域の囲いデバッグ")] private bool drawRegionOutlines = true;
         [SerializeField] private float debugDrawDuration = 2f;
         [SerializeField] private float markerTextSize = 0.25f;
 
@@ -62,11 +64,16 @@ namespace Fibonacci.InGame.BorderLine
 
             regionDebugView = new BorderLineRegionDebugView(transform, worldZ, markerTextSize, debugDrawDuration);
 
+            // --- [ADD] 初期化 ---
+            colorMap = new BorderLineColorMap(displayRenderer, worldZ, textureResolution);
+
             if (selectionHighlightView == null)
             {
                 selectionHighlightView = GetComponent<BorderLineSelectionHighlightView>();
             }
         }
+
+        
 
         private void OnEnable()
         {
@@ -123,7 +130,6 @@ namespace Fibonacci.InGame.BorderLine
             {
                 Vector2 actionPos = pointerPositionAction.action.ReadValue<Vector2>();
 
-                // actionPos が (0,0) のままでも pointerCurrentPos が取れていることがあるため、そちらを優先
                 if (hasPointerCurrent && actionPos == Vector2.zero && pointerCurrentPos != Vector2.zero)
                 {
                     screenPos = pointerCurrentPos;
@@ -163,7 +169,6 @@ namespace Fibonacci.InGame.BorderLine
 
         private Vector2 ScreenToWorld2D(Camera cam, Vector2 screenPos)
         {
-            // ScreenToWorldPoint の z は「カメラからの距離」なので、2Dの盤面(z=worldZ)までの距離を入れる
             float zDistance = Mathf.Abs(cam.transform.position.z - worldZ);
             Vector3 world = cam.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, zDistance));
             return new Vector2(world.x, world.y);
@@ -178,30 +183,20 @@ namespace Fibonacci.InGame.BorderLine
             if (cam == null) return;
 
             Vector2 mousePos = ScreenToWorld2D(cam, screenPos);
-
             Collider2D hitCollider = Physics2D.OverlapPoint(mousePos);
 
-            if (hitCollider == null)
-            {
-                return;
-            }
-
-            if (!hitCollider.CompareTag(targetTag))
-            {
-                return;
-            }
+            if (hitCollider == null) return;
+            if (!hitCollider.CompareTag(targetTag)) return;
 
             Transform clickedObject = hitCollider.transform;
 
             if (firstSelectedBall == null)
             {
-                // 1つ目の玉を選択
                 firstSelectedBall = clickedObject;
                 selectionHighlightView?.SetTarget(firstSelectedBall);
             }
             else
             {
-                // 2つ目の玉を選択（自分自身以外）
                 if (clickedObject != firstSelectedBall)
                 {
                     // 領域分割（カメラ表示範囲ベース＝スクリーン）
@@ -236,10 +231,13 @@ namespace Fibonacci.InGame.BorderLine
 
                     PartitionCreated?.Invoke(partition, cam);
 
-                    // 選択状態をリセット
+                    // --- [ADD] 色塗りの呼び出し ---
+                    colorMap.UpdateVisual(split);
+
                     selectionHighlightView?.Clear();
                     firstSelectedBall = null;
                 }
+                
             }
         }
 

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6155ad71facf6d43b047df64f0b88d5, type: 3}
+  m_Name: AudioData
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.Audio.AudioDataSO
+  audioDataList:
+  - audioName: Button
+    audioClip: {fileID: 8300000, guid: 16d7b64836e8a734aa81c97b26949903, type: 3}
+    volumeMultiplier: 0
+  - audioName: Border
+    audioClip: {fileID: 8300000, guid: 52ae38a6dba28d5499906c09d92e9e20, type: 3}
+    volumeMultiplier: 0
