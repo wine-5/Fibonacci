@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using NaughtyAttributes;
+using System;
 
 namespace Fibonacci.InGame.BorderLine
 {
@@ -31,6 +32,16 @@ namespace Fibonacci.InGame.BorderLine
         private Transform firstSelectedBall;
         private BorderLineSegmentRenderer lineDrawer;
         private BorderLineRegionDebugView regionDebugView;
+
+        private bool hasCurrentPartition;
+        private BorderLineRegionSplitter.PartitionResult currentPartition;
+
+        private bool interactionLocked;
+        private bool suppressRegionMarkers;
+
+        public event Action<BorderLineRegionSplitter.PartitionResult, Camera> PartitionCreated;
+
+        public float WorldZ => worldZ;
 
         [Header("Selection Highlight")]
         [SerializeField, Label("1つ目選択のハイライト表示")] private BorderLineSelectionHighlightView selectionHighlightView;
@@ -81,6 +92,12 @@ namespace Fibonacci.InGame.BorderLine
         private void OnDisable()
         {
             selectionHighlightView?.Clear();
+
+            hasCurrentPartition = false;
+            currentPartition = default;
+
+            interactionLocked = false;
+            suppressRegionMarkers = false;
 
             if (clickAction != null && clickAction.action != null)
             {
@@ -139,8 +156,15 @@ namespace Fibonacci.InGame.BorderLine
             {
                 Awake();
             }
+            if (interactionLocked) return;
             if (!TryGetPointerScreenPosition(out var screenPos)) return;
             CheckSelection(screenPos);
+        }
+
+        public bool TryGetCurrentPartition(out BorderLineRegionSplitter.PartitionResult partition)
+        {
+            partition = currentPartition;
+            return hasCurrentPartition;
         }
 
         private Vector2 ScreenToWorld2D(Camera cam, Vector2 screenPos)
@@ -152,6 +176,9 @@ namespace Fibonacci.InGame.BorderLine
 
         void CheckSelection(Vector2 screenPos)
         {
+            if (interactionLocked) return;
+
+            // マウス位置をワールド座標に変換
             var cam = GetCameraOrMain();
             if (cam == null) return;
 
@@ -172,29 +199,37 @@ namespace Fibonacci.InGame.BorderLine
             {
                 if (clickedObject != firstSelectedBall)
                 {
-                    if (!BorderLineRegionSplitter.TryGetPlayAreaRectFromTargets(targetTag, out var rect))
+                    // 領域分割（カメラ表示範囲ベース＝スクリーン）
+                    if (!BorderLineRegionSplitter.TryGetCameraWorldRect(cam, worldZ, out var rect))
                     {
                         selectionHighlightView?.Clear();
                         firstSelectedBall = null;
                         return;
                     }
 
-                    if (!BorderLineRegionSplitter.TrySplitRectByLine(rect, firstSelectedBall.position, clickedObject.position, out var split))
+                    if (!BorderLineRegionSplitter.TrySplitRectByLine(rect, firstSelectedBall.position, clickedObject.position, out BorderLineRegionSplitter.PartitionResult partition))
                     {
                         selectionHighlightView?.Clear();
                         firstSelectedBall = null;
                         return;
                     }
 
+                    hasCurrentPartition = true;
+                    currentPartition = partition;
+
+                    // 見た目の線（外枠まで延長するかどうか）
                     lineDrawer.DrawSplitOrSegment(
                         firstSelectedBall.position,
                         clickedObject.position,
-                        split.Intersection0,
-                        split.Intersection1,
+                        partition.Intersection0,
+                        partition.Intersection1,
                         extendLineToBounds,
                         z: worldZ);
 
-                    regionDebugView.Render(split, showRegionMarkers, drawRegionOutlines);
+                    bool showMarkers = showRegionMarkers && !suppressRegionMarkers;
+                    regionDebugView.Render(partition, showMarkers, drawRegionOutlines);
+
+                    PartitionCreated?.Invoke(partition, cam);
 
                     // --- [ADD] 色塗りの呼び出し ---
                     colorMap.UpdateVisual(split);
@@ -204,6 +239,17 @@ namespace Fibonacci.InGame.BorderLine
                 }
                 
             }
+        }
+
+        public void LockInteraction()
+        {
+            interactionLocked = true;
+            selectionHighlightView?.Clear();
+        }
+
+        public void SetSuppressRegionMarkers(bool suppress)
+        {
+            suppressRegionMarkers = suppress;
         }
     }
 }
