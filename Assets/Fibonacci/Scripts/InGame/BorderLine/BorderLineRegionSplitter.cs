@@ -436,5 +436,37 @@ namespace Fibonacci.InGame.BorderLine
             }
             return new Vector2(x / poly.Count, y / poly.Count);
         }
+
+        /// <summary>
+        /// PartitionResultからSplitResultへ変換するメソッド
+        /// 色塗り機能のために必要
+        /// </summary>
+        public static SplitResult ConvertToSplitResult(PartitionResult partitionResult)
+        {
+            var splitResult = new SplitResult
+            {
+                Rect = partitionResult.Rect,
+                Intersection0 = partitionResult.Intersection0,
+                Intersection1 = partitionResult.Intersection1
+            };
+
+            if (partitionResult.Regions != null && partitionResult.Regions.Count >= 2)
+            {
+                splitResult.Polygon1 = partitionResult.Regions[0].Polygon;
+                splitResult.Polygon2 = partitionResult.Regions[1].Polygon;
+                splitResult.Centroid1 = partitionResult.Regions[0].Centroid;
+                splitResult.Centroid2 = partitionResult.Regions[1].Centroid;
+            }
+            else
+            {
+                // フォールバック: 空のポリゴンと中央座標
+                splitResult.Polygon1 = new List<Vector2>();
+                splitResult.Polygon2 = new List<Vector2>();
+                splitResult.Centroid1 = partitionResult.Rect.center;
+                splitResult.Centroid2 = partitionResult.Rect.center;
+            }
+
+            return splitResult;
+        }
     }
 }

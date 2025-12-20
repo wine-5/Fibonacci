@@ -42,7 +42,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1329423704766539081}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -159,11 +159,13 @@ MonoBehaviour:
   targetCamera: {fileID: 0}
   worldZ: 0
   targetTag: LineTarget
-  extendLineToBounds: 1
+  extendLineToBounds: 0
   lineRenderer: {fileID: 861468770892815570}
+  displayRenderer: {fileID: 0}
+  textureResolution: 1024
   selectionHighlightView: {fileID: 3436017770186840745}
   showRegionMarkers: 1
-  drawRegionOutlines: 1
+  drawRegionOutlines: 0
   debugDrawDuration: 2
   markerTextSize: 0.25
 --- !u!114 &3436017770186840745

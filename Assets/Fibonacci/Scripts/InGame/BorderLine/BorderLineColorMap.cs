@@ -81,5 +81,37 @@ namespace Fibonacci.InGame.BorderLine
             // [追加アドバイス] さらに確実にするなら Order in Layer を下げる
             displayRenderer.sortingOrder = -1;
         }
+
+        /// <summary>
+        /// PartitionResultを直接受け取るオーバーロードメソッド
+        /// </summary>
+        public void UpdateVisual(BorderLineRegionSplitter.PartitionResult partition)
+        {
+            // PartitionResultからSplitResultに変換
+            var split = new BorderLineRegionSplitter.SplitResult
+            {
+                Rect = partition.Rect,
+                Intersection0 = partition.Intersection0,
+                Intersection1 = partition.Intersection1
+            };
+
+            if (partition.Regions != null && partition.Regions.Count >= 2)
+            {
+                split.Polygon1 = partition.Regions[0].Polygon;
+                split.Polygon2 = partition.Regions[1].Polygon;
+                split.Centroid1 = partition.Regions[0].Centroid;
+                split.Centroid2 = partition.Regions[1].Centroid;
+            }
+            else
+            {
+                split.Polygon1 = new System.Collections.Generic.List<Vector2>();
+                split.Polygon2 = new System.Collections.Generic.List<Vector2>();
+                split.Centroid1 = partition.Rect.center;
+                split.Centroid2 = partition.Rect.center;
+            }
+
+            // 既存のUpdateVisualメソッドを呼び出し
+            UpdateVisual(split);
+        }
     }
 }
