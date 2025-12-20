@@ -20,7 +20,7 @@ namespace Fibonacci.Player
 
         [Header("Input System設定")]
         [SerializeField] private InputActionReference moveActionRef;
-        [SerializeField] private InputActionReference jumpActionRef;
+        // [SerializeField] private InputActionReference jumpActionRef;
         
         [Header("リスタート設定")]
         [SerializeField] private Vector3 startPosition;
@@ -42,7 +42,7 @@ namespace Fibonacci.Player
         void OnEnable()
         {
             moveActionRef.action.Enable();
-            jumpActionRef.action.Enable();
+            // jumpActionRef.action.Enable();
 
             // ジャンプアクションの登録をコメントアウト
             // jumpActionRef.action.performed += OnJump;
@@ -57,7 +57,7 @@ namespace Fibonacci.Player
             // jumpActionRef.action.performed -= OnJump;
             
             moveActionRef.action.Disable();
-            jumpActionRef.action.Disable();
+            // jumpActionRef.action.Disable();
             
             // リスタートイベントの購読を解除
             GameEvents.OnRestart -= OnRestart;
