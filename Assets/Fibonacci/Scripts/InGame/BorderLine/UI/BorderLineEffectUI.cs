@@ -2,6 +2,10 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
+using UnityEngine.EventSystems;
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem.UI;
+#endif
 
 namespace Fibonacci.InGame.BorderLine.UI
 {
@@ -72,6 +76,39 @@ namespace Fibonacci.InGame.BorderLine.UI
             if (framesParent == null)
             {
                 framesParent = worldCanvas != null ? worldCanvas.transform : transform;
+            }
+
+            EnsureUiInputReady();
+        }
+
+        private void EnsureUiInputReady()
+        {
+            // 1) CanvasにGraphicRaycasterが無いとUIはクリックできない
+            if (worldCanvas != null)
+            {
+                if (worldCanvas.GetComponent<GraphicRaycaster>() == null)
+                {
+                    worldCanvas.gameObject.AddComponent<GraphicRaycaster>();
+                }
+
+                // 2) World Space/Camera Spaceではevent cameraが必要
+                if (worldCanvas.renderMode != RenderMode.ScreenSpaceOverlay && worldCanvas.worldCamera == null)
+                {
+                    var cam = Camera.main;
+                    worldCanvas.worldCamera = cam;
+                }
+            }
+
+            // 3) EventSystemが無いとクリックイベントが発火しない
+            if (EventSystem.current == null)
+            {
+                var esGo = new GameObject("EventSystem");
+                esGo.AddComponent<EventSystem>();
+#if ENABLE_INPUT_SYSTEM
+                esGo.AddComponent<InputSystemUIInputModule>();
+#else
+                esGo.AddComponent<StandaloneInputModule>();
+#endif
             }
         }
 
