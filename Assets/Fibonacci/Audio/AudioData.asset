@@ -15,7 +15,7 @@ MonoBehaviour:
   audioDataList:
   - audioName: Button
     audioClip: {fileID: 8300000, guid: 16d7b64836e8a734aa81c97b26949903, type: 3}
-    volumeMultiplier: 0
+    volumeMultiplier: 1
   - audioName: Border
     audioClip: {fileID: 8300000, guid: 52ae38a6dba28d5499906c09d92e9e20, type: 3}
-    volumeMultiplier: 0
+    volumeMultiplier: 1

@@ -42,32 +42,6 @@ namespace Fibonacci.Scene
         }
 
         /// <summary>
-        /// 現在のシーンをリロード
-        /// </summary>
-        public void ReloadCurrentScene()
-        {
-            string currentSceneName = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(currentSceneName);
-        }
-
-        /// <summary>
-        /// 現在のステージを再開（Rキー用）
-        /// ゲームステージでのみ有効
-        /// </summary>
-        public void RestartCurrentStage()
-        {
-            if (IsGameStage())
-            {
-                LoadScene(CurrentStage);
-                Debug.Log($"Restarting stage: {CurrentStage}");
-            }
-            else
-            {
-                Debug.LogWarning("Cannot restart: Current scene is not a game stage");
-            }
-        }
-
-        /// <summary>
         /// 次のステージに進む
         /// </summary>
         public void LoadNextStage()
@@ -115,22 +89,6 @@ namespace Fibonacci.Scene
                    CurrentStage == SceneName.Stage1_2 || 
                    CurrentStage == SceneName.Stage2_1 || 
                    CurrentStage == SceneName.Stage2_2;
-        }
-
-        /// <summary>
-        /// ステージ選択画面に戻る
-        /// </summary>
-        public void LoadStageSelect()
-        {
-            LoadScene(SceneName.StageSelect);
-        }
-
-        /// <summary>
-        /// タイトル画面に戻る
-        /// </summary>
-        public void LoadTitle()
-        {
-            LoadScene(SceneName.Title);
         }
     }
 }

@@ -5,39 +5,19 @@ using Fibonacci.Event;
 namespace Fibonacci
 {
     /// <summary>
-    /// Rキーでリスタートするシンプルなクラス
-    /// GameJam用の軽量実装
+    /// リスタート入力を管理するクラス
+    /// PlayerInputコンポーネントのInvokeUnityEventsモードを使用
     /// </summary>
     public class ResetInputManager : MonoBehaviour
     {
-        [Header("入力設定")]
-        [SerializeField] private InputActionReference restartAction;
-
-        private void OnEnable()
-        {
-            if (restartAction != null)
-            {
-                restartAction.action.Enable();
-                restartAction.action.performed += OnRestartPressed;
-            }
-        }
-
-        private void OnDisable()
-        {
-            if (restartAction != null)
-            {
-                restartAction.action.performed -= OnRestartPressed;
-                restartAction.action.Disable();
-            }
-        }
-
         /// <summary>
-        /// Rキーが押された時の処理
+        /// PlayerInputから呼び出されるリスタート入力のコールバック
+        /// Input Action の名前が "Restart" の場合に自動的に呼ばれる
         /// </summary>
-        private void OnRestartPressed(InputAction.CallbackContext context)
+        public void OnRestart(InputAction.CallbackContext context)
         {
-            // リスタートイベントを発火
-            GameEvents.TriggerRestart();
+            if (context.performed)
+                GameEvents.TriggerRestart();
         }
     }
 }
