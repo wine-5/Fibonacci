@@ -16,6 +16,15 @@ Shader "Custom/Title"
         _PulseSpeed ("Pulse Speed", Range(0,10)) = 4.0
         _SparkleIntensity ("Sparkle Intensity", Range(0,2)) = 1.2
         _RimPower ("Rim Power", Range(1,10)) = 3.0
+        _BorderLineWidth ("Border Line Width", Range(0.01,0.2)) = 0.05
+        _BorderLineColor ("Border Line Color", Color) = (0.3,0.8,1.0,1)
+        _BorderLineSpeed ("Border Line Speed", Range(0,10)) = 2.0
+        _BorderLineGlow ("Border Line Glow", Range(0,5)) = 2.0
+        _GridDensity ("Grid Density", Range(1,50)) = 10
+        _GridLineWidth ("Grid Line Width", Range(0.005,0.05)) = 0.02
+        _GridColor ("Grid Color", Color) = (0.1,0.5,1.0,0.8)
+        _EnergyFieldSpeed ("Energy Field Speed", Range(0,5)) = 1.5
+        _FragmentIntensity ("Fragment Intensity", Range(0,3)) = 1.0
     }
     
     SubShader
@@ -66,6 +75,15 @@ Shader "Custom/Title"
             float _PulseSpeed;
             float _SparkleIntensity;
             float _RimPower;
+            float _BorderLineWidth;
+            fixed4 _BorderLineColor;
+            float _BorderLineSpeed;
+            float _BorderLineGlow;
+            float _GridDensity;
+            float _GridLineWidth;
+            fixed4 _GridColor;
+            float _EnergyFieldSpeed;
+            float _FragmentIntensity;
             
             v2f vert (appdata v)
             {
@@ -97,6 +115,38 @@ Shader "Custom/Title"
                 float pulse2 = sin(_Time.y * _PulseSpeed * 0.7) * 0.3 + 0.7;
                 float combinedPulse = pulse1 * pulse2;
                 
+                // === 境界線エフェクト ===
+                
+                // 1. 動的ボーダーライン（縁取り）
+                float borderX = step(i.uv.x, _BorderLineWidth) + step(1.0 - _BorderLineWidth, i.uv.x);
+                float borderY = step(i.uv.y, _BorderLineWidth) + step(1.0 - _BorderLineWidth, i.uv.y);
+                float borderMask = saturate(borderX + borderY);
+                
+                // ボーダーラインのアニメーション
+                float borderPulse = sin(_Time.y * _BorderLineSpeed) * 0.5 + 0.5;
+                borderMask *= borderPulse * _BorderLineGlow;
+                
+                // 2. グリッド分割線
+                float2 gridUV = i.uv * _GridDensity;
+                float gridX = abs(frac(gridUV.x) - 0.5) < _GridLineWidth;
+                float gridY = abs(frac(gridUV.y) - 0.5) < _GridLineWidth;
+                float gridMask = saturate(gridX + gridY);
+                
+                // グリッドのパルス
+                float gridPulse = sin(_Time.y * 3.0 + gridUV.x + gridUV.y) * 0.3 + 0.7;
+                gridMask *= gridPulse;
+                
+                // 3. エネルギーフィールド効果
+                float energyField1 = sin(i.uv.x * 8.0 + _Time.y * _EnergyFieldSpeed) * 0.5 + 0.5;
+                float energyField2 = cos(i.uv.y * 6.0 - _Time.y * _EnergyFieldSpeed * 0.8) * 0.5 + 0.5;
+                float energyMask = energyField1 * energyField2;
+                
+                // 4. フラグメント効果（破片のような）
+                float2 fragmentUV = i.uv + sin(_Time.y * 2.0) * 0.01;
+                float fragment1 = sin(fragmentUV.x * 20.0 + fragmentUV.y * 15.0 + _Time.y * 4.0);
+                float fragment2 = cos(fragmentUV.x * 12.0 - fragmentUV.y * 18.0 + _Time.y * 3.0);
+                float fragmentMask = saturate(fragment1 * fragment2) * _FragmentIntensity * 0.3;
+                
                 // 強化されたスパークル（複数レイヤー）
                 float sparkle1 = sin(i.uv.x * 15.0 + _Time.y * 3.0) * 0.5 + 0.5;
                 float sparkle2 = sin(i.uv.x * 25.0 + i.uv.y * 20.0 + _Time.y * 5.0) * 0.3 + 0.7;
@@ -118,6 +168,12 @@ Shader "Custom/Title"
                 col.rgb += glow * 0.6 * _GradientTop.rgb;
                 col.rgb += combinedPulse * 0.4 * _GradientTop.rgb;
                 
+                // 境界線エフェクトの追加
+                col.rgb += borderMask * _BorderLineColor.rgb;
+                col.rgb += gridMask * _GridColor.rgb * _GridColor.a;
+                col.rgb += energyMask * 0.3 * _BorderLineColor.rgb;
+                col.rgb += fragmentMask * _GradientTop.rgb;
+                
                 // スパークル効果
                 col.rgb += totalSparkle * 0.3 * _OutlineColor.rgb;
                 col.rgb += randomSparkle * 0.8 * float3(1,1,0.8);
@@ -126,11 +182,11 @@ Shader "Custom/Title"
                 col.rgb += rim * 0.5 * _OutlineColor.rgb;
                 
                 // ブルーム効果のシミュレーション
-                float bloom = (glow + combinedPulse + totalSparkle * 0.5) * _BloomIntensity;
+                float bloom = (glow + combinedPulse + totalSparkle * 0.5 + borderMask * 0.5) * _BloomIntensity;
                 col.rgb += bloom * 0.3 * _GradientTop.rgb;
                 
                 // 全体の輝度を上げる
-                col.rgb *= 1.3;
+                col.rgb *= 1.2;
                 
                 return col;
             }

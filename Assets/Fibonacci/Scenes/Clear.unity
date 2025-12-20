@@ -119,6 +119,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &422036595 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6343196152189646759, guid: ddf33033c0016624494aebd2b9d60fb2, type: 3}
+  m_PrefabInstance: {fileID: 2253592289522419302}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47f2d724b9fd2a047ba0f81c666f482c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneButton
 --- !u!1001 &2253592289522419302
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -127,6 +138,42 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 998932255491260865, guid: ddf33033c0016624494aebd2b9d60fb2, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 33.260746
+      objectReference: {fileID: 0}
+    - target: {fileID: 998932255491260865, guid: ddf33033c0016624494aebd2b9d60fb2, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 33.260746
+      objectReference: {fileID: 0}
+    - target: {fileID: 998932255491260865, guid: ddf33033c0016624494aebd2b9d60fb2, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 5.5434575
+      objectReference: {fileID: 0}
+    - target: {fileID: 998932255491260865, guid: ddf33033c0016624494aebd2b9d60fb2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 14.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 998932255491260865, guid: ddf33033c0016624494aebd2b9d60fb2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -55.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2191340586303302883, guid: ddf33033c0016624494aebd2b9d60fb2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 422036595}
+    - target: {fileID: 2191340586303302883, guid: ddf33033c0016624494aebd2b9d60fb2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 2191340586303302883, guid: ddf33033c0016624494aebd2b9d60fb2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SceneButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2299001012748620308, guid: ddf33033c0016624494aebd2b9d60fb2, type: 3}
+      propertyPath: m_Name
+      value: ClearBG
+      objectReference: {fileID: 0}
     - target: {fileID: 3311619708299032442, guid: ddf33033c0016624494aebd2b9d60fb2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.08311
@@ -166,6 +213,10 @@ PrefabInstance:
     - target: {fileID: 3311619708299032442, guid: ddf33033c0016624494aebd2b9d60fb2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4615993104278752998, guid: ddf33033c0016624494aebd2b9d60fb2, type: 3}
+      propertyPath: m_Name
+      value: TitleText
       objectReference: {fileID: 0}
     - target: {fileID: 5720932490234768640, guid: ddf33033c0016624494aebd2b9d60fb2, type: 3}
       propertyPath: m_Name
