@@ -14,7 +14,7 @@ namespace Fibonacci.Scene
         Stage1_2,
         Stage2_1,
         Stage2_2,
-        Result
+        Clear
     }
 
     /// <summary>
@@ -47,13 +47,13 @@ namespace Fibonacci.Scene
         public void LoadNextStage()
         {
             SceneName nextStage = GetNextStage(CurrentStage);
-            if (nextStage != SceneName.Result)
+            if (nextStage != SceneName.Clear)
             {
                 LoadScene(nextStage);
             }
             else
             {
-                LoadScene(SceneName.Result);
+                LoadScene(SceneName.Clear);
             }
         }
 
@@ -61,7 +61,7 @@ namespace Fibonacci.Scene
         /// 指定したステージの次のステージを取得
         /// </summary>
         /// <param name="currentStage">現在のステージ</param>
-        /// <returns>次のステージ、最後の場合はResult</returns>
+        /// <returns>次のステージ、最後の場合はClear</returns>
         private SceneName GetNextStage(SceneName currentStage)
         {
             switch (currentStage)
@@ -73,9 +73,9 @@ namespace Fibonacci.Scene
                 case SceneName.Stage2_1:
                     return SceneName.Stage2_2;
                 case SceneName.Stage2_2:
-                    return SceneName.Result;
+                    return SceneName.Clear;
                 default:
-                    return SceneName.Result;
+                    return SceneName.Clear;
             }
         }
 

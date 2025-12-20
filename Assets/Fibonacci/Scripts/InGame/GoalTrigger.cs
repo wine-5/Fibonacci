@@ -19,6 +19,6 @@ public class GoalTrigger : MonoBehaviour
     {
         // SceneControllerのインスタンスを経由してリザルト画面に移動
         if (SceneController.Instance != null)
-            SceneController.Instance.LoadScene(SceneName.Result);
+            SceneController.Instance.LoadScene(SceneName.Clear);
     }
 }
