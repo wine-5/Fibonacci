@@ -135,6 +135,10 @@ PrefabInstance:
       propertyPath: moveActionRef
       value: 
       objectReference: {fileID: 1131906063}
+    - target: {fileID: 1445270468257016253, guid: fa1d2f583fe9bfa4ebd78bf59d006677, type: 3}
+      propertyPath: restartAction
+      value: 
+      objectReference: {fileID: 1435162697}
     - target: {fileID: 4873048127903736618, guid: fa1d2f583fe9bfa4ebd78bf59d006677, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -198,6 +202,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
   m_Asset: {fileID: -944628639613478452, guid: c8503dea8d63fc64a947832749700d9c, type: 3}
   m_ActionId: 7761a769-7684-47b9-9245-dc046ea913de
+--- !u!114 &1435162697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Player/Restart
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: c8503dea8d63fc64a947832749700d9c, type: 3}
+  m_ActionId: 6dc7372c-9a0e-484c-9e13-390d2441bd14
 --- !u!114 &1880659325
 MonoBehaviour:
   m_ObjectHideFlags: 0

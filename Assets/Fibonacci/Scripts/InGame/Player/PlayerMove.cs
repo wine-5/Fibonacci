@@ -11,7 +11,7 @@ namespace Fibonacci.Player
         // === 設定パラメータ ===
         [Header("移動設定")]
         [SerializeField] private float moveSpeed = 5f;
-        [SerializeField] private float jumpForce = 7f;
+        // [SerializeField] private float jumpForce = 7f;
 
         [Header("接地判定")]
         [Tooltip("足元からRayを飛ばす距離")]
@@ -135,9 +135,7 @@ namespace Fibonacci.Player
         /// リスタートイベント受信時の処理
         /// </summary>
         private void OnRestart()
-        {
-            Debug.Log("PlayerMove: Restart event received - resetting player position and velocity");
-            
+        {            
             // 位置をリセット
             transform.position = startPosition;
             

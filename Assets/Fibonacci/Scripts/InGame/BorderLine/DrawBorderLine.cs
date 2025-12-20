@@ -232,7 +232,7 @@ namespace Fibonacci.InGame.BorderLine
                     PartitionCreated?.Invoke(partition, cam);
 
                     // --- [ADD] 色塗りの呼び出し ---
-                    colorMap.UpdateVisual(split);
+                    colorMap.UpdateVisual(partition);
 
                     selectionHighlightView?.Clear();
                     firstSelectedBall = null;
