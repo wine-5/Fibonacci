@@ -1,11 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
-
 namespace Fibonacci.Player
 {
-    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Rigidbody2D))] // 2D用に変更
 
     public class PlayerMove : MonoBehaviour
     {
@@ -24,14 +22,14 @@ namespace Fibonacci.Player
         [SerializeField] private InputActionReference jumpActionRef;
 
         // === プライベート変数 ===
-        private Rigidbody rb;
+        private Rigidbody2D rb; // 2D用に変更
         private Vector2 moveInput;
         private bool isGrounded;
 
         void Awake()
         {
-            // Rigidbodyコンポーネントの参照を取得
-            rb = GetComponent<Rigidbody>();
+            // Rigidbody2Dコンポーネントの参照を取得
+            rb = GetComponent<Rigidbody2D>();
         }
 
         // === Input System の有効化/無効化 ===
@@ -40,14 +38,15 @@ namespace Fibonacci.Player
             moveActionRef.action.Enable();
             jumpActionRef.action.Enable();
 
-            // ジャンプアクションが実行された時のイベントを登録
-            jumpActionRef.action.performed += OnJump;
+            // ジャンプアクションの登録をコメントアウト
+            // jumpActionRef.action.performed += OnJump;
         }
 
         void OnDisable()
         {
-            // イベント解除と無効化
-            jumpActionRef.action.performed -= OnJump;
+            // イベント解除をコメントアウト
+            // jumpActionRef.action.performed -= OnJump;
+            
             moveActionRef.action.Disable();
             jumpActionRef.action.Disable();
         }
@@ -58,7 +57,7 @@ namespace Fibonacci.Player
             // Input Systemから移動入力値 (Vector2) を読み取る
             moveInput = moveActionRef.action.ReadValue<Vector2>();
 
-            // 接地判定 (Raycastを真下に飛ばす)
+            // 接地判定 (Raycastを真下に飛ばす) - 2Dでも継続
             isGrounded = CheckIsGrounded();
         }
 
@@ -75,22 +74,23 @@ namespace Fibonacci.Player
         /// </summary>
         private void HandleMovement()
         {
-            // 入力のX成分 (左右) のみを使用し、Y成分 (ジャンプ/落下速度) はRigidbodyの現在の速度を維持し、Zは0に固定
-            Vector3 targetVelocity = new Vector3(moveInput.x * moveSpeed, rb.linearVelocity.y, 0f);
+            // 2D用にVector2を使用。Z軸の考慮が不要になります
+            Vector2 targetVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
 
-            // 速度を直接設定して移動
+            // 速度を設定
             rb.linearVelocity = targetVelocity;
 
             // キャラクターの向きを制御
             if (moveInput.x != 0)
             {
-                // 入力方向に合わせてY軸を回転させる（左右の振り向き）
-                float yRotation = moveInput.x > 0 ? 90f : -90f;
+                // 2Dの場合、Y軸を90度回転させると画像が消えてしまうため、
+                // 一般的な「右向き(0度)」「左向き(180度)」に調整しています
+                float yRotation = moveInput.x > 0 ? 0f : 180f;
                 transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
             }
         }
 
-        /// <summary>
+        /* /// <summary>
         /// ジャンプアクションが実行されたときに呼び出されます。
         /// </summary>
         private void OnJump(InputAction.CallbackContext context)
@@ -98,22 +98,25 @@ namespace Fibonacci.Player
             // 接地している場合のみジャンプ実行
             if (isGrounded)
             {
-                // 既存のY速度をリセット（0にする）してから力を加えることで、ジャンプの挙動を安定させる
-                rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, 0f);
+                // 既存のY速度をリセット（0にする）してから力を加える
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
 
                 // 瞬間的な力 (Impulse) を上方向に追加
-                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             }
         }
+        */
 
         /// <summary>
-        /// Raycastを使用して接地判定を行います。
+        /// Raycast2Dを使用して接地判定を行います。
         /// </summary>
         /// <returns>地面に接地していれば true</returns>
         private bool CheckIsGrounded()
         {
-            // プレイヤーの中心から下方向にRayを飛ばし、指定されたLayerMaskのオブジェクトに当たっているかを判定
-            return Physics.Raycast(transform.position, Vector3.down, rayDistance, groundLayer);
+            // Physics2D.Raycastを使用
+            // 2DのRaycastは「衝突結果」を返すため、コライダーが存在するかで判定します
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, groundLayer);
+            return hit.collider != null;
         }
     }
 }

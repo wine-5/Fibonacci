@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Fibonacci/Scenes/Title.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
+    path: Assets/Fibonacci/Scenes/StageSelect.unity
+    guid: 1240e5dfa1998904a8b67b6dc12f7310
+  - enabled: 1
     path: Assets/Fibonacci/Scenes/InGame.unity
     guid: f156ce22612c16d4e85df14ed8a59d21
   - enabled: 1
