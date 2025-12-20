@@ -11,7 +11,7 @@ namespace Fibonacci.InGame.BorderLine
         private Rect currentRect;
 
         // 領域を広げる幅
-        private const float Padding = 2.0f;
+        private const float PADDING = 2.0f;
 
         public BorderLineColorMap(SpriteRenderer displayRenderer, float worldZ, int resolution)
         {
@@ -25,10 +25,10 @@ namespace Fibonacci.InGame.BorderLine
             if (displayRenderer == null) return;
 
             Rect visualRect = split.Rect;
-            visualRect.xMin -= Padding;
-            visualRect.yMin -= Padding;
-            visualRect.width += Padding * 2;
-            visualRect.height += Padding * 2;
+            visualRect.xMin -= PADDING;
+            visualRect.yMin -= PADDING;
+            visualRect.width += PADDING * 2;
+            visualRect.height += PADDING * 2;
 
             currentRect = visualRect;
 
@@ -80,14 +80,6 @@ namespace Fibonacci.InGame.BorderLine
 
             // [追加アドバイス] さらに確実にするなら Order in Layer を下げる
             displayRenderer.sortingOrder = -1;
-        }
-
-        public Color GetColorAtWorldPos(Vector2 worldPos)
-        {
-            if (currentTexture == null || !currentRect.Contains(worldPos)) return Color.clear;
-            float tx = (worldPos.x - currentRect.xMin) / currentRect.width;
-            float ty = (worldPos.y - currentRect.yMin) / currentRect.height;
-            return currentTexture.GetPixelBilinear(tx, ty);
         }
     }
 }
