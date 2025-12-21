@@ -17,6 +17,7 @@ namespace Fibonacci.InGame.BorderLine
 
         [Header("Targets")]
         [SerializeField] private string targetTag = "LineTarget";
+        [SerializeField, Label("選択完了後にターゲット玉を非表示")] private bool hideTargetsAfterSelection = true;
 
         [Header("Line")]
         [SerializeField] private bool extendLineToBounds = true;
@@ -235,6 +236,11 @@ namespace Fibonacci.InGame.BorderLine
                     // --- [ADD] 色塗りの呼び出し ---
                     colorMap.UpdateVisual(partition);
 
+                    if (hideTargetsAfterSelection)
+                    {
+                        HideTargetBalls();
+                    }
+
                     selectionHighlightView?.Clear();
                     firstSelectedBall = null;
                 }
@@ -251,6 +257,41 @@ namespace Fibonacci.InGame.BorderLine
         public void SetSuppressRegionMarkers(bool suppress)
         {
             suppressRegionMarkers = suppress;
+        }
+
+        private void HideTargetBalls()
+        {
+            if (string.IsNullOrEmpty(targetTag)) return;
+
+            GameObject[] targets;
+            try
+            {
+                targets = GameObject.FindGameObjectsWithTag(targetTag);
+            }
+            catch (UnityException)
+            {
+                return;
+            }
+
+            if (targets == null || targets.Length == 0) return;
+
+            for (int i = 0; i < targets.Length; i++)
+            {
+                var go = targets[i];
+                if (go == null) continue;
+
+                var colliders = go.GetComponentsInChildren<Collider2D>(includeInactive: true);
+                for (int c = 0; c < colliders.Length; c++)
+                {
+                    if (colliders[c] != null) colliders[c].enabled = false;
+                }
+
+                var renderers = go.GetComponentsInChildren<Renderer>(includeInactive: true);
+                for (int r = 0; r < renderers.Length; r++)
+                {
+                    if (renderers[r] != null) renderers[r].enabled = false;
+                }
+            }
         }
     }
 }
