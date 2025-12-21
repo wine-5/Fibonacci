@@ -49,17 +49,21 @@ namespace Fibonacci.Player
         {
             if (def == null) return;
 
-            // 1. ログを出力
-            //Debug.Log($"<color=yellow>【UI選択】エリア {regionId} に効果「{def.Id}」が設定されました</color>");
+            // ★ 修正：regionId ではなく frameIndex を使ってみる（UIの枠番号 = エリア番号のはず）
+            // また、実際にどんなIDがセットされたかログを出す
+            if (frameIndex == 0)
+            {
+                EffectIdArea0 = def.Id;
+                Debug.Log($"<color=cyan>EffectIdArea0 に '{def.Id}' をセットしました (frameIndex: {frameIndex})</color>");
+            }
+            else if (frameIndex == 1)
+            {
+                EffectIdArea1 = def.Id;
+                Debug.Log($"<color=cyan>EffectIdArea1 に '{def.Id}' をセットしました (frameIndex: {frameIndex})</color>");
+            }
 
-            // 2. 効果を保持
-            if (regionId == 0) EffectIdArea0 = def.Id;
-            else if (regionId == 1) EffectIdArea1 = def.Id;
-
-            // 3. UI側に「選択したよ」と伝えてアイコンを表示させる
             effectUI.ApplySelection(frameIndex, def.Id, def.Icon);
         }
-
         /// <summary>
         /// PlayerInputから呼び出される移動入力のコールバック
         /// Input Action の名前が "Move" の場合に自動的に呼ばれる
@@ -99,16 +103,19 @@ namespace Fibonacci.Player
 
         public void OnAreaChanged(int newAreaIndex)
         {
+            // 現在保持しているエフェクトIDをログ出力
             string currentEffect = (newAreaIndex == 0) ? EffectIdArea0 : EffectIdArea1;
+            Debug.Log($"<color=orange>エリア {newAreaIndex} のエフェクト判定中: 現在のIDは '{currentEffect}' です</color>");
 
+            // ★ 文字列が完全に一致しているかチェック
             if (currentEffect == "ZeroGravity")
             {
-                // ZeroGravityエリアなら、強制的に重力をマイナス（反転）にする
+                Debug.Log("<color=red>重力反転を実行します！</color>");
                 playerGravity.SetGravityScale(-1f);
             }
             else
             {
-                // それ以外（効果なし、または別の効果）なら、重力をプラス（正常）に戻す
+                Debug.Log("<color=white>重力を通常に戻します</color>");
                 playerGravity.SetNormalGravity();
             }
         }
