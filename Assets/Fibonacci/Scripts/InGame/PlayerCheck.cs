@@ -1,15 +1,21 @@
 using UnityEngine;
 using Fibonacci.InGame.BorderLine;
 using Fibonacci.Player;
+using Fibonacci.Audio; // ★これが必要！名前空間を追加
+using System.Linq;
 
 namespace Fibonacci.InGame.Player
 {
     public class PlayerCheck : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField] private DrawBorderLine drawBorderLine;
         [SerializeField] private PlayerController playerController;
 
-        // 前回のエリア番号を保持（-1: 未確定, 0: 青, 1: 緑）
+        [Header("Audio Settings")]
+        [SerializeField] private AudioSource audioSource;
+        [SerializeField] private AudioDataSO audioData; 
+
         private int lastAreaIndex = -1;
 
         void Update()
@@ -23,14 +29,15 @@ namespace Fibonacci.InGame.Player
 
             if (currentAreaIndex != lastAreaIndex)
             {
+                // ラインを越えた瞬間に音を鳴らす
+                PlaySoundByName("Border");
+
                 if (currentAreaIndex == 0 || currentAreaIndex == 1)
                 {
-                    LogAreaChange(currentAreaIndex);
                     playerController.OnAreaChanged(currentAreaIndex);
                 }
                 else
                 {
-                    // ★追加点：エリア外（-1）になったらリセットを呼ぶ
                     playerController.ResetGravity();
                 }
 
@@ -38,15 +45,22 @@ namespace Fibonacci.InGame.Player
             }
         }
 
-        private void LogAreaChange(int index)
+        private void PlaySoundByName(string targetName)
         {
-            if (index == 1)
+            if (audioData == null || audioSource == null) return;
+
+            // ★ AudioDataSO内のプロパティ名「AudioDataList」に修正
+            // ★ AudioData内のプロパティ名「AudioName」と「AudioClip」に修正
+            var data = audioData.AudioDataList.FirstOrDefault(x => x.AudioName == targetName);
+
+            if (data != null && data.AudioClip != null)
             {
-                
+                // VolumeMultiplierも反映させるとより良くなります
+                audioSource.PlayOneShot(data.AudioClip, data.VolumeMultiplier);
             }
-            else if (index == 0)
+            else
             {
-                
+                Debug.LogWarning($"AudioDataSOの中に '{targetName}' という名前の音が見つかりませんでした。");
             }
         }
     }
