@@ -1,5 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+
 --- !u!1 &874879603607690447
 GameObject:
   m_ObjectHideFlags: 0
@@ -45,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.Player.PlayerAnimationController
   animator: {fileID: 7200932020193399876}
+
 --- !u!1 &877297230197825460
 GameObject:
   m_ObjectHideFlags: 0
@@ -78,11 +80,13 @@ Transform:
   - {fileID: 8692062546109745394}
   - {fileID: 3831573626798900611}
   - {fileID: 29426670248730427}
+
   - {fileID: 8173328190964002541}
   - {fileID: 1561140281814314519}
   - {fileID: 908873996507997842}
   - {fileID: 7441680991214800217}
   - {fileID: 545793648128370274}
+
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1467716919710694859

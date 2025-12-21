@@ -7,7 +7,6 @@ namespace Fibonacci.Player
         [SerializeField]private Animator animator;
         // ★名前を "IsRunning" に統一
         //private readonly int speedHash = Animator.StringToHash("IsRunning");
-
         void Awake()
         {
             if (animator == null)
