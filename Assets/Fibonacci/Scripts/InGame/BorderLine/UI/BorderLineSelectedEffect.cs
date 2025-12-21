@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Fibonacci.Event;
 
 namespace Fibonacci.InGame.BorderLine.UI
 {
@@ -34,6 +35,9 @@ namespace Fibonacci.InGame.BorderLine.UI
 
         private void OnEnable()
         {
+            GameEvents.OnRestart -= OnGameRestart;
+            GameEvents.OnRestart += OnGameRestart;
+
             if (effectUI != null)
             {
                 effectUI.EffectClicked -= OnEffectClicked;
@@ -49,6 +53,8 @@ namespace Fibonacci.InGame.BorderLine.UI
 
         private void OnDisable()
         {
+            GameEvents.OnRestart -= OnGameRestart;
+
             if (effectUI != null)
             {
                 effectUI.EffectClicked -= OnEffectClicked;
@@ -57,6 +63,13 @@ namespace Fibonacci.InGame.BorderLine.UI
             {
                 drawBorderLine.PartitionCreated -= OnPartitionCreated;
             }
+        }
+
+        private void OnGameRestart()
+        {
+            decided = false;
+            selectedFrameIndices.Clear();
+            effectUI?.ResetSelectionsAndShowPalettes();
         }
 
         private void OnPartitionCreated(BorderLineRegionSplitter.PartitionResult _, Camera __)

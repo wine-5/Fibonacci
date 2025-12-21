@@ -92,6 +92,14 @@ namespace Fibonacci.InGame.BorderLine
             }
         }
 
+        public void Clear()
+        {
+            for (int i = 0; i < regionMarkers.Count; i++)
+            {
+                if (regionMarkers[i] != null) regionMarkers[i].SetActive(false);
+            }
+        }
+
         private GameObject CreateTextMarker(string name, string text, Color color)
         {
             var go = new GameObject(name);
