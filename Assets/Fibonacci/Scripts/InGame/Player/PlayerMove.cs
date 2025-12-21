@@ -20,6 +20,8 @@ namespace Fibonacci.Player
         [Tooltip("接地判定のボックスサイズ")]
         [SerializeField] private Vector2 groundCheckSize = new Vector2(0.8f, 0.1f);
         [SerializeField] private LayerMask groundLayer;
+        [Header("参照設定")]
+        [SerializeField] private PlayerAnimationController animationController;
 
         // === プライベート変数 ===
         private Rigidbody2D rb;
@@ -52,6 +54,14 @@ namespace Fibonacci.Player
         public void OnMoveInput(Vector2 input)
         {
             moveInput = input;
+
+            if (animationController != null)
+            {
+                animationController.UpdateMoveAnimation(input);
+            }
+            else
+            {
+            }
         }
 
         /// <summary>
@@ -91,5 +101,6 @@ namespace Fibonacci.Player
             rb.angularVelocity = 0f;
             moveInput = Vector2.zero;
         }
+
     }
 }
