@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Fibonacci/Scenes/Stage1_1.unity
     guid: af5db5d2a55caf94e99f4bddc85ed1ea
   - enabled: 1
+    path: Assets/Fibonacci/Scenes/Work_F/InGameF.unity
+    guid: 53dce2b419344ce4ba5c835920dfd1ad
+  - enabled: 1
     path: Assets/Fibonacci/Scenes/Clear.unity
     guid: a7af35e513f33db4a8b0d5288cf9d528
   m_configObjects:
