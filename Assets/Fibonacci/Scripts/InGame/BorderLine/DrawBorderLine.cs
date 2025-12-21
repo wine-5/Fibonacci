@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using NaughtyAttributes;
 using System;
+using Fibonacci.Event;
 
 namespace Fibonacci.InGame.BorderLine
 {
@@ -79,6 +80,9 @@ namespace Fibonacci.InGame.BorderLine
 
         private void OnEnable()
         {
+            GameEvents.OnRestart -= OnGameRestart;
+            GameEvents.OnRestart += OnGameRestart;
+
             if (clickAction != null && clickAction.action != null)
             {
                 clickAction.action.performed += OnClickPerformed;
@@ -94,6 +98,8 @@ namespace Fibonacci.InGame.BorderLine
         private void OnDisable()
         {
             selectionHighlightView?.Clear();
+
+            GameEvents.OnRestart -= OnGameRestart;
 
             hasCurrentPartition = false;
             currentPartition = default;
@@ -292,6 +298,63 @@ namespace Fibonacci.InGame.BorderLine
                     if (renderers[r] != null) renderers[r].enabled = false;
                 }
             }
+        }
+
+        private void ShowTargetBalls()
+        {
+            if (string.IsNullOrEmpty(targetTag)) return;
+
+            GameObject[] targets;
+            try
+            {
+                targets = GameObject.FindGameObjectsWithTag(targetTag);
+            }
+            catch (UnityException)
+            {
+                return;
+            }
+
+            if (targets == null || targets.Length == 0) return;
+
+            for (int i = 0; i < targets.Length; i++)
+            {
+                var go = targets[i];
+                if (go == null) continue;
+
+                var colliders = go.GetComponentsInChildren<Collider2D>(includeInactive: true);
+                for (int c = 0; c < colliders.Length; c++)
+                {
+                    if (colliders[c] != null) colliders[c].enabled = true;
+                }
+
+                var renderers = go.GetComponentsInChildren<Renderer>(includeInactive: true);
+                for (int r = 0; r < renderers.Length; r++)
+                {
+                    if (renderers[r] != null) renderers[r].enabled = true;
+                }
+            }
+        }
+
+        private void OnGameRestart()
+        {
+            if (lineDrawer == null || regionDebugView == null || colorMap == null)
+            {
+                Awake();
+            }
+
+            selectionHighlightView?.Clear();
+            firstSelectedBall = null;
+
+            hasCurrentPartition = false;
+            currentPartition = default;
+
+            interactionLocked = false;
+
+            lineDrawer?.Hide();
+            regionDebugView?.Clear();
+            colorMap?.ClearVisual();
+
+            ShowTargetBalls();
         }
     }
 }

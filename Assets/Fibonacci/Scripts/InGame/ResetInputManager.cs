@@ -16,6 +16,7 @@ namespace Fibonacci
         /// </summary>
         public void OnRestart(InputAction.CallbackContext context)
         {
+            //PlayerControllerのリセットと被って2個リセットが走る可能性
             if (context.performed)
                 GameEvents.TriggerRestart();
         }
