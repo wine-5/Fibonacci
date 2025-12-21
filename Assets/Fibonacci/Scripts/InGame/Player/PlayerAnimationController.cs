@@ -2,18 +2,26 @@ using UnityEngine;
 
 namespace Fibonacci.Player
 {
-    /// <summary>
-    /// プレイヤーのアニメーション制御を管理するクラス
-    /// アニメーションの切り替えや状態管理を担当
-    /// </summary>
     public class PlayerAnimationController : MonoBehaviour
-    {  
-        //TODO:Animationの制御はまだ書いていない
-        private Animator animator;      
+    {
+        [SerializeField]private Animator animator;
+        // ★名前を "IsRunning" に統一
+        //private readonly int speedHash = Animator.StringToHash("IsRunning");
+
         void Awake()
         {
             if (animator == null)
                 animator = GetComponent<Animator>();
+        }
+
+        public void UpdateMoveAnimation(Vector2 moveInput)
+        {
+            if (animator == null) return;
+
+            // 横移動の絶対値を計算
+            float speed = Mathf.Abs(moveInput.x);
+            // Animatorのパラメーターを更新
+            animator.SetFloat("IsRunning", speed);
         }
     }
 }
