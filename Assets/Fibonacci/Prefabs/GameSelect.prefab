@@ -585,6 +585,7 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+
     - target: {fileID: 567006355785427832, guid: 49c7982308893d24a93e789650581124, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -593,10 +594,12 @@ PrefabInstance:
       propertyPath: m_PixelsPerUnitMultiplier
       value: 5
       objectReference: {fileID: 0}
+
     - target: {fileID: 907686564910855844, guid: 49c7982308893d24a93e789650581124, type: 3}
       propertyPath: m_Name
       value: stage1
       objectReference: {fileID: 0}
+
     - target: {fileID: 1063214246967415233, guid: 49c7982308893d24a93e789650581124, type: 3}
       propertyPath: m_RaycastTarget
       value: 0
@@ -625,10 +628,12 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4294967295
       objectReference: {fileID: 0}
+
     - target: {fileID: 1827188727378202371, guid: 49c7982308893d24a93e789650581124, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -485
       objectReference: {fileID: 0}
+
     - target: {fileID: 1941447503165684564, guid: 49c7982308893d24a93e789650581124, type: 3}
       propertyPath: m_fontAsset
       value: 
@@ -653,6 +658,7 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4294967295
       objectReference: {fileID: 0}
+
     - target: {fileID: 2073928723828889485, guid: 49c7982308893d24a93e789650581124, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -661,6 +667,7 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+
     - target: {fileID: 2073928723828889485, guid: 49c7982308893d24a93e789650581124, type: 3}
       propertyPath: m_RaycastTarget
       value: 1
@@ -717,6 +724,7 @@ PrefabInstance:
       propertyPath: m_PixelsPerUnitMultiplier
       value: 5
       objectReference: {fileID: 0}
+
     - target: {fileID: 5500436512056533024, guid: 49c7982308893d24a93e789650581124, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -485
@@ -729,6 +737,7 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 485
       objectReference: {fileID: 0}
+
     - target: {fileID: 5864730796654276508, guid: 49c7982308893d24a93e789650581124, type: 3}
       propertyPath: m_Type
       value: 1
@@ -773,6 +782,7 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 50
       objectReference: {fileID: 0}
+
     - target: {fileID: 8311598917356288489, guid: 49c7982308893d24a93e789650581124, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 485
@@ -781,6 +791,7 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 290
       objectReference: {fileID: 0}
+
     - target: {fileID: 8449237074417556866, guid: 49c7982308893d24a93e789650581124, type: 3}
       propertyPath: m_Name
       value: 2-2
@@ -809,6 +820,7 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4294967295
       objectReference: {fileID: 0}
+
     - target: {fileID: 9128323945542358387, guid: 49c7982308893d24a93e789650581124, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -895,6 +907,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9128323945542358387, guid: 49c7982308893d24a93e789650581124, type: 3}
       insertIndex: 0
       addedObject: {fileID: 373740828427306264}
+
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 907686564910855844, guid: 49c7982308893d24a93e789650581124, type: 3}
       insertIndex: -1
@@ -959,11 +972,13 @@ MonoBehaviour:
   easeType: 27
   enableColorChange: 0
   hoverColor: {r: 1, g: 1, b: 1, a: 1}
+
 --- !u!224 &2645627315646297655 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9128323945542358387, guid: 49c7982308893d24a93e789650581124, type: 3}
   m_PrefabInstance: {fileID: 6492354776709489476}
   m_PrefabAsset: {fileID: 0}
+
 --- !u!1 &3021451717878397633 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8356182892131834245, guid: 49c7982308893d24a93e789650581124, type: 3}
@@ -1053,3 +1068,4 @@ MonoBehaviour:
   easeType: 27
   enableColorChange: 0
   hoverColor: {r: 1, g: 1, b: 1, a: 1}
+
