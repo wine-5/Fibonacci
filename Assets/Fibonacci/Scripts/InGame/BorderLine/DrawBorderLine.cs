@@ -225,13 +225,12 @@ namespace Fibonacci.InGame.BorderLine
                     hasCurrentPartition = true;
                     currentPartition = partition;
 
-                    // 見た目の線（外枠まで延長するかどうか）
                     lineDrawer.DrawSplitOrSegment(
                         firstSelectedBall.position,
                         clickedObject.position,
                         partition.Intersection0,
                         partition.Intersection1,
-                        extendLineToBounds,
+                        extendToBounds: true,
                         z: worldZ);
 
                     bool showMarkers = showRegionMarkers && !suppressRegionMarkers;
