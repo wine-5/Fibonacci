@@ -214,7 +214,7 @@ namespace Fibonacci.Editor
             try
             {
                 EditorSceneManager.OpenScene(scenePath);
-                Debug.Log($"Opened scene: {Path.GetFileNameWithoutExtension(scenePath)}");
+                // Debug.Log($"Opened scene: {Path.GetFileNameWithoutExtension(scenePath)}");
             }
             catch (System.Exception e)
             {

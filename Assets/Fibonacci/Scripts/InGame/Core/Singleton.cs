@@ -62,9 +62,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         {
             instance = this as T;
             if (UseDontDestroyOnLoad)
-            {
-                DontDestroyOnLoad(gameObject);
-            }
+                DontDestroyOnLoad(transform.root.gameObject);
         }
         else if (instance != this)
         {

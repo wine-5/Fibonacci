@@ -1,5 +1,6 @@
 using UnityEngine;
 using Fibonacci.Scene;
+using Fibonacci.Audio;
 
 /// <summary>
 /// シーン遷移ボタンのラッパークラス
@@ -16,6 +17,10 @@ public class SceneButton : MonoBehaviour
     /// </summary>
     public void OnClick()
     {
+        // ボタンクリック音を再生
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.Play("Button");
+        
         if (SceneController.Instance != null)
             SceneController.Instance.LoadScene(targetScene);
         else
