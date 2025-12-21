@@ -14,7 +14,8 @@ namespace Fibonacci.Scene
         Stage1_2,
         Stage2_1,
         Stage2_2,
-        Clear
+        Clear,
+        InGameF
     }
 
     /// <summary>
