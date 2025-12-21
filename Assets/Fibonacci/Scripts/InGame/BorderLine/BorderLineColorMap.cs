@@ -112,5 +112,21 @@ namespace Fibonacci.InGame.BorderLine
 
             UpdateVisual(split);
         }
+
+        public void ClearVisual()
+        {
+            if (displayRenderer != null)
+            {
+                displayRenderer.sprite = null;
+            }
+
+            if (currentTexture != null)
+            {
+                Object.Destroy(currentTexture);
+                currentTexture = null;
+            }
+
+            currentRect = default;
+        }
     }
 }
