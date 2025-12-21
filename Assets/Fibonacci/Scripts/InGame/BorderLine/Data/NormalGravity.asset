@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: NormalGravity
   m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.BorderLine.UI.BorderLineEffectDefinition
   id: NormalGravity
-  icon: {fileID: 21300000, guid: b9802ef28c4405542a43244b1a12265d, type: 3}
+  icon: {fileID: 21300000, guid: 092cfeb293aed644c9c33081692475a9, type: 3}

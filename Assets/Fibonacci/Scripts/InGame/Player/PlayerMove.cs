@@ -1,4 +1,5 @@
 using UnityEngine;
+using Fibonacci.InGame;
 
 namespace Fibonacci.Player
 {
@@ -37,13 +38,21 @@ namespace Fibonacci.Player
             initialPosition = transform.position;
         }
 
+
         void Update()
         {
-            isGrounded = CheckIsGrounded();
+            if (GameManager.Instance == null || GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
         }
 
         void FixedUpdate()
         {
+            if (GameManager.Instance == null || GameManager.Instance.CurrentPhase != GamePhase.Playing)
+            {
+                // 入力による横移動を0にし、重力のみ働かせるか、完全に停止させる
+                rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+                return;
+            }
+
             HandleMovement();
         }
 

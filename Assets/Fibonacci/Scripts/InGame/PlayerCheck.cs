@@ -1,7 +1,7 @@
 using UnityEngine;
 using Fibonacci.InGame.BorderLine;
 using Fibonacci.Player;
-using Fibonacci.Audio; // ★これが必要！名前空間を追加
+using Fibonacci.Audio;
 using System.Linq;
 
 namespace Fibonacci.InGame.Player
@@ -14,53 +14,76 @@ namespace Fibonacci.InGame.Player
 
         [Header("Audio Settings")]
         [SerializeField] private AudioSource audioSource;
-        [SerializeField] private AudioDataSO audioData; 
+        [SerializeField] private AudioDataSO audioData;
 
         private int lastAreaIndex = -1;
+        private bool isInitializedOnStart = false;
 
-        void Update()
+        private void Start()
         {
-            if (drawBorderLine == null || playerController == null) return;
+            // 開始時のインデックスを記録
+            UpdateAreaIndex();
+        }
 
+        // ★ Update ではなく LateUpdate を使う
+        // これにより、他の全てのスクリプトのUpdate（データの確定）が終わった後に判定が走ります
+        void LateUpdate()
+        {
+            if (GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
+
+            if (drawBorderLine == null || playerController == null) return;
             var colorMap = drawBorderLine.GetColorMap();
             if (colorMap == null) return;
 
             int currentAreaIndex = colorMap.GetAreaIndex(transform.position);
 
-            if (currentAreaIndex != lastAreaIndex)
+            // 初回判定、またはエリアが変更された場合のみ実行
+            if (!isInitializedOnStart || currentAreaIndex != lastAreaIndex)
             {
-                // ラインを越えた瞬間に音を鳴らす
-                PlaySoundByName("Border");
-
-                if (currentAreaIndex == 0 || currentAreaIndex == 1)
-                {
-                    playerController.OnAreaChanged(currentAreaIndex);
-                }
-                else
-                {
-                    playerController.ResetGravity();
-                }
-
+                ApplyEffect(currentAreaIndex, isInitializedOnStart);
                 lastAreaIndex = currentAreaIndex;
+                isInitializedOnStart = true;
+            }
+        }
+
+        private void ApplyEffect(int areaIndex, bool playSound)
+        {
+            // エリア移動時のみ音を鳴らす（初回判定時は鳴らさない）
+            if (playSound && areaIndex != lastAreaIndex && lastAreaIndex != -1)
+            {
+                PlaySoundByName("Border");
+            }
+
+            // 重力状態の反映
+            if (areaIndex == 0 || areaIndex == 1)
+            {
+                playerController.OnAreaChanged(areaIndex);
+            }
+            else
+            {
+                playerController.ResetGravity();
+            }
+        }
+
+        private void UpdateAreaIndex()
+        {
+            if (drawBorderLine != null)
+            {
+                var colorMap = drawBorderLine.GetColorMap();
+                if (colorMap != null)
+                {
+                    lastAreaIndex = colorMap.GetAreaIndex(transform.position);
+                }
             }
         }
 
         private void PlaySoundByName(string targetName)
         {
             if (audioData == null || audioSource == null) return;
-
-            // ★ AudioDataSO内のプロパティ名「AudioDataList」に修正
-            // ★ AudioData内のプロパティ名「AudioName」と「AudioClip」に修正
             var data = audioData.AudioDataList.FirstOrDefault(x => x.AudioName == targetName);
-
             if (data != null && data.AudioClip != null)
             {
-                // VolumeMultiplierも反映させるとより良くなります
                 audioSource.PlayOneShot(data.AudioClip, data.VolumeMultiplier);
-            }
-            else
-            {
-                Debug.LogWarning($"AudioDataSOの中に '{targetName}' という名前の音が見つかりませんでした。");
             }
         }
     }

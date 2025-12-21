@@ -109,6 +109,10 @@ namespace Fibonacci.InGame.BorderLine.UI
             {
                 drawBorderLine.LockInteraction();
             }
+            if (Fibonacci.InGame.GameManager.Instance != null)
+            {
+                Fibonacci.InGame.GameManager.Instance.StartGame();
+            }
         }
     }
 }
