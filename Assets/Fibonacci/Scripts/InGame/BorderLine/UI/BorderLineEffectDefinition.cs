@@ -1,4 +1,6 @@
 using UnityEngine;
+using Fibonacci.InGame.BorderLine.Effects;
+using Fibonacci.Utilities.ScriptableVariables;
 
 namespace Fibonacci.InGame.BorderLine.UI
 {
@@ -8,7 +10,14 @@ namespace Fibonacci.InGame.BorderLine.UI
         [SerializeField] private string id;
         [SerializeField] private Sprite icon;
 
+        [Header("Effect")]
+        [SerializeField] private BorderLineEffect effect;
+        [SerializeField] private FloatReference floatValue;
+
         public string Id => id;
         public Sprite Icon => icon;
+
+        public BorderLineEffect Effect => effect;
+        public FloatReference FloatValue => floatValue;
     }
 }

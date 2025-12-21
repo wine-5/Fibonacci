@@ -19,6 +19,9 @@ namespace Fibonacci.Player
         public string EffectIdArea0 { get; private set; } = "";
         public string EffectIdArea1 { get; private set; } = "";
 
+        public BorderLineEffectDefinition EffectDefArea0 { get; private set; }
+        public BorderLineEffectDefinition EffectDefArea1 { get; private set; }
+
         void Awake()
         {
             playerMove = GetComponent<PlayerMove>();
@@ -54,11 +57,13 @@ namespace Fibonacci.Player
             if (frameIndex == 0)
             {
                 EffectIdArea0 = def.Id;
+                EffectDefArea0 = def;
                 Debug.Log($"<color=cyan>EffectIdArea0 に '{def.Id}' をセットしました (frameIndex: {frameIndex})</color>");
             }
             else if (frameIndex == 1)
             {
                 EffectIdArea1 = def.Id;
+                EffectDefArea1 = def;
                 Debug.Log($"<color=cyan>EffectIdArea1 に '{def.Id}' をセットしました (frameIndex: {frameIndex})</color>");
             }
 
@@ -99,13 +104,24 @@ namespace Fibonacci.Player
 
             EffectIdArea0 = "";
             EffectIdArea1 = "";
+
+            EffectDefArea0 = null;
+            EffectDefArea1 = null;
         }
 
         public void OnAreaChanged(int newAreaIndex)
         {
             // 現在保持しているエフェクトIDをログ出力
-            string currentEffect = (newAreaIndex == 0) ? EffectIdArea0 : EffectIdArea1;
+            var currentDef = (newAreaIndex == 0) ? EffectDefArea0 : EffectDefArea1;
+            string currentEffect = currentDef != null ? currentDef.Id : ((newAreaIndex == 0) ? EffectIdArea0 : EffectIdArea1);
             Debug.Log($"<color=orange>エリア {newAreaIndex} のエフェクト判定中: 現在のIDは '{currentEffect}' です</color>");
+
+            // ScriptableObjectのEffectが指定されている場合はそれを優先して実行
+            if (currentDef != null && currentDef.Effect != null)
+            {
+                currentDef.Effect.Apply(this, currentDef.FloatValue.Value);
+                return;
+            }
 
             // ★ 文字列が完全に一致しているかチェック
             if (currentEffect == "ZeroGravity")
@@ -121,6 +137,10 @@ namespace Fibonacci.Player
         }
         public void ResetGravity()
         {
+            // ScriptableObject Effectが指定されている場合は Clear を呼ぶ
+            EffectDefArea0?.Effect?.Clear(this);
+            EffectDefArea1?.Effect?.Clear(this);
+
             // もし今、重力が反転（マイナス）しているなら、ReverseGravityを呼んでプラスに戻す
             if (playerGravity != null && playerGravity.GetGravityScale() < 0)
             {

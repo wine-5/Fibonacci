@@ -10,7 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbce18fe5ce929845a55ca81af4a938d, type: 3}
-  m_Name: NormalGravity
+  m_Name: ZeroGravity
   m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.BorderLine.UI.BorderLineEffectDefinition
-  id: NormalGravity
+  id: ZeroGravity
   icon: {fileID: 21300000, guid: 092cfeb293aed644c9c33081692475a9, type: 3}
+  effect: {fileID: 11400000, guid: 7f14ba54871d3574387d0813cfc4b1b6, type: 2}
+  floatValue:
+    useConstant: 1
+    constantValue: -1
+    variable: {fileID: 0}
