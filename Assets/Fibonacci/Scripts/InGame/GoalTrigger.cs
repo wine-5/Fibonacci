@@ -1,23 +1,33 @@
 using Fibonacci.Scene;
+using Fibonacci.Audio;
 using UnityEngine;
+using System.Collections;
 
-/// <summary>
-/// プレイヤーがゴールに到達した時の判定とシーン遷移を管理するクラス
-/// </summary>
 public class GoalTrigger : MonoBehaviour
 {
-    /// <summary>
-    /// プレイヤーがゴールに到達した時の判定とシーン遷移を管理するクラス
-    /// </summary>
+    [SerializeField] private string goalSeName = "GoalSE";
+    [SerializeField] private float waitSeconds = 0.2f;
+    private bool cleared = false;
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
-            LoadResultScene();
+        if (cleared) return;
+        if (!other.CompareTag("Player")) return;
+
+        cleared = true;
+        StartCoroutine(PlaySeAndLoad());
     }
 
-    private void LoadResultScene()
+    private IEnumerator PlaySeAndLoad()
     {
-        // SceneControllerのインスタンスを経由してリザルト画面に移動
+        // ゴールSE
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.Play(goalSeName);
+
+        // SEが聞こえるように少し待つ
+        yield return new WaitForSeconds(waitSeconds);
+
+        // リザルトへ
         if (SceneController.Instance != null)
             SceneController.Instance.LoadScene(SceneName.Clear);
     }
