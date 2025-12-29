@@ -18,22 +18,7 @@
 
 ---
 
-## 📁 ファイル・フォルダ
-
-### プロジェクト構造
-```
-Assets/Fibonacci/
-├── Scripts/
-│   ├── Player/
-│   ├── Enemy/
-│   ├── UI/
-│   └── Manager/
-├── Prefabs/
-├── Materials/
-└── Scenes/
-```
-
-### ファイル命名
+### フォルダ / ファイル命名
 - **PascalCase** を使用
 - 機能が分かる名前にする
 
@@ -46,7 +31,6 @@ Assets/Fibonacci/
 
 ### Inspector
 - `[Header]` と `[SerializeField]` を適切に使用
-- NaughtyAttributesの使用でもあり
 
 ---
 

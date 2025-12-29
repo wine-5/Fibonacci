@@ -5,7 +5,7 @@ using System.Collections;
 
 public class GoalTrigger : MonoBehaviour
 {
-    [SerializeField] private string goalSeName = "GoalSE";
+    // [SerializeField] private string goalSeName = "Goal";
     [SerializeField] private float waitSeconds = 0.2f;
     private bool cleared = false;
 
@@ -22,7 +22,7 @@ public class GoalTrigger : MonoBehaviour
     {
         // ゴールSE
         if (AudioManager.Instance != null)
-            AudioManager.Instance.Play(goalSeName);
+            AudioManager.Instance.Play("Goal");
 
         // SEが聞こえるように少し待つ
         yield return new WaitForSeconds(waitSeconds);
