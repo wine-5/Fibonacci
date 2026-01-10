@@ -1,132 +1,79 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Fibonacci.Event;
 using Fibonacci.InGame.BorderLine.UI;
 
-namespace Fibonacci.Player
+namespace Fibonacci.InGame.Player
 {
     /// <summary>
-    /// プレイヤーのメインコントローラー
-    /// PlayerInputコンポーネントからの入力を受け取り、各コンポーネントに配信
+    /// プレイヤーの全体制御と状態管理を司る司令塔（Controller）クラス。
+    /// ゲームフェーズに応じた動作の許可判定、PlayerMove（移動ロジック）のインスタンス管理、
+    /// エリア変更に伴う重力操作やUIとの連携など、プレイヤーに関する各コンポーネントの仲介役として機能します。
     /// </summary>
-    [RequireComponent(typeof(PlayerInput))]
     public class PlayerController : MonoBehaviour
     {
-        [SerializeField] private BorderLineEffectUI effectUI;
+        [Header("Settings")]
+        [SerializeField] private float moveSpeed = 5f;
         [SerializeField] private PlayerGravity playerGravity;
+        [SerializeField] private PlayerAnimationController animationController;
+        [SerializeField] private BorderLineEffectUI effectUI;
+
         private PlayerMove playerMove;
+        private Rigidbody2D rb;
 
         public string EffectIdArea0 { get; private set; } = "";
         public string EffectIdArea1 { get; private set; } = "";
 
         void Awake()
         {
-            playerMove = GetComponent<PlayerMove>();
+            rb = GetComponent<Rigidbody2D>();
             if (playerGravity == null) playerGravity = GetComponent<PlayerGravity>();
+            
+            playerMove = new PlayerMove(rb, transform, animationController, moveSpeed);
         }
 
-        void OnEnable()
+        void FixedUpdate()
         {
-            GameEvents.OnRestart += OnGameRestart;
-
-            if (effectUI != null)
+            if (GameManager.Instance == null || GameManager.Instance.CurrentPhase != GamePhase.Playing)
             {
-                effectUI.EffectClicked += OnEffectClicked;
+                rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+                return;
             }
+
+            playerMove.ExecutePhysicsUpdate();
         }
 
-        void OnDisable()
+        public void SetMoveInput(Vector2 input)
         {
-            GameEvents.OnRestart -= OnGameRestart;
-
-            if (effectUI != null)
-            {
-                effectUI.EffectClicked -= OnEffectClicked;
-            }
+            playerMove.MoveInput = input;
+            playerMove.UpdateAnimation();
         }
 
-        private void OnEffectClicked(int frameIndex, int regionId, BorderLineEffectDefinition def)
-        {
-            if (def == null) return;
+        #region GameLogic (Gravity/Effects)
+        // private void OnEnable()
+        // {
+        //     GameEvents.OnRestart += OnGameRestart;
+        //     if (effectUI != null) effectUI.EffectClicked += OnEffectClicked;
+        // }
 
-            // ★ 修正：regionId ではなく frameIndex を使ってみる（UIの枠番号 = エリア番号のはず）
-            // また、実際にどんなIDがセットされたかログを出す
-            if (frameIndex == 0)
-            {
-                EffectIdArea0 = def.Id;
-                Debug.Log($"<color=cyan>EffectIdArea0 に '{def.Id}' をセットしました (frameIndex: {frameIndex})</color>");
-            }
-            else if (frameIndex == 1)
-            {
-                EffectIdArea1 = def.Id;
-                Debug.Log($"<color=cyan>EffectIdArea1 に '{def.Id}' をセットしました (frameIndex: {frameIndex})</color>");
-            }
+        // private void OnDisable()
+        // {
+        //     GameEvents.OnRestart -= OnGameRestart;
+        //     if (effectUI != null) effectUI.EffectClicked -= OnEffectClicked;
+        // }
 
-            effectUI.ApplySelection(frameIndex, def.Id, def.Icon);
-        }
-        /// <summary>
-        /// PlayerInputから呼び出される移動入力のコールバック
-        /// Input Action の名前が "Move" の場合に自動的に呼ばれる
-        /// </summary>
-        public void OnMove(InputAction.CallbackContext context)
-        {
-            if (playerMove != null)
-            {
-                Vector2 moveInput = context.ReadValue<Vector2>();
-                playerMove.OnMoveInput(moveInput);
-            }
-        }
-
-        /// <summary>
-        /// PlayerInputから呼び出されるリスタート入力のコールバック
-        /// Input Action の名前が "Restart" の場合に自動的に呼ばれる
-        /// </summary>
-        public void OnRestart(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                GameEvents.TriggerRestart();
-            }
-        }
-
-        /// <summary>
-        /// ゲームリスタート時の処理
-        /// </summary>
         private void OnGameRestart()
         {
-            if (playerMove != null)
-                playerMove.ResetPosition();
-
+            playerMove.ResetPosition();
             EffectIdArea0 = "";
             EffectIdArea1 = "";
         }
 
         public void OnAreaChanged(int newAreaIndex)
         {
-            // 現在保持しているエフェクトIDをログ出力
             string currentEffect = (newAreaIndex == 0) ? EffectIdArea0 : EffectIdArea1;
-            Debug.Log($"<color=orange>エリア {newAreaIndex} のエフェクト判定中: 現在のIDは '{currentEffect}' です</color>");
-
-            // ★ 文字列が完全に一致しているかチェック
-            if (currentEffect == "ZeroGravity")
-            {
-                Debug.Log("<color=red>重力反転を実行します！</color>");
-                playerGravity.SetGravityScale(-1f);
-            }
-            else
-            {
-                Debug.Log("<color=white>重力を通常に戻します</color>");
-                playerGravity.SetNormalGravity();
-            }
+            if (currentEffect == "ZeroGravity") playerGravity.SetGravityScale(-1f);
+            else playerGravity.SetNormalGravity();
         }
-        public void ResetGravity()
-        {
-            // もし今、重力が反転（マイナス）しているなら、ReverseGravityを呼んでプラスに戻す
-            if (playerGravity != null && playerGravity.GetGravityScale() < 0)
-            {
-                playerGravity.ReverseGravity();
-                Debug.Log("<color=white>エリア外に出たため重力を元に戻しました</color>");
-            }
-        }
+        #endregion
     }
 }

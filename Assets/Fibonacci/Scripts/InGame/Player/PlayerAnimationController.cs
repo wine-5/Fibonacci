@@ -1,14 +1,15 @@
-using System;
 using UnityEngine;
-using Fibonacci.InGame;
 
-namespace Fibonacci.Player
+namespace Fibonacci.InGame.Player
 {
+    /// <summary>
+    /// プレイヤーの移動アニメーションを制御するクラス。
+    /// ゲームフェーズの状態を確認し、移動入力（Vector2）に基づいて
+    /// Animatorのパラメーター（IsRunning）を更新する役割を担います。
+    /// </summary>
     public class PlayerAnimationController : MonoBehaviour
     {
         [SerializeField] private Animator animator;
-        // ★名前を "IsRunning" に統一
-        //private readonly int speedHash = Animator.StringToHash("IsRunning");
 
         void Awake()
         {
@@ -18,7 +19,6 @@ namespace Fibonacci.Player
 
         void Start()
         {
-            // 開始時に強制的にアニメーションを待機(0)にする
             if (animator != null)
             {
                 animator.SetFloat("IsRunning", 0f);
@@ -34,16 +34,12 @@ namespace Fibonacci.Player
         {
             if (GameManager.Instance == null || GameManager.Instance.CurrentPhase != GamePhase.Playing)
             {
-                // 強制的に立ちポーズ（0）にする
                 if (animator != null) animator.SetFloat("IsRunning", 0f);
-                return;
             }
 
             if (animator == null) return;
 
-            // 横移動の絶対値を計算
             float speed = Mathf.Abs(moveInput.x);
-            // Animatorのパラメーターを更新
             animator.SetFloat("IsRunning", speed);
         }
     }

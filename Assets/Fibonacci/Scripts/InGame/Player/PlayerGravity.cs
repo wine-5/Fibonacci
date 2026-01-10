@@ -1,7 +1,12 @@
 using UnityEngine;
 
-namespace Fibonacci.Player
+namespace Fibonacci.InGame.Player
 {
+    /// <summary>
+    /// プレイヤーの重力制御と、それに伴う反転処理を管理するクラス。
+    /// Rigidbody2Dの重力スケール変更と同時に、プレイヤーの上下の向き(localScale.y)を
+    /// 適切に同期させ、物理的な落下方向とビジュアルを一致させる役割を担います。
+    /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerGravity : MonoBehaviour
     {
@@ -12,22 +17,14 @@ namespace Fibonacci.Player
             rb = GetComponent<Rigidbody2D>();
         }
 
-        public float GetGravityScale()
-        {
-            return rb != null ? rb.gravityScale : 1f;
-        }
+        public float GetGravity() => rb != null ? rb.gravityScale : 1f;
 
-        /// <summary>
-        /// 重力を反転させる（外からこれを呼ぶだけでOK）
-        /// </summary>
         public void ReverseGravity()
         {
             if (rb != null)
             {
-                // 現在の重力スケールをプラスマイナス逆転させる
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
 
-                // プレイヤーの向き（上下）も反転させる
                 Vector3 scale = transform.localScale;
                 scale.y *= -1;
                 transform.localScale = scale;
@@ -38,16 +35,13 @@ namespace Fibonacci.Player
             if (rb == null) return;
 
             rb.gravityScale = scale;
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0); // 慣性リセット
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
 
-            // 見た目の向きを重力に合わせる
             Vector3 localScale = transform.localScale;
-            // 重力がマイナスならキャラも逆さま(-1)、プラスならそのまま(1)
             localScale.y = (scale < 0) ? -Mathf.Abs(localScale.y) : Mathf.Abs(localScale.y);
             transform.localScale = localScale;
         }
 
-        // 正常な重力に戻す専用のショートカット
         public void SetNormalGravity()
         {
             SetGravityScale(1f);

@@ -1,18 +1,23 @@
 using UnityEngine;
 using Fibonacci.InGame.BorderLine;
-using Fibonacci.Player;
+using Fibonacci.InGame.Player;
 using Fibonacci.Audio;
 using System.Linq;
 
-namespace Fibonacci.InGame.Player
+namespace Fibonacci.InGame
 {
+    /// <summary>
+    /// プレイヤーの座標を監視し、所属するエリアに応じたイベント処理を行うクラス。
+    /// 境界線（DrawBorderLine）のデータに基づき、エリアが切り替わった際の
+    /// 重力変化の通知（PlayerController）やSEの再生（AudioSource）を統括します。
+    /// </summary>
     public class PlayerCheck : MonoBehaviour
     {
-        [Header("References")]
+        [Header("参考コンポーネント")]
         [SerializeField] private DrawBorderLine drawBorderLine;
         [SerializeField] private PlayerController playerController;
 
-        [Header("Audio Settings")]
+        [Header("オーディオ設定")]
         [SerializeField] private AudioSource audioSource;
         [SerializeField] private AudioDataSO audioData;
 
@@ -21,12 +26,9 @@ namespace Fibonacci.InGame.Player
 
         private void Start()
         {
-            // 開始時のインデックスを記録
             UpdateAreaIndex();
         }
 
-        // ★ Update ではなく LateUpdate を使う
-        // これにより、他の全てのスクリプトのUpdate（データの確定）が終わった後に判定が走ります
         void LateUpdate()
         {
             if (GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
@@ -37,7 +39,6 @@ namespace Fibonacci.InGame.Player
 
             int currentAreaIndex = colorMap.GetAreaIndex(transform.position);
 
-            // 初回判定、またはエリアが変更された場合のみ実行
             if (!isInitializedOnStart || currentAreaIndex != lastAreaIndex)
             {
                 ApplyEffect(currentAreaIndex, isInitializedOnStart);
@@ -48,13 +49,11 @@ namespace Fibonacci.InGame.Player
 
         private void ApplyEffect(int areaIndex, bool playSound)
         {
-            // エリア移動時のみ音を鳴らす（初回判定時は鳴らさない）
             if (playSound && areaIndex != lastAreaIndex && lastAreaIndex != -1)
             {
                 PlaySoundByName("Border");
             }
 
-            // 重力状態の反映
             if (areaIndex == 0 || areaIndex == 1)
             {
                 playerController.OnAreaChanged(areaIndex);
