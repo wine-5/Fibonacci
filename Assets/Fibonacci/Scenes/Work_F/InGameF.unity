@@ -133,6 +133,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
   m_Asset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_ActionId: 04bc69fe-2063-4a17-b700-0bb2791793b5
+--- !u!114 &351779975 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3347236534191068487, guid: 9642415863345644999f100032ce848e, type: 3}
+  m_PrefabInstance: {fileID: 1311050985}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a76e213bc18a7584c92260925cac736a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.BorderLine.UI.BorderLineEffectUI
 --- !u!114 &466781744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,6 +222,38 @@ PrefabInstance:
       propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5517424177560606333, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5517424177560606333, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5517424177560606333, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1335238705}
+    - target: {fileID: 5517424177560606333, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1335238705}
+    - target: {fileID: 5517424177560606333, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5517424177560606333, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Fibonacci.InGame.Player.PlayerInputManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5517424177560606333, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Fibonacci.InGame.Player.PlayerInputManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5517424177560606333, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Fibonacci.InGame.Player.PlayerInputManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 7021400571018210812, guid: 9642415863345644999f100032ce848e, type: 3}
       propertyPath: m_Parameters.textureMode
       value: 1
@@ -227,11 +270,72 @@ PrefabInstance:
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 9095356416132029707, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: animationController
+      value: 
+      objectReference: {fileID: 2117423232}
+    m_RemovedComponents:
+    - {fileID: 8667137706381586179, guid: 9642415863345644999f100032ce848e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5204657233798859872, guid: 9642415863345644999f100032ce848e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1335238705}
   m_SourcePrefab: {fileID: 100100000, guid: 9642415863345644999f100032ce848e, type: 3}
+--- !u!1 &1335238693 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5204657233798859872, guid: 9642415863345644999f100032ce848e, type: 3}
+  m_PrefabInstance: {fileID: 1311050985}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1335238696 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3450024784029158765, guid: 9642415863345644999f100032ce848e, type: 3}
+  m_PrefabInstance: {fileID: 1311050985}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335238693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cac950abd6217e04fbf53e94bbf9e210, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.Player.PlayerGravity
+--- !u!114 &1335238699 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9095356416132029707, guid: 9642415863345644999f100032ce848e, type: 3}
+  m_PrefabInstance: {fileID: 1311050985}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335238693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b81958ec003ace45a7044cdd1692090, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.Player.PlayerController
+--- !u!114 &1335238705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335238693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d52187eca8c3cd469acbe6b3a4e5f0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.Player.PlayerInputManager
+  playerController: {fileID: 1335238699}
+  effectUI: {fileID: 351779975}
+  playerGravity: {fileID: 1335238696}
+--- !u!114 &2117423232 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3925931504576246979, guid: 9642415863345644999f100032ce848e, type: 3}
+  m_PrefabInstance: {fileID: 1311050985}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c21d435e1cf6494cbdeaeb38396ed62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.Player.PlayerAnimationController
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

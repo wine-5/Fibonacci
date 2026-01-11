@@ -41,28 +41,28 @@ namespace Fibonacci.InGame
 
             if (!isInitializedOnStart || currentAreaIndex != lastAreaIndex)
             {
-                ApplyEffect(currentAreaIndex, isInitializedOnStart);
+                //ApplyEffect(currentAreaIndex, isInitializedOnStart);
                 lastAreaIndex = currentAreaIndex;
                 isInitializedOnStart = true;
             }
         }
 
-        private void ApplyEffect(int areaIndex, bool playSound)
-        {
-            if (playSound && areaIndex != lastAreaIndex && lastAreaIndex != -1)
-            {
-                PlaySoundByName("Border");
-            }
+        // private void ApplyEffect(int areaIndex, bool playSound)
+        // {
+        //     if (playSound && areaIndex != lastAreaIndex && lastAreaIndex != -1)
+        //     {
+        //         PlaySoundByName("Border");
+        //     }
 
-            if (areaIndex == 0 || areaIndex == 1)
-            {
-                playerController.OnAreaChanged(areaIndex);
-            }
-            else
-            {
-                playerController.ResetGravity();
-            }
-        }
+        //     if (areaIndex == 0 || areaIndex == 1)
+        //     {
+        //         playerController.OnAreaChanged(areaIndex);
+        //     }
+        //     else
+        //     {
+        //         playerController.ResetGravity();
+        //     }
+        // }
 
         private void UpdateAreaIndex()
         {

@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Fibonacci.Event;
+using Fibonacci.InGame.BorderLine.UI;
+using Fibonacci.Scene;  
 
 namespace Fibonacci.InGame.Player
 {
@@ -13,6 +15,12 @@ namespace Fibonacci.InGame.Player
     public class PlayerInputManager : MonoBehaviour
     {
         [SerializeField] private PlayerController playerController;
+        [SerializeField] private BorderLineEffectUI effectUI;
+        [SerializeField] private PlayerGravity playerGravity;
+
+        public string EffectIdArea0 { get; private set; } = "";
+        public string EffectIdArea1 { get; private set; } = "";
+
 
         public void OnMove(InputAction.CallbackContext context)
         {
@@ -22,12 +30,50 @@ namespace Fibonacci.InGame.Player
             }
         }
 
+
+
+
         public void OnRestart(InputAction.CallbackContext context)
         {
-            if (context.performed)
+            Debug.Log("Restart Input Received");
+            if (context.started)
             {
                 GameEvents.TriggerRestart();
             }
         }
+
+        private void OnGameRestart()
+        {
+            EffectIdArea0 = "";
+            EffectIdArea1 = "";
+
+            if (playerController != null)
+            {
+                playerController.ResetPlayerState();
+            }
+        }
+
+        private void OnEnable()
+        {
+            GameEvents.OnRestart += OnGameRestart;
+            //if (effectUI != null) effectUI.EffectClicked += OnEffectClicked;
+        }
+
+        private void OnDisable()
+        {
+            GameEvents.OnRestart -= OnGameRestart;
+            //if (effectUI != null) effectUI.EffectClicked -= OnEffectClicked;
+        }
+
+
+
+
+        public void OnAreaChanged(int newAreaIndex)
+        {
+            string currentEffect = (newAreaIndex == 0) ? EffectIdArea0 : EffectIdArea1;
+            if (currentEffect == "ZeroGravity") playerGravity.SetGravityScale(-1f);
+            else playerGravity.SetNormalGravity();
+        }
+
     }
 }

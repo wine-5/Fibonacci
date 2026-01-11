@@ -149,7 +149,7 @@
                     "name": "",
                     "id": "10be87a8-bd59-4270-a63a-72dc40158afa",
                     "path": "<Keyboard>/r",
-                    "interactions": "",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "",
                     "action": "Restart",

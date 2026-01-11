@@ -1,6 +1,4 @@
 using UnityEngine;
-using Fibonacci.Event;
-using Fibonacci.InGame.BorderLine.UI;
 
 namespace Fibonacci.InGame.Player
 {
@@ -15,19 +13,16 @@ namespace Fibonacci.InGame.Player
         [SerializeField] private float moveSpeed = 5f;
         [SerializeField] private PlayerGravity playerGravity;
         [SerializeField] private PlayerAnimationController animationController;
-        [SerializeField] private BorderLineEffectUI effectUI;
+
 
         private PlayerMove playerMove;
         private Rigidbody2D rb;
-
-        public string EffectIdArea0 { get; private set; } = "";
-        public string EffectIdArea1 { get; private set; } = "";
 
         void Awake()
         {
             rb = GetComponent<Rigidbody2D>();
             if (playerGravity == null) playerGravity = GetComponent<PlayerGravity>();
-            
+
             playerMove = new PlayerMove(rb, transform, animationController, moveSpeed);
         }
 
@@ -49,31 +44,26 @@ namespace Fibonacci.InGame.Player
         }
 
         #region GameLogic (Gravity/Effects)
-        // private void OnEnable()
-        // {
-        //     GameEvents.OnRestart += OnGameRestart;
-        //     if (effectUI != null) effectUI.EffectClicked += OnEffectClicked;
-        // }
 
-        // private void OnDisable()
-        // {
-        //     GameEvents.OnRestart -= OnGameRestart;
-        //     if (effectUI != null) effectUI.EffectClicked -= OnEffectClicked;
-        // }
-
-        private void OnGameRestart()
+        /// <summary>
+        /// 【追加】プレイヤーの状態を一括リセットします。
+        /// PlayerInputManagerのOnGameRestartから呼ばれます。
+        /// </summary>
+        public void ResetPlayerState()
         {
-            playerMove.ResetPosition();
-            EffectIdArea0 = "";
-            EffectIdArea1 = "";
-        }
+            // 移動ロジック側の座標・速度リセットを実行
+            if (playerMove != null)
+            {
+                playerMove.ResetPosition();
+            }
 
-        public void OnAreaChanged(int newAreaIndex)
-        {
-            string currentEffect = (newAreaIndex == 0) ? EffectIdArea0 : EffectIdArea1;
-            if (currentEffect == "ZeroGravity") playerGravity.SetGravityScale(-1f);
-            else playerGravity.SetNormalGravity();
-        }
+            // 重力状態を通常に戻す
+            if (playerGravity != null)
+            {
+                playerGravity.SetNormalGravity();
+            }
+
         #endregion
+        }
     }
 }

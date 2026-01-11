@@ -40,13 +40,11 @@ namespace Fibonacci.InGame.Player
                 _transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
             }
         }
-
+        /// <summary> アニメーションを更新します。</summary>
         public void UpdateAnimation()
         {
             if (_anim != null)
-            {
                 _anim.UpdateMoveAnimation(MoveInput);
-            }
         }
 
         public void ResetPosition()
