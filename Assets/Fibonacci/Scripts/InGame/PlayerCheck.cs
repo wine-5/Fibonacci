@@ -16,6 +16,7 @@ namespace Fibonacci.InGame
         [Header("参考コンポーネント")]
         [SerializeField] private DrawBorderLine drawBorderLine;
         [SerializeField] private PlayerController playerController;
+        [SerializeField] private Fibonacci.InGame.Player.PlayerInputManager playerInputManager;
 
         [Header("オーディオ設定")]
         [SerializeField] private AudioSource audioSource;
@@ -29,7 +30,7 @@ namespace Fibonacci.InGame
             UpdateAreaIndex();
         }
 
-        void LateUpdate()
+        private void LateUpdate()
         {
             if (GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
 
@@ -41,28 +42,17 @@ namespace Fibonacci.InGame
 
             if (!isInitializedOnStart || currentAreaIndex != lastAreaIndex)
             {
-                //ApplyEffect(currentAreaIndex, isInitializedOnStart);
+                if (playerInputManager != null)
+                {
+                    playerInputManager.OnAreaChanged(currentAreaIndex);
+                }
+
                 lastAreaIndex = currentAreaIndex;
                 isInitializedOnStart = true;
             }
         }
 
-        // private void ApplyEffect(int areaIndex, bool playSound)
-        // {
-        //     if (playSound && areaIndex != lastAreaIndex && lastAreaIndex != -1)
-        //     {
-        //         PlaySoundByName("Border");
-        //     }
 
-        //     if (areaIndex == 0 || areaIndex == 1)
-        //     {
-        //         playerController.OnAreaChanged(areaIndex);
-        //     }
-        //     else
-        //     {
-        //         playerController.ResetGravity();
-        //     }
-        // }
 
         private void UpdateAreaIndex()
         {
@@ -73,16 +63,6 @@ namespace Fibonacci.InGame
                 {
                     lastAreaIndex = colorMap.GetAreaIndex(transform.position);
                 }
-            }
-        }
-
-        private void PlaySoundByName(string targetName)
-        {
-            if (audioData == null || audioSource == null) return;
-            var data = audioData.AudioDataList.FirstOrDefault(x => x.AudioName == targetName);
-            if (data != null && data.AudioClip != null)
-            {
-                audioSource.PlayOneShot(data.AudioClip, data.VolumeMultiplier);
             }
         }
     }

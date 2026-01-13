@@ -2,7 +2,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Fibonacci.Event;
 using Fibonacci.InGame.BorderLine.UI;
-using Fibonacci.Scene;  
+using Fibonacci.InGame;
+using Fibonacci.Audio;
+using Fibonacci.Scene;
 
 namespace Fibonacci.InGame.Player
 {
@@ -20,6 +22,8 @@ namespace Fibonacci.InGame.Player
 
         public string EffectIdArea0 { get; private set; } = "";
         public string EffectIdArea1 { get; private set; } = "";
+
+        private int lastAreaIndex = -1;
 
 
         public void OnMove(InputAction.CallbackContext context)
@@ -65,14 +69,30 @@ namespace Fibonacci.InGame.Player
             //if (effectUI != null) effectUI.EffectClicked -= OnEffectClicked;
         }
 
+        // private void ApplyEffect(int areaIndex, bool playSound)
+        // {
+        //     Debug.Log($"[ApplyEffect] Current Area: {areaIndex}, Last Area: {lastAreaIndex}, playSound: {playSound}");
 
+        //     if (playSound && areaIndex != lastAreaIndex && lastAreaIndex != -1)
+        //     {
+        //         Debug.Log("<color=cyan>[ApplyEffect] 境界線越えを検知！音を再生します。</color>");
 
+        //         if (AudioManager.Instance != null)
+        //         {
+        //             AudioManager.Instance.Play("Border");
+        //         }
+        //         else
+        //         {
+        //             Debug.LogWarning("[ApplyEffect] AudioManagerのインスタンスが見つかりません。");
+        //         }
+        //     }
+
+        //     lastAreaIndex = areaIndex;
+        // }
 
         public void OnAreaChanged(int newAreaIndex)
         {
-            string currentEffect = (newAreaIndex == 0) ? EffectIdArea0 : EffectIdArea1;
-            if (currentEffect == "ZeroGravity") playerGravity.SetGravityScale(-1f);
-            else playerGravity.SetNormalGravity();
+           // ApplyEffect(newAreaIndex, true);
         }
 
     }

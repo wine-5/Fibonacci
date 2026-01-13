@@ -1286,6 +1286,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: stone3
       objectReference: {fileID: 0}
+    - target: {fileID: 8219454534161262851, guid: 991651be83fa9b14f956df427cca7502, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1400,6 +1404,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7213455979908436820, guid: 4a6b1aef76af90c4db23ac0079e90027, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1432,10 +1440,46 @@ PrefabInstance:
       propertyPath: effectUI
       value: 
       objectReference: {fileID: 3347236534191068487}
+    - target: {fileID: 5904915179703420672, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
+      propertyPath: animationController
+      value: 
+      objectReference: {fileID: 3925931504576246979}
     - target: {fileID: 6308576299905643784, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
       propertyPath: animationController
       value: 
       objectReference: {fileID: 3925931504576246979}
+    - target: {fileID: 7159209810321247350, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7159209810321247350, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7159209810321247350, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
+      propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6035969105161919717}
+    - target: {fileID: 7159209810321247350, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6035969105161919717}
+    - target: {fileID: 7159209810321247350, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7159209810321247350, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
+      propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Fibonacci.InGame.Player.PlayerInputManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7159209810321247350, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Fibonacci.InGame.Player.PlayerInputManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7159209810321247350, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Fibonacci.InGame.Player.PlayerInputManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 7490017549848532587, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1492,14 +1536,33 @@ PrefabInstance:
       propertyPath: drawBorderLine
       value: 
       objectReference: {fileID: 79902286664852689}
-    m_RemovedComponents: []
+    - target: {fileID: 8270959238855892997, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
+      propertyPath: playerInputManager
+      value: 
+      objectReference: {fileID: 6035969105161919717}
+    m_RemovedComponents:
+    - {fileID: 6308576299905643784, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7490017549848532587, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6946811501703024791}
+    - targetCorrespondingSourceObject: {fileID: 7490017549848532587, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6035969105161919717}
   m_SourcePrefab: {fileID: 100100000, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
+--- !u!114 &3450024784029158765 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 12305913256630118, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
+  m_PrefabInstance: {fileID: 3443929261412866571}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5204657233798859872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cac950abd6217e04fbf53e94bbf9e210, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.Player.PlayerGravity
 --- !u!1 &5204657233798859872 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7490017549848532587, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
@@ -1602,6 +1665,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6035969105161919717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5204657233798859872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d52187eca8c3cd469acbe6b3a4e5f0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.Player.PlayerInputManager
+  playerController: {fileID: 9095356416132029707}
+  effectUI: {fileID: 3347236534191068487}
+  playerGravity: {fileID: 3450024784029158765}
 --- !u!4 &6832308342231051713 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8149957688349489098, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
@@ -1612,6 +1690,17 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 5486953278519070287, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
   m_PrefabInstance: {fileID: 3443929261412866571}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9095356416132029707 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5904915179703420672, guid: 53d76c1cbc89a0f42867d43bd739a008, type: 3}
+  m_PrefabInstance: {fileID: 3443929261412866571}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5204657233798859872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b81958ec003ace45a7044cdd1692090, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.Player.PlayerController
 --- !u!1001 &3640153683567875117
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1729,6 +1818,10 @@ PrefabInstance:
     - target: {fileID: 8219454534161262851, guid: 991651be83fa9b14f956df427cca7502, type: 3}
       propertyPath: m_Name
       value: stone2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8219454534161262851, guid: 991651be83fa9b14f956df427cca7502, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1928,6 +2021,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: stone1
       objectReference: {fileID: 0}
+    - target: {fileID: 8219454534161262851, guid: 991651be83fa9b14f956df427cca7502, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2012,6 +2109,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3708983746114596251}
     m_Modifications:
+    - target: {fileID: 861468770892815570, guid: accebced7f778604189b9ad6f179e072, type: 3}
+      propertyPath: m_Parameters.textureMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 861468770892815570, guid: accebced7f778604189b9ad6f179e072, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: -876546973899608171, guid: d0809adc0cc2f2a4390b46e560e8124e, type: 3}
+    - target: {fileID: 861468770892815570, guid: accebced7f778604189b9ad6f179e072, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].time
+      value: 0.141458
+      objectReference: {fileID: 0}
+    - target: {fileID: 861468770892815570, guid: accebced7f778604189b9ad6f179e072, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1329423704766539081, guid: accebced7f778604189b9ad6f179e072, type: 3}
       propertyPath: m_Name
       value: BorderLineManager
