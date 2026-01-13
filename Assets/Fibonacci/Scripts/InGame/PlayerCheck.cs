@@ -16,7 +16,7 @@ namespace Fibonacci.InGame
         [Header("参考コンポーネント")]
         [SerializeField] private DrawBorderLine drawBorderLine;
         [SerializeField] private PlayerController playerController;
-        [SerializeField] private Fibonacci.InGame.Player.PlayerInputManager playerInputManager;
+        [SerializeField] private PlayerInputManager playerInputManager;
 
         [Header("オーディオ設定")]
         [SerializeField] private AudioSource audioSource;
