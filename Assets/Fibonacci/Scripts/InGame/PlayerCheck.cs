@@ -30,27 +30,37 @@ namespace Fibonacci.InGame
             UpdateAreaIndex();
         }
 
-        private void LateUpdate()
+private void LateUpdate()
+{
+    if (GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
+
+    if (drawBorderLine == null || playerController == null) return;
+    var borderData = drawBorderLine.GetBorderLineData();
+    if (borderData == null || !borderData.IsActive) 
+    {
+        isInitializedOnStart = false;
+        return; 
+    }
+
+    int currentAreaIndex = borderData.GetAreaIndex(transform.position);
+
+    if (!isInitializedOnStart || currentAreaIndex != lastAreaIndex)
+    {
+        if (isInitializedOnStart)
         {
-            if (GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
-
-            if (drawBorderLine == null || playerController == null) return;
-            var borderData = drawBorderLine.GetBorderLineData();
-            if (borderData == null) return;
-
-            int currentAreaIndex = borderData.GetAreaIndex(transform.position);
-
-            if (!isInitializedOnStart || currentAreaIndex != lastAreaIndex)
-            {
-                if (playerInputManager != null)
-                {
-                    playerInputManager.OnAreaChanged(currentAreaIndex);
-                }
-
-                lastAreaIndex = currentAreaIndex;
-                isInitializedOnStart = true;
-            }
+            string areaColor = currentAreaIndex == 1 ? "緑 (1)" : "青 (0)";
+            Debug.Log($"<color=cyan>【PlayerCheck】</color> 境界線を越えて <color=yellow>{areaColor}</color> に入りました。");
         }
+
+        if (playerInputManager != null)
+        {
+            playerInputManager.OnAreaChanged(currentAreaIndex);
+        }
+
+        lastAreaIndex = currentAreaIndex;
+        isInitializedOnStart = true;
+    }
+}
 
 
 

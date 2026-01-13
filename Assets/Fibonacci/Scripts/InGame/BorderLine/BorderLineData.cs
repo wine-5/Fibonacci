@@ -11,8 +11,8 @@ namespace Fibonacci.InGame.BorderLine
     {
         public Vector2 Intersection0 { get; private set; }
         public Vector2 Intersection1 { get; private set; }
+        public bool IsActive { get; private set; }
 
-        public bool IsValid { get; private set; }
 
         /// <summary>
         /// 線のデータを更新します。
@@ -21,7 +21,7 @@ namespace Fibonacci.InGame.BorderLine
         {
             Intersection0 = p0;
             Intersection1 = p1;
-            IsValid = true;
+            IsActive = true;
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Fibonacci.InGame.BorderLine
         /// </summary>
         public void Clear()
         {
-            IsValid = false;
+            IsActive = false;
         }
 
         /// <summary>
@@ -39,10 +39,7 @@ namespace Fibonacci.InGame.BorderLine
         /// <returns>エリア番号 (0 or 1)。無効な場合は -1</returns>
         public int GetAreaIndex(Vector2 worldPos)
         {
-            if (!IsValid) return -1;
-
-            float lineLengthSq = (Intersection1 - Intersection0).sqrMagnitude;
-            if (lineLengthSq < 0.0001f) return -1;
+            if (!IsActive) return -1;
 
             float crossProduct = (Intersection1.x - Intersection0.x) * (worldPos.y - Intersection0.y) -
                                  (Intersection1.y - Intersection0.y) * (worldPos.x - Intersection0.x);

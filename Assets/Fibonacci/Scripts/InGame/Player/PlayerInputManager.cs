@@ -39,7 +39,7 @@ namespace Fibonacci.InGame.Player
 
         public void OnRestart(InputAction.CallbackContext context)
         {
-            Debug.Log("Restart Input Received");
+            
             if (context.started)
             {
                 GameEvents.TriggerRestart();

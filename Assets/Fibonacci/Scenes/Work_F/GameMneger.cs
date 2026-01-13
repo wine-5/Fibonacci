@@ -22,7 +22,6 @@ namespace Fibonacci.InGame
         public void StartGame()
         {
             CurrentPhase = GamePhase.Playing;
-            Debug.Log("ゲームスタート！プレイヤーの動作を許可します。");
         }
     }
 }
