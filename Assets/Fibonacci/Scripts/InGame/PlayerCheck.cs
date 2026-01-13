@@ -7,9 +7,9 @@ using System.Linq;
 namespace Fibonacci.InGame
 {
     /// <summary>
-    /// プレイヤーの座標を監視し、所属するエリアに応じたイベント処理を行うクラス。
-    /// 境界線（DrawBorderLine）のデータに基づき、エリアが切り替わった際の
-    /// 重力変化の通知（PlayerController）やSEの再生（AudioSource）を統括します。
+    /// プレイヤーの現在座標を監視し、BorderLineData を参照してエリアの切り替わりを検知するセンサー。
+    /// エリア番号に変更があった場合のみ、PlayerInputManager などの上位コンポーネントへ
+    /// イベントを通知する「観測」の役割に特化しています。
     /// </summary>
     public class PlayerCheck : MonoBehaviour
     {
@@ -35,10 +35,10 @@ namespace Fibonacci.InGame
             if (GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
 
             if (drawBorderLine == null || playerController == null) return;
-            var colorMap = drawBorderLine.GetColorMap();
-            if (colorMap == null) return;
+            var borderData = drawBorderLine.GetBorderLineData();
+            if (borderData == null) return;
 
-            int currentAreaIndex = colorMap.GetAreaIndex(transform.position);
+            int currentAreaIndex = borderData.GetAreaIndex(transform.position);
 
             if (!isInitializedOnStart || currentAreaIndex != lastAreaIndex)
             {
@@ -58,10 +58,10 @@ namespace Fibonacci.InGame
         {
             if (drawBorderLine != null)
             {
-                var colorMap = drawBorderLine.GetColorMap();
-                if (colorMap != null)
+                var borderData = drawBorderLine.GetBorderLineData();
+                if (borderData != null)
                 {
-                    lastAreaIndex = colorMap.GetAreaIndex(transform.position);
+                    lastAreaIndex = borderData.GetAreaIndex(transform.position);
                 }
             }
         }
