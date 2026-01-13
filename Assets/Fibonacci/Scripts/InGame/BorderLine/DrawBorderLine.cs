@@ -29,9 +29,9 @@ namespace Fibonacci.InGame.BorderLine
         [SerializeField, Label("解像度")] private int textureResolution = 1024;
 
         private BorderLineColorMap colorMap;
-        private BorderLineData borderLineData;
+        private BorderLineDataBridge borderLineData;
 
-        public BorderLineData GetBorderLineData() => borderLineData;
+        public BorderLineDataBridge GetBorderLineData() => borderLineData;
         public BorderLineColorMap GetColorMap() => colorMap;
         private Transform firstSelectedBall;
         private BorderLineSegmentRenderer lineDrawer;
@@ -68,7 +68,7 @@ namespace Fibonacci.InGame.BorderLine
 
             regionDebugView = new BorderLineRegionDebugView(transform, worldZ, markerTextSize, debugDrawDuration);
 
-            borderLineData = new BorderLineData();
+            borderLineData = new BorderLineDataBridge();
 
             colorMap = new BorderLineColorMap(displayRenderer, worldZ, textureResolution);
             if (selectionHighlightView == null)
@@ -226,7 +226,7 @@ namespace Fibonacci.InGame.BorderLine
                     hasCurrentPartition = true;
                     currentPartition = partition;
 
-                    borderLineData.UpdateData(partition.Intersection0, partition.Intersection1);
+                    borderLineData.SetLine(partition.Intersection0, partition.Intersection1);
 
                     lineDrawer.DrawSplitOrSegment(
                         firstSelectedBall.position,
