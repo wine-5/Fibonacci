@@ -2,13 +2,17 @@ using UnityEngine;
 
 namespace Fibonacci.InGame.BorderLine
 {
+    /// <summary>
+    /// 境界線によって分割された領域を、視覚的に青と緑で塗り分けるためのテクスチャ描画クラス。
+    /// BorderLineData から渡される座標情報に基づき、SpriteRenderer に適用するスプライトを
+    /// 動的に生成・更新する「表示」の専門家です。判定ロジックは持ちません。
+    /// </summary>
     public class BorderLineColorMap
     {
         private readonly SpriteRenderer displayRenderer;
         private readonly float worldZ;
         private readonly int resolution;
         private Texture2D currentTexture;
-        private Rect currentRect;
 
         private const float PADDING = 2.0f;
 
@@ -19,19 +23,6 @@ namespace Fibonacci.InGame.BorderLine
             this.resolution = resolution;
         }
 
-        // --- [ここを追加] プレイヤーの座標からエリア番号を返す ---
-        public int GetAreaIndex(Vector2 worldPos)
-        {
-            if (currentTexture == null || !currentRect.Contains(worldPos)) return -1;
-
-            float tx = (worldPos.x - currentRect.xMin) / currentRect.width;
-            float ty = (worldPos.y - currentRect.yMin) / currentRect.height;
-            Color c = currentTexture.GetPixelBilinear(tx, ty);
-
-            if (c.a < 0.1f) return -1;
-            return (c.g > c.b) ? 1 : 0; // 緑(G)が多ければ1、青(B)が多ければ0
-        }
-        // -----------------------------------------------------
 
         public void UpdateVisual(BorderLineRegionSplitter.SplitResult split)
         {
@@ -42,8 +33,6 @@ namespace Fibonacci.InGame.BorderLine
             visualRect.yMin -= PADDING;
             visualRect.width += PADDING * 2;
             visualRect.height += PADDING * 2;
-
-            currentRect = visualRect;
 
             int width = resolution;
             int height = Mathf.RoundToInt(resolution * (visualRect.height / visualRect.width));
@@ -76,43 +65,16 @@ namespace Fibonacci.InGame.BorderLine
 
             displayRenderer.sprite = Sprite.Create(currentTexture, new Rect(0, 0, width, height), new Vector2(0.5f, 0.5f), 100f);
 
-            float backZ = worldZ + 0.5f;
-            displayRenderer.transform.position = new Vector3(visualRect.center.x, visualRect.center.y, backZ);
-
+            displayRenderer.transform.position = new Vector3(visualRect.center.x, visualRect.center.y, worldZ + 0.5f);
             float spriteOriginalWorldWidth = width / 100f;
             float spriteOriginalWorldHeight = height / 100f;
             displayRenderer.transform.localScale = new Vector3(visualRect.width / spriteOriginalWorldWidth, visualRect.height / spriteOriginalWorldHeight, 1f);
-
             displayRenderer.sortingOrder = -1;
         }
 
-        public void UpdateVisual(BorderLineRegionSplitter.PartitionResult partition)
-        {
-            var split = new BorderLineRegionSplitter.SplitResult
-            {
-                Rect = partition.Rect,
-                Intersection0 = partition.Intersection0,
-                Intersection1 = partition.Intersection1
-            };
-
-            if (partition.Regions != null && partition.Regions.Count >= 2)
-            {
-                split.Polygon1 = partition.Regions[0].Polygon;
-                split.Polygon2 = partition.Regions[1].Polygon;
-                split.Centroid1 = partition.Regions[0].Centroid;
-                split.Centroid2 = partition.Regions[1].Centroid;
-            }
-            else
-            {
-                split.Polygon1 = new System.Collections.Generic.List<Vector2>();
-                split.Polygon2 = new System.Collections.Generic.List<Vector2>();
-                split.Centroid1 = partition.Rect.center;
-                split.Centroid2 = partition.Rect.center;
-            }
-
-            UpdateVisual(split);
-        }
-
+        /// <summary>
+        /// 描画されている色（テクスチャ）を消去し、表示をクリアします。
+        /// </summary>
         public void ClearVisual()
         {
             if (displayRenderer != null)
@@ -125,8 +87,6 @@ namespace Fibonacci.InGame.BorderLine
                 Object.Destroy(currentTexture);
                 currentTexture = null;
             }
-
-            currentRect = default;
         }
     }
 }
