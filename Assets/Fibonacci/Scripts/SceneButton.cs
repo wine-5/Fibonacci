@@ -19,7 +19,7 @@ public class SceneButton : MonoBehaviour
     {
         // ボタンクリック音を再生
         if (AudioManager.Instance != null)
-            AudioManager.Instance.Play("Button");
+            AudioManager.Instance.PlaySE(SeType.ButtonClick);
         
         if (SceneController.Instance != null)
             SceneController.Instance.LoadScene(targetScene);
