@@ -12,10 +12,6 @@ namespace Fibonacci.InGame.Player
         [SerializeField] private DrawBorderLine drawBorderLine;
         [SerializeField] private PlayerController playerController;
 
-        [Header("Audio Settings")]
-        [SerializeField] private AudioSource audioSource;
-        [SerializeField] private AudioDataSO audioData;
-
         private int lastAreaIndex = -1;
         private bool isInitializedOnStart = false;
 
@@ -51,7 +47,8 @@ namespace Fibonacci.InGame.Player
             // エリア移動時のみ音を鳴らす（初回判定時は鳴らさない）
             if (playSound && areaIndex != lastAreaIndex && lastAreaIndex != -1)
             {
-                PlaySoundByName("Border");
+                if (AudioManager.Instance != null)
+                    AudioManager.Instance.PlaySE(SeType.Border);
             }
 
             // 重力状態の反映
@@ -74,16 +71,6 @@ namespace Fibonacci.InGame.Player
                 {
                     lastAreaIndex = colorMap.GetAreaIndex(transform.position);
                 }
-            }
-        }
-
-        private void PlaySoundByName(string targetName)
-        {
-            if (audioData == null || audioSource == null) return;
-            var data = audioData.AudioDataList.FirstOrDefault(x => x.AudioName == targetName);
-            if (data != null && data.AudioClip != null)
-            {
-                audioSource.PlayOneShot(data.AudioClip, data.VolumeMultiplier);
             }
         }
     }
