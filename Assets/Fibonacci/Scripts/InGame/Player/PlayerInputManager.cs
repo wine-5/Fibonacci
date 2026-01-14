@@ -8,23 +8,15 @@ using Fibonacci.Scene;
 
 namespace Fibonacci.InGame.Player
 {
-    /// <summary>
-    /// 入力デバイスとゲームロジックの仲介（Input Bridge）を担当するクラス。
-    /// Unity Input System からの物理的な入力を受け取り、それを「移動値のセット」や
-    /// 「リスタートの実行」といった具体的なアクションとして、コントローラーや
-    /// イベントシステムへ配信する責任を持ちます。
-    /// </summary>
     public class PlayerInputManager : MonoBehaviour
     {
         [SerializeField] private PlayerController playerController;
         [SerializeField] private BorderLineEffectUI effectUI;
-        [SerializeField] private PlayerGravity playerGravity;
 
         public string EffectIdArea0 { get; private set; } = "";
         public string EffectIdArea1 { get; private set; } = "";
 
         private int lastAreaIndex = -1;
-
 
         public void OnMove(InputAction.CallbackContext context)
         {
@@ -34,18 +26,18 @@ namespace Fibonacci.InGame.Player
             }
         }
 
-
-
-
         public void OnRestart(InputAction.CallbackContext context)
         {
-            
             if (context.started)
             {
                 GameEvents.TriggerRestart();
             }
         }
 
+        /// <summary>
+        /// リスタート時の処理。
+        /// 入力に関する状態と、選択中のエフェクト情報を初期化します。
+        /// </summary>
         private void OnGameRestart()
         {
             EffectIdArea0 = "";
@@ -55,45 +47,24 @@ namespace Fibonacci.InGame.Player
             {
                 playerController.ResetPlayerState();
             }
+
+            lastAreaIndex = -1;           
+
         }
 
         private void OnEnable()
         {
             GameEvents.OnRestart += OnGameRestart;
-            //if (effectUI != null) effectUI.EffectClicked += OnEffectClicked;
         }
 
         private void OnDisable()
         {
             GameEvents.OnRestart -= OnGameRestart;
-            //if (effectUI != null) effectUI.EffectClicked -= OnEffectClicked;
         }
-
-        // private void ApplyEffect(int areaIndex, bool playSound)
-        // {
-        //     Debug.Log($"[ApplyEffect] Current Area: {areaIndex}, Last Area: {lastAreaIndex}, playSound: {playSound}");
-
-        //     if (playSound && areaIndex != lastAreaIndex && lastAreaIndex != -1)
-        //     {
-        //         Debug.Log("<color=cyan>[ApplyEffect] 境界線越えを検知！音を再生します。</color>");
-
-        //         if (AudioManager.Instance != null)
-        //         {
-        //             AudioManager.Instance.Play("Border");
-        //         }
-        //         else
-        //         {
-        //             Debug.LogWarning("[ApplyEffect] AudioManagerのインスタンスが見つかりません。");
-        //         }
-        //     }
-
-        //     lastAreaIndex = areaIndex;
-        // }
 
         public void OnAreaChanged(int newAreaIndex)
         {
-           // ApplyEffect(newAreaIndex, true);
+            lastAreaIndex = newAreaIndex;
         }
-
     }
 }

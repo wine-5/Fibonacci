@@ -11,19 +11,26 @@ namespace Fibonacci.InGame.Player
     {
         [Header("Settings")]
         [SerializeField] private float moveSpeed = 5f;
-        [SerializeField] private PlayerGravity playerGravity;
+        [SerializeField] private PlayerGravityLogic playerGravity;
         [SerializeField] private PlayerAnimationController animationController;
 
 
         private PlayerMove playerMove;
         private Rigidbody2D rb;
+        private readonly PlayerGravityLogic gravityLogic = new PlayerGravityLogic();
 
         void Awake()
         {
             rb = GetComponent<Rigidbody2D>();
-            if (playerGravity == null) playerGravity = GetComponent<PlayerGravity>();
-
             playerMove = new PlayerMove(rb, transform, animationController, moveSpeed);
+        }
+
+        /// <summary>
+        /// 司令塔への「エリアが変わったぞ」という報告窓口
+        /// </summary>
+        public void ChangeAreaEffect(int areaIndex)
+        {
+            gravityLogic.Execute(rb, this.transform, areaIndex);
         }
 
         void FixedUpdate()
@@ -46,24 +53,26 @@ namespace Fibonacci.InGame.Player
         #region GameLogic (Gravity/Effects)
 
         /// <summary>
-        /// 【追加】プレイヤーの状態を一括リセットします。
-        /// PlayerInputManagerのOnGameRestartから呼ばれます。
+        /// プレイヤーの全状態（座標、速度、重力、向き）を初期化します。
         /// </summary>
         public void ResetPlayerState()
         {
-            // 移動ロジック側の座標・速度リセットを実行
             if (playerMove != null)
             {
                 playerMove.ResetPosition();
             }
 
-            // 重力状態を通常に戻す
-            if (playerGravity != null)
+            if (rb != null)
             {
-                playerGravity.SetNormalGravity();
+                rb.linearVelocity = Vector2.zero;
+                rb.angularVelocity = 0f;
             }
 
-        #endregion
+            ChangeAreaEffect(0);
+
+            Debug.Log("<color=green>【PlayerController】</color> プレイヤーの全状態を正常にリセットしました。");
         }
+
+        #endregion 
     }
 }

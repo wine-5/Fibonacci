@@ -24,6 +24,16 @@ namespace Fibonacci.InGame
 
         private int lastAreaIndex = -1;
         private bool isInitializedOnStart = false;
+        private readonly PlayerGravityLogic gravityLogic = new PlayerGravityLogic();
+        private Rigidbody2D playerRb;
+
+        void Awake()
+        {
+            if (playerController != null)
+            {
+                playerRb = playerController.GetComponent<Rigidbody2D>();
+            }
+        }
 
         private void Start()
         {
@@ -40,7 +50,7 @@ namespace Fibonacci.InGame
 
             if (borderData == null || !borderData.IsActive)
             {
-                isInitializedOnStart = false;
+                isInitializedOnStart = false; 
                 return;
             }
 
@@ -49,17 +59,21 @@ namespace Fibonacci.InGame
                 borderData.P1,
                 transform.position
             );
+
+            if (!isInitializedOnStart || currentAreaIndex != lastAreaIndex)
             {
                 string areaColor = currentAreaIndex == 1 ? "緑 (1)" : "青 (0)";
 
                 if (!isInitializedOnStart)
                 {
-                    Debug.Log($"<color=white>【初期判定】</color> 境界線が有効になりました。現在 <color=yellow>{areaColor}</color> にいます。");
+                    Debug.Log($"<color=white>【初期判定】</color> 境界線が有効。現在 <color=yellow>{areaColor}</color>");
                 }
                 else
                 {
-                    Debug.Log($"<color=cyan>【エリア変更】</color> 境界線を越えました！ <color=yellow>{areaColor}</color> に入ります。");
+                    Debug.Log($"<color=cyan>【エリア変更】</color> 境界線を越えました！ <color=yellow>{areaColor}</color>");
                 }
+
+                playerController.ChangeAreaEffect(currentAreaIndex);
 
                 if (playerInputManager != null)
                 {
