@@ -170,6 +170,22 @@ namespace Fibonacci.InGame.BorderLine
                 return false;
             }
 
+            var regionA = new Region(0, polyA);
+            var regionB = new Region(0, polyB);
+
+            bool aIsFirst;
+            if (Mathf.Abs(regionA.Centroid.x - regionB.Centroid.x) > 0.01f)
+            {
+                aIsFirst = regionA.Centroid.x < regionB.Centroid.x;
+            }
+            else
+            {
+                aIsFirst = regionA.Centroid.y > regionB.Centroid.y;
+            }
+
+            var r1 = aIsFirst ? new Region(1, polyA) : new Region(1, polyB);
+            var r2 = aIsFirst ? new Region(2, polyB) : new Region(2, polyA);
+
             result = new PartitionResult
             {
                 Rect = rect,
@@ -177,11 +193,7 @@ namespace Fibonacci.InGame.BorderLine
                 Intersection1 = i1,
                 LineP0 = p0,
                 LineP1 = p1,
-                Regions = new List<Region>(2)
-                {
-                    new Region(1, polyA),
-                    new Region(2, polyB)
-                }
+                Regions = new List<Region>(2) { r1, r2 }
             };
             return true;
         }

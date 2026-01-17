@@ -1,4 +1,5 @@
 using UnityEngine;
+using Fibonacci.InGame.Core;
 
 namespace Fibonacci.InGame.Player
 {
@@ -30,7 +31,9 @@ namespace Fibonacci.InGame.Player
         /// </summary>
         public void ChangeAreaEffect(int areaIndex)
         {
-            gravityLogic.Execute(rb, this.transform, areaIndex);
+            AbilityType ability = AbilityManager.Instance.GetAbilityAt(areaIndex);
+            int gravityDir = (ability == AbilityType.GravityInvert) ? 1 : 0;
+            gravityLogic.Execute(rb, this.transform, gravityDir);
         }
 
         void FixedUpdate()

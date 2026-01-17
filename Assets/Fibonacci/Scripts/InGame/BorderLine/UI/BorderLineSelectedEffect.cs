@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Fibonacci.Event;
+using Fibonacci.InGame.Core;
 
 namespace Fibonacci.InGame.BorderLine.UI
 {
@@ -87,6 +88,8 @@ namespace Fibonacci.InGame.BorderLine.UI
 
             // 1枠につき1回だけ選択（以後変更不可の仕様に寄せる）
             if (selectedFrameIndices.Contains(frameIndex)) return;
+
+            Fibonacci.InGame.Core.AbilityManager.Instance.SetAreaAbility(frameIndex, def.Id);
 
             selectedFrameIndices.Add(frameIndex);
 

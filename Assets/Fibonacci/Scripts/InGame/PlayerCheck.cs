@@ -2,15 +2,9 @@ using UnityEngine;
 using Fibonacci.InGame.BorderLine;
 using Fibonacci.InGame.Player;
 using Fibonacci.Audio;
-using System.Linq;
 
 namespace Fibonacci.InGame
 {
-    /// <summary>
-    /// プレイヤーの現在座標を監視し、BorderLineData を参照してエリアの切り替わりを検知するセンサー。
-    /// エリア番号に変更があった場合のみ、PlayerInputManager などの上位コンポーネントへ
-    /// イベントを通知する「観測」の役割に特化しています。
-    /// </summary>
     public class PlayerCheck : MonoBehaviour
     {
         [Header("参考コンポーネント")]
@@ -18,19 +12,9 @@ namespace Fibonacci.InGame
         [SerializeField] private PlayerController playerController;
         [SerializeField] private PlayerInputManager playerInputManager;
 
-
         private int lastAreaIndex = -1;
         private bool isInitializedOnStart = false;
-        private readonly PlayerGravityLogic gravityLogic = new PlayerGravityLogic();
-        private Rigidbody2D playerRb;
 
-        void Awake()
-        {
-            if (playerController != null)
-            {
-                playerRb = playerController.GetComponent<Rigidbody2D>();
-            }
-        }
 
         private void Start()
         {
@@ -39,12 +23,10 @@ namespace Fibonacci.InGame
 
         private void LateUpdate()
         {
-            if (GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
-
+            if (GameManager.Instance == null || GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
             if (drawBorderLine == null || playerController == null) return;
 
             var borderData = drawBorderLine.GetBorderLineData();
-
             if (borderData == null || !borderData.IsActive)
             {
                 isInitializedOnStart = false;
@@ -60,17 +42,10 @@ namespace Fibonacci.InGame
             if (!isInitializedOnStart || currentAreaIndex != lastAreaIndex)
             {
                 string areaColor = currentAreaIndex == 1 ? "緑 (1)" : "青 (0)";
-
-                if (!isInitializedOnStart)
-                {
-                    Debug.Log($"<color=white>【初期判定】</color> 境界線が有効。現在 <color=yellow>{areaColor}</color>");
-                }
-                else
-                {
-                    Debug.Log($"<color=cyan>【エリア変更】</color> 境界線を越えました！ <color=yellow>{areaColor}</color>");
-                }
-
+                
                 playerController.ChangeAreaEffect(currentAreaIndex);
+
+                ApplyEffect(currentAreaIndex, isInitializedOnStart);
 
                 if (playerInputManager != null)
                 {
@@ -84,32 +59,21 @@ namespace Fibonacci.InGame
 
         private void ApplyEffect(int areaIndex, bool playSound)
         {
-            // エリア移動時のみ音を鳴らす（初回判定時は鳴らさない）
-            if (playSound && areaIndex != lastAreaIndex && lastAreaIndex != -1)
+            if (playSound && AudioManager.Instance != null)
             {
-                if (AudioManager.Instance != null)
-                    AudioManager.Instance.PlaySE(SeType.Border);
+                AudioManager.Instance.PlaySE(SeType.Border);
             }
         }
 
         private void UpdateAreaIndex()
         {
-            if (drawBorderLine != null)
+            if (drawBorderLine == null) return;
+            var borderData = drawBorderLine.GetBorderLineData();
+            if (borderData != null && borderData.IsActive)
             {
-                var borderData = drawBorderLine.GetBorderLineData();
-
-                if (borderData != null && borderData.IsActive)
-                {
-                    lastAreaIndex = BorderLineCalculator.DetermineAreaIndex(
-                        borderData.P0,
-                        borderData.P1,
-                        transform.position
-                    );
-                }
-                else
-                {
-                    lastAreaIndex = -1;
-                }
+                lastAreaIndex = BorderLineCalculator.DetermineAreaIndex(
+                    borderData.P0, borderData.P1, transform.position
+                );
             }
         }
     }

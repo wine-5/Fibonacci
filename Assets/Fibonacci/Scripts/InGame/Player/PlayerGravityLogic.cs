@@ -22,7 +22,6 @@ namespace Fibonacci.InGame.Player
             scale.y = (targetScale < 0) ? -Mathf.Abs(scale.y) : Mathf.Abs(scale.y);
             trans.localScale = scale;
 
-            Debug.Log($"<color=orange>【GravityLogic】</color> 重力を {targetScale} に設定しました。");
         }
     }
 }

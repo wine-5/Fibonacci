@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: BorderLineEffectCatalog
   m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.BorderLine.UI.BorderLineEffectCatalog
   effects:
-  - {fileID: 11400000, guid: d4f18c064938ae2499613165fb24a634, type: 2}
   - {fileID: 11400000, guid: c18eeb0da51e81f4a8fe136f00e2425b, type: 2}
+  - {fileID: 11400000, guid: d4f18c064938ae2499613165fb24a634, type: 2}

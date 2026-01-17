@@ -5,6 +5,7 @@ using Fibonacci.InGame.BorderLine.UI;
 using Fibonacci.InGame;
 using Fibonacci.Audio;
 using Fibonacci.Scene;
+using Fibonacci.InGame.Core;
 
 namespace Fibonacci.InGame.Player
 {
@@ -40,6 +41,8 @@ namespace Fibonacci.InGame.Player
         /// </summary>
         private void OnGameRestart()
         {
+            AbilityManager.Instance.Reset();
+
             EffectIdArea0 = "";
             EffectIdArea1 = "";
 
