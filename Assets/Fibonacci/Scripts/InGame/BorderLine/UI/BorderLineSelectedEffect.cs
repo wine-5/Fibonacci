@@ -109,6 +109,9 @@ namespace Fibonacci.InGame.BorderLine.UI
             {
                 drawBorderLine.LockInteraction();
             }
+
+            // ここにキャラクターに能力を付与するメソッドを呼んであげる
+            // 例）AbilityManager.SetAbility（必要ならここにキャラクターの引数を書く）
             if (Fibonacci.InGame.GameManager.Instance != null)
             {
                 Fibonacci.InGame.GameManager.Instance.StartGame();

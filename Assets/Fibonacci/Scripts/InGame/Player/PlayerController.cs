@@ -60,6 +60,8 @@ namespace Fibonacci.InGame.Player
             if (playerMove != null)
             {
                 playerMove.ResetPosition();
+                playerMove.MoveInput = Vector2.zero;
+                playerMove.UpdateAnimation();
             }
 
             if (rb != null)

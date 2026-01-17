@@ -22,7 +22,7 @@ public class GoalTrigger : MonoBehaviour
     {
         // ゴールSE
         if (AudioManager.Instance != null)
-            AudioManager.Instance.Play("Goal");
+            AudioManager.Instance.PlaySE(SeType.Goal);
 
         // SEが聞こえるように少し待つ
         yield return new WaitForSeconds(waitSeconds);

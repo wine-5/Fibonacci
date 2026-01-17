@@ -18,9 +18,6 @@ namespace Fibonacci.InGame
         [SerializeField] private PlayerController playerController;
         [SerializeField] private PlayerInputManager playerInputManager;
 
-        [Header("オーディオ設定")]
-        [SerializeField] private AudioSource audioSource;
-        [SerializeField] private AudioDataSO audioData;
 
         private int lastAreaIndex = -1;
         private bool isInitializedOnStart = false;
@@ -50,7 +47,7 @@ namespace Fibonacci.InGame
 
             if (borderData == null || !borderData.IsActive)
             {
-                isInitializedOnStart = false; 
+                isInitializedOnStart = false;
                 return;
             }
 
@@ -85,7 +82,15 @@ namespace Fibonacci.InGame
             }
         }
 
-
+        private void ApplyEffect(int areaIndex, bool playSound)
+        {
+            // エリア移動時のみ音を鳴らす（初回判定時は鳴らさない）
+            if (playSound && areaIndex != lastAreaIndex && lastAreaIndex != -1)
+            {
+                if (AudioManager.Instance != null)
+                    AudioManager.Instance.PlaySE(SeType.Border);
+            }
+        }
 
         private void UpdateAreaIndex()
         {
