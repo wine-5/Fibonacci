@@ -41,7 +41,6 @@ namespace Fibonacci.InGame.Player
         /// ゲームフェーズの変更通知を受け取り、物理シミュレーションの有効・無効を切り替えます。
         /// プレイ開始時には位置判定を強制更新し、最新のエリア効果を即座に反映させます。
         /// </summary>
-        /// <param name="newPhase">遷移後のゲームフェーズ</param>
         private void HandlePhaseChanged(GamePhase newPhase)
         {
             if (newPhase == GamePhase.Playing)
@@ -113,7 +112,7 @@ namespace Fibonacci.InGame.Player
             {
                 rb.linearVelocity = Vector2.zero;
                 rb.angularVelocity = 0f;
-                rb.simulated = true;
+                rb.simulated = false;
             }
 
             gravityLogic.Execute(rb, this.transform, 0);

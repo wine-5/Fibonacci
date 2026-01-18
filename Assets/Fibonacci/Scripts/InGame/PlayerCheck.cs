@@ -59,7 +59,6 @@ namespace Fibonacci.InGame
         /// 現在のプレイヤー座標から所属エリアを計算し、前回判定時と異なるエリアにいる場合に効果を適用します。
         /// 境界線の有効状態のチェック、エリアインデックスの算出、各種マネージャーへの通知を一括で行います。
         /// </summary>
-        /// <param name="canPlaySound">エリア切り替わり時に効果音を再生するかどうか</param>
         private void ExecuteAreaCheck(bool canPlaySound)
         {
             if (drawBorderLine == null || playerController == null) return;

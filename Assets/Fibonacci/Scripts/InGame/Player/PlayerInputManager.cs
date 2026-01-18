@@ -6,8 +6,9 @@ using Fibonacci.InGame.Core;
 namespace Fibonacci.InGame.Player
 {
     /// <summary>
-    /// Unity Input System からの入力を受け取り、プレイヤーの操作やゲームシステムのコマンド（リスタート等）へ変換するクラス。
-    /// 選択された能力の識別子保持や、リスタート時のプレイヤーおよび能力マネージャーの初期化も担当します。
+    /// 入力デバイスからの信号をゲーム内コマンドへ変換する管理クラス。
+    /// リスタート時には司令塔として、ゲームフェーズの差し戻し、能力のリセット、
+    /// およびプレイヤー状態の初期化を適切な順序で実行します。
     /// </summary>
     public class PlayerInputManager : MonoBehaviour
     {
@@ -29,8 +30,9 @@ namespace Fibonacci.InGame.Player
         }
 
         /// <summary>
-        /// 移動入力が発生した際に呼ばれ、入力ベクトルを PlayerController へ伝達します。
+        /// 移動入力（スティック/キーボード）を検知し、プレイヤーコントローラーへベクトルを伝達します。
         /// </summary>
+        /// <param name="context">InputSystemのアクションコンテキスト</param>
         public void OnMove(InputAction.CallbackContext context)
         {
             if (playerController != null)
@@ -40,8 +42,9 @@ namespace Fibonacci.InGame.Player
         }
 
         /// <summary>
-        /// リスタート入力が発生した際に呼ばれ、ゲーム全体のリスタートイベントを発火させます。
+        /// リスタートボタンの入力を検知し、システム全体へリスタートイベントを発火させます。
         /// </summary>
+        /// <param name="context">InputSystemのアクションコンテキスト</param>
         public void OnRestart(InputAction.CallbackContext context)
         {
             if (context.started)
@@ -51,15 +54,25 @@ namespace Fibonacci.InGame.Player
         }
 
         /// <summary>
-        /// エリアの変更を検知した際に呼ばれ、内部で保持する現在のエリアインデックスを更新します。
+        /// 所属エリアの変更を記録します。
         /// </summary>
+        /// <param name="newAreaIndex">進入したエリアのインデックス</param>
         public void OnAreaChanged(int newAreaIndex)
         {
             lastAreaIndex = newAreaIndex;
         }
 
+        /// <summary>
+        /// システム全体のリスタート要求に応じ、依存する各マネージャーとオブジェクトを初期化します。
+        /// 物理演算の予期せぬ挙動を防ぐため、最初にゲームフェーズを停止状態（Drawing）へリセットします。
+        /// </summary>
         private void OnGameRestart()
         {
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.ResetPhase();
+            }
+
             AbilityManager.Instance.Reset();
 
             EffectIdArea0 = "";

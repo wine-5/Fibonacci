@@ -1,5 +1,4 @@
 using UnityEngine;
-using Fibonacci.InGame.Core;
 
 namespace Fibonacci.InGame
 {
@@ -24,6 +23,15 @@ namespace Fibonacci.InGame
         {
             CurrentPhase = GamePhase.Playing;
             Fibonacci.Event.GameEvents.TriggerPhaseChanged(GamePhase.Playing);
+        }
+
+        /// <summary>
+        /// ゲーム状態を初期状態（Drawing）にリセットします。
+        /// </summary>
+        public void ResetPhase()
+        {
+            CurrentPhase = GamePhase.Drawing;
+            Fibonacci.Event.GameEvents.TriggerPhaseChanged(GamePhase.Drawing);
         }
     }
 }
