@@ -44,6 +44,9 @@ namespace Fibonacci.InGame.Core
 
             // 判定結果をログで確認
             Debug.Log($"<color=magenta>【AbilityManager】</color> ID:「{id}」を判定。結果: <color=yellow>{_areaAbilities[areaIndex]}</color> (エリア:{areaIndex})");
+
+            // 能力が更新されたことを通知（UI/プレイヤーが即時再適用できるように）
+            Fibonacci.Event.GameEvents.TriggerAbilitiesUpdated();
         }
 
         /// <summary>

@@ -34,6 +34,7 @@ namespace Fibonacci.InGame.Player
             AbilityType ability = AbilityManager.Instance.GetAbilityAt(areaIndex);
             int gravityDir = (ability == AbilityType.GravityInvert) ? 1 : 0;
             gravityLogic.Execute(rb, this.transform, gravityDir);
+            
         }
 
         void FixedUpdate()
@@ -73,8 +74,9 @@ namespace Fibonacci.InGame.Player
                 rb.angularVelocity = 0f;
             }
 
-            ChangeAreaEffect(0);
-
+            // リセット時は AbilityManager の状態に依存せず明示的に通常重力を適用する。
+            // Ability の再設定後は PlayerCheck 側で改めて ChangeAreaEffect が呼ばれる。
+            gravityLogic.Execute(rb, this.transform, 0);
             Debug.Log("<color=green>【PlayerController】</color> プレイヤーの全状態を正常にリセットしました。");
         }
 

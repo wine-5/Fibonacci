@@ -17,11 +17,22 @@ namespace Fibonacci.Event
         public static event Action OnRestart;
 
         /// <summary>
+        /// 能力（エリア効果）が変更された時に通知するイベント
+        /// AbilityManager.SetAreaAbility から発火される
+        /// </summary>
+        public static event Action OnAbilitiesUpdated;
+
+        /// <summary>
         /// リスタートイベントを発火
         /// </summary>
         public static void TriggerRestart()
         {
             OnRestart?.Invoke();
+        }
+
+        public static void TriggerAbilitiesUpdated()
+        {
+            OnAbilitiesUpdated?.Invoke();
         }
     }
 }

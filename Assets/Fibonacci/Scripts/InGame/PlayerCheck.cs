@@ -2,6 +2,7 @@ using UnityEngine;
 using Fibonacci.InGame.BorderLine;
 using Fibonacci.InGame.Player;
 using Fibonacci.Audio;
+using Fibonacci.Event;
 
 namespace Fibonacci.InGame
 {
@@ -19,6 +20,20 @@ namespace Fibonacci.InGame
         private void Start()
         {
             UpdateAreaIndex();
+        }
+
+        private void OnEnable()
+        {
+            GameEvents.OnRestart -= OnGameRestart;
+            GameEvents.OnRestart += OnGameRestart;
+            GameEvents.OnAbilitiesUpdated -= OnAbilitiesUpdated;
+            GameEvents.OnAbilitiesUpdated += OnAbilitiesUpdated;
+        }
+
+        private void OnDisable()
+        {
+            GameEvents.OnRestart -= OnGameRestart;
+            GameEvents.OnAbilitiesUpdated -= OnAbilitiesUpdated;
         }
 
         private void LateUpdate()
@@ -39,6 +54,8 @@ namespace Fibonacci.InGame
                 transform.position
             );
 
+            
+
             if (!isInitializedOnStart || currentAreaIndex != lastAreaIndex)
             {
                 string areaColor = currentAreaIndex == 1 ? "緑 (1)" : "青 (0)";
@@ -57,6 +74,31 @@ namespace Fibonacci.InGame
             }
         }
 
+
+    private void OnGameRestart()
+    {
+        // リスタート時は前回の領域情報をクリアして再評価を許可する
+        lastAreaIndex = -1;
+        isInitializedOnStart = false;
+    }
+
+    private void OnAbilitiesUpdated()
+    {
+        // 能力が設定された直後に現在領域の効果を再適用する
+        Debug.Log("[PlayerCheck] OnAbilitiesUpdated: re-evaluating current area");
+        if (drawBorderLine == null || playerController == null) return;
+
+        var borderData = drawBorderLine.GetBorderLineData();
+        if (borderData == null || !borderData.IsActive) return;
+
+        int currentAreaIndex = BorderLineCalculator.DetermineAreaIndex(borderData.P0, borderData.P1, transform.position);
+        Debug.Log($"[PlayerCheck] OnAbilitiesUpdated determined area={currentAreaIndex}");
+        // force apply
+        playerController.ChangeAreaEffect(currentAreaIndex);
+        if (playerInputManager != null) playerInputManager.OnAreaChanged(currentAreaIndex);
+        lastAreaIndex = currentAreaIndex;
+        isInitializedOnStart = true;
+    }
         private void ApplyEffect(int areaIndex, bool playSound)
         {
             if (playSound && AudioManager.Instance != null)
@@ -74,6 +116,7 @@ namespace Fibonacci.InGame
                 lastAreaIndex = BorderLineCalculator.DetermineAreaIndex(
                     borderData.P0, borderData.P1, transform.position
                 );
+                
             }
         }
     }
