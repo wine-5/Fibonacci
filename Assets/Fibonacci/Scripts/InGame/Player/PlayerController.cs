@@ -1,5 +1,6 @@
 using UnityEngine;
 using Fibonacci.InGame.Core;
+using Fibonacci.InGame.Core.Gimmick;
 using Fibonacci.Event;
 
 namespace Fibonacci.InGame.Player
@@ -18,7 +19,7 @@ namespace Fibonacci.InGame.Player
         private PlayerMove playerMove;
         private Rigidbody2D rb;
         private PlayerCheck playerCheck;
-        private readonly PlayerGravityLogic gravityLogic = new PlayerGravityLogic();
+        private readonly GravityAbility gravityLogic = new GravityAbility();
 
         private void Awake()
         {
@@ -71,7 +72,7 @@ namespace Fibonacci.InGame.Player
 
             AbilityType ability = AbilityManager.Instance.GetAbilityAt(areaIndex);
             int gravityDir = (ability == AbilityType.GravityInvert) ? 1 : 0;
-            gravityLogic.Execute(rb, this.transform, gravityDir);
+            gravityLogic.Apply(rb, this.transform, gravityDir);
         }
 
         private void FixedUpdate()
@@ -115,7 +116,7 @@ namespace Fibonacci.InGame.Player
                 rb.simulated = false;
             }
 
-            gravityLogic.Execute(rb, this.transform, 0);
+            gravityLogic.Apply(rb, this.transform, 0);
 
             if (GameManager.Instance != null && GameManager.Instance.CurrentPhase != GamePhase.Playing)
             {
