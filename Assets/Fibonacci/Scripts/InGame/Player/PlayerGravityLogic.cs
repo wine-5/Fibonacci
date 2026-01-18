@@ -1,13 +1,11 @@
 using UnityEngine;
 
-using Fibonacci.Event;
-
-
 namespace Fibonacci.InGame.Player
 {
     /// <summary>
-    /// 重力操作の「手順」のみを定義したピュアC#クラス。
-    /// 自身は状態を持たず、渡されたコンポーネントに対して操作を実行します。　
+    /// プレイヤーに対する重力操作の具体的な計算と適用ロジックを定義するクラス。
+    /// ステートレス（状態を持たない）な設計により、外部から渡されたRigidbody2DとTransformに対して
+    /// 重力方向の変更、速度のリセット、および見た目の反転処理を直接実行します。
     /// </summary>
     public class PlayerGravityLogic
     {
@@ -24,14 +22,6 @@ namespace Fibonacci.InGame.Player
             Vector3 scale = trans.localScale;
             scale.y = (targetScale < 0) ? -Mathf.Abs(scale.y) : Mathf.Abs(scale.y);
             trans.localScale = scale;
-
-            
-
         }
-        private void OnGravityRestart()
-        {
-        }
-
-        
     }
 }

@@ -3,21 +3,23 @@ using UnityEngine;
 namespace Fibonacci.InGame.Player
 {
     /// <summary>
-    /// プレイヤーの移動アニメーションを制御するクラス。
-    /// ゲームフェーズの状態を確認し、移動入力（Vector2）に基づいて
-    /// Animatorのパラメーター（IsRunning）を更新する役割を担います。
+    /// プレイヤーキャラクターのアニメーション状態を制御するクラス。
+    /// 移動入力の値に基づいて Animator のパラメーターを更新し、
+    /// 待機状態と走行状態のアニメーション遷移を管理します。
     /// </summary>
     public class PlayerAnimationController : MonoBehaviour
     {
         [SerializeField] private Animator animator;
 
-        void Awake()
+        private void Awake()
         {
             if (animator == null)
+            {
                 animator = GetComponent<Animator>();
+            }
         }
 
-        void Start()
+        private void Start()
         {
             if (animator != null)
             {
@@ -25,16 +27,19 @@ namespace Fibonacci.InGame.Player
             }
         }
 
-        void Update()
-        {
-            if (GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
-        }
-
+        /// <summary>
+        /// 移動入力ベクトルを受け取り、その入力強度（横方向の絶対値）をアニメーターに反映させます。
+        /// ゲームプレイ中でない場合は、強制的に停止状態のアニメーションへとリセットします。
+        /// </summary>
         public void UpdateMoveAnimation(Vector2 moveInput)
         {
             if (GameManager.Instance == null || GameManager.Instance.CurrentPhase != GamePhase.Playing)
             {
-                if (animator != null) animator.SetFloat("IsRunning", 0f);
+                if (animator != null)
+                {
+                    animator.SetFloat("IsRunning", 0f);
+                }
+                return;
             }
 
             if (animator == null) return;

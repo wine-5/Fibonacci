@@ -6,6 +6,10 @@ using Fibonacci.Event;
 
 namespace Fibonacci.InGame
 {
+    /// <summary>
+    /// プレイヤーの現在位置を監視し、境界線によって分割されたエリア間の移動を検知します。
+    /// エリア変更に伴う能力の切り替え、入力設定の更新、および音響演出の発火を制御します。
+    /// </summary>
     public class PlayerCheck : MonoBehaviour
     {
         [Header("参考コンポーネント")]
@@ -18,7 +22,6 @@ namespace Fibonacci.InGame
 
         private void Start()
         {
-            // 初回のエリア判定
             ExecuteAreaCheck(false);
         }
 
@@ -36,26 +39,27 @@ namespace Fibonacci.InGame
 
         private void LateUpdate()
         {
-            // プレイ中以外は判定を行わない（選択中の意図しない反転を防止）
             if (GameManager.Instance == null || GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
             
             ExecuteAreaCheck(true);
         }
 
         /// <summary>
-        /// PlayerControllerから呼ばれる強制再判定。
-        /// プレイ開始の瞬間に呼び出すことで、ラグなしで効果を適用します。
+        /// プレイヤーの状態（位置判定・効果適用）を強制的に再評価します。
+        /// 主にゲーム開始時、位置関係をリセットした直後に最新のエリア効果を即時反映させるために使用します。
         /// </summary>
         public void ForceCheck()
         {
             lastAreaIndex = -1;
             isInitializedOnStart = false;
-            ExecuteAreaCheck(false); // 強制適用時はSEを鳴らさない場合はfalse
+            ExecuteAreaCheck(false);
         }
 
         /// <summary>
-        /// エリア判定と効果適用のコアロジック
+        /// 現在のプレイヤー座標から所属エリアを計算し、前回判定時と異なるエリアにいる場合に効果を適用します。
+        /// 境界線の有効状態のチェック、エリアインデックスの算出、各種マネージャーへの通知を一括で行います。
         /// </summary>
+        /// <param name="canPlaySound">エリア切り替わり時に効果音を再生するかどうか</param>
         private void ExecuteAreaCheck(bool canPlaySound)
         {
             if (drawBorderLine == null || playerController == null) return;
@@ -73,13 +77,10 @@ namespace Fibonacci.InGame
                 transform.position
             );
 
-            // 初回、またはエリアが変わった場合のみ適用
             if (!isInitializedOnStart || currentAreaIndex != lastAreaIndex)
             {
-                // Controller側に通知（Controller内のガードによりPlaying中のみ反映される）
                 playerController.ChangeAreaEffect(currentAreaIndex);
 
-                // 音やその他の演出
                 ApplyEffect(currentAreaIndex, canPlaySound && isInitializedOnStart);
 
                 if (playerInputManager != null)
@@ -100,7 +101,6 @@ namespace Fibonacci.InGame
 
         private void OnAbilitiesUpdated()
         {
-            // 能力更新時、プレイ中であれば即座に再評価する
             if (GameManager.Instance != null && GameManager.Instance.CurrentPhase == GamePhase.Playing)
             {
                 ExecuteAreaCheck(false);
