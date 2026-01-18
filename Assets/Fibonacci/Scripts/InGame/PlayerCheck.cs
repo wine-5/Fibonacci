@@ -3,6 +3,7 @@ using Fibonacci.InGame.BorderLine;
 using Fibonacci.InGame.Player;
 using Fibonacci.Audio;
 using Fibonacci.Event;
+using Fibonacci.InGame.Core;
 
 namespace Fibonacci.InGame
 {
@@ -40,7 +41,7 @@ namespace Fibonacci.InGame
         private void LateUpdate()
         {
             if (GameManager.Instance == null || GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
-            
+
             ExecuteAreaCheck(true);
         }
 
@@ -80,7 +81,7 @@ namespace Fibonacci.InGame
             {
                 playerController.ChangeAreaEffect(currentAreaIndex);
 
-                ApplyEffect(currentAreaIndex, canPlaySound && isInitializedOnStart);
+                ApplyEffect(canPlaySound && isInitializedOnStart);
 
                 if (playerInputManager != null)
                 {
@@ -106,7 +107,7 @@ namespace Fibonacci.InGame
             }
         }
 
-        private void ApplyEffect(int areaIndex, bool playSound)
+        private void ApplyEffect(bool playSound)
         {
             if (playSound && AudioManager.Instance != null)
             {

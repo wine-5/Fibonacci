@@ -1,6 +1,5 @@
-using UnityEngine;
 using System;
-using Fibonacci.InGame;    
+using Fibonacci.InGame.Core;
 
 namespace Fibonacci.Event
 
