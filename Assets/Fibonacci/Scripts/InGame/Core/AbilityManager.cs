@@ -33,19 +33,14 @@ namespace Fibonacci.InGame.Core
 
             if (id == "ZeroGravity")
             {
-                // ZeroGravity という名前が来たら「重力反転」として記憶する
                 _areaAbilities[areaIndex] = AbilityType.GravityInvert;
             }
             else
             {
-                // NormalGravity やそれ以外は「通常（None）」として記憶する
                 _areaAbilities[areaIndex] = AbilityType.None;
             }
 
-            // 判定結果をログで確認
-            Debug.Log($"<color=magenta>【AbilityManager】</color> ID:「{id}」を判定。結果: <color=yellow>{_areaAbilities[areaIndex]}</color> (エリア:{areaIndex})");
 
-            // 能力が更新されたことを通知（UI/プレイヤーが即時再適用できるように）
             Fibonacci.Event.GameEvents.TriggerAbilitiesUpdated();
         }
 

@@ -21,6 +21,7 @@ namespace Fibonacci.InGame.BorderLine.UI
 
         private bool decided;
         private readonly HashSet<int> selectedFrameIndices = new();
+        private readonly Dictionary<int, string> tempSelectedAbilities = new Dictionary<int, string>();
 
         private void Awake()
         {
@@ -70,6 +71,7 @@ namespace Fibonacci.InGame.BorderLine.UI
         {
             decided = false;
             selectedFrameIndices.Clear();
+            tempSelectedAbilities.Clear();
             effectUI?.ResetSelectionsAndShowPalettes();
         }
 
@@ -77,6 +79,7 @@ namespace Fibonacci.InGame.BorderLine.UI
         {
             if (decided) return;
             selectedFrameIndices.Clear();
+            tempSelectedAbilities.Clear();
             effectUI?.ResetSelectionsAndShowPalettes();
         }
 
@@ -89,9 +92,8 @@ namespace Fibonacci.InGame.BorderLine.UI
             // 1枠につき1回だけ選択（以後変更不可の仕様に寄せる）
             if (selectedFrameIndices.Contains(frameIndex)) return;
 
-            Fibonacci.InGame.Core.AbilityManager.Instance.SetAreaAbility(frameIndex, def.Id);
-
-            selectedFrameIndices.Add(frameIndex);
+            tempSelectedAbilities[frameIndex] = def.Id;
+            selectedFrameIndices.Add(frameIndex); 
 
             effectUI.ApplySelection(frameIndex, def.Id, def.Icon);
             effectUI.SetPaletteVisible(frameIndex, false);
@@ -103,6 +105,11 @@ namespace Fibonacci.InGame.BorderLine.UI
 
             decided = true;
 
+            foreach (var kvp in tempSelectedAbilities)
+            {
+                AbilityManager.Instance.SetAreaAbility(kvp.Key, kvp.Value);
+            }
+
             for (int i = 0; i < need; i++)
             {
                 effectUI.SetPaletteVisible(i, false);
@@ -113,8 +120,6 @@ namespace Fibonacci.InGame.BorderLine.UI
                 drawBorderLine.LockInteraction();
             }
 
-            // ここにキャラクターに能力を付与するメソッドを呼んであげる
-            // 例）AbilityManager.SetAbility（必要ならここにキャラクターの引数を書く）
             if (Fibonacci.InGame.GameManager.Instance != null)
             {
                 Fibonacci.InGame.GameManager.Instance.StartGame();

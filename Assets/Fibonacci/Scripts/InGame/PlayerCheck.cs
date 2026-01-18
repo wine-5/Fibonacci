@@ -16,17 +16,15 @@ namespace Fibonacci.InGame
         private int lastAreaIndex = -1;
         private bool isInitializedOnStart = false;
 
-
         private void Start()
         {
-            UpdateAreaIndex();
+            // 初回のエリア判定
+            ExecuteAreaCheck(false);
         }
 
         private void OnEnable()
         {
-            GameEvents.OnRestart -= OnGameRestart;
             GameEvents.OnRestart += OnGameRestart;
-            GameEvents.OnAbilitiesUpdated -= OnAbilitiesUpdated;
             GameEvents.OnAbilitiesUpdated += OnAbilitiesUpdated;
         }
 
@@ -38,7 +36,28 @@ namespace Fibonacci.InGame
 
         private void LateUpdate()
         {
+            // プレイ中以外は判定を行わない（選択中の意図しない反転を防止）
             if (GameManager.Instance == null || GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
+            
+            ExecuteAreaCheck(true);
+        }
+
+        /// <summary>
+        /// PlayerControllerから呼ばれる強制再判定。
+        /// プレイ開始の瞬間に呼び出すことで、ラグなしで効果を適用します。
+        /// </summary>
+        public void ForceCheck()
+        {
+            lastAreaIndex = -1;
+            isInitializedOnStart = false;
+            ExecuteAreaCheck(false); // 強制適用時はSEを鳴らさない場合はfalse
+        }
+
+        /// <summary>
+        /// エリア判定と効果適用のコアロジック
+        /// </summary>
+        private void ExecuteAreaCheck(bool canPlaySound)
+        {
             if (drawBorderLine == null || playerController == null) return;
 
             var borderData = drawBorderLine.GetBorderLineData();
@@ -54,15 +73,14 @@ namespace Fibonacci.InGame
                 transform.position
             );
 
-            
-
+            // 初回、またはエリアが変わった場合のみ適用
             if (!isInitializedOnStart || currentAreaIndex != lastAreaIndex)
             {
-                string areaColor = currentAreaIndex == 1 ? "緑 (1)" : "青 (0)";
-                
+                // Controller側に通知（Controller内のガードによりPlaying中のみ反映される）
                 playerController.ChangeAreaEffect(currentAreaIndex);
 
-                ApplyEffect(currentAreaIndex, isInitializedOnStart);
+                // 音やその他の演出
+                ApplyEffect(currentAreaIndex, canPlaySound && isInitializedOnStart);
 
                 if (playerInputManager != null)
                 {
@@ -74,49 +92,26 @@ namespace Fibonacci.InGame
             }
         }
 
+        private void OnGameRestart()
+        {
+            lastAreaIndex = -1;
+            isInitializedOnStart = false;
+        }
 
-    private void OnGameRestart()
-    {
-        // リスタート時は前回の領域情報をクリアして再評価を許可する
-        lastAreaIndex = -1;
-        isInitializedOnStart = false;
-    }
+        private void OnAbilitiesUpdated()
+        {
+            // 能力更新時、プレイ中であれば即座に再評価する
+            if (GameManager.Instance != null && GameManager.Instance.CurrentPhase == GamePhase.Playing)
+            {
+                ExecuteAreaCheck(false);
+            }
+        }
 
-    private void OnAbilitiesUpdated()
-    {
-        // 能力が設定された直後に現在領域の効果を再適用する
-        Debug.Log("[PlayerCheck] OnAbilitiesUpdated: re-evaluating current area");
-        if (drawBorderLine == null || playerController == null) return;
-
-        var borderData = drawBorderLine.GetBorderLineData();
-        if (borderData == null || !borderData.IsActive) return;
-
-        int currentAreaIndex = BorderLineCalculator.DetermineAreaIndex(borderData.P0, borderData.P1, transform.position);
-        Debug.Log($"[PlayerCheck] OnAbilitiesUpdated determined area={currentAreaIndex}");
-        // force apply
-        playerController.ChangeAreaEffect(currentAreaIndex);
-        if (playerInputManager != null) playerInputManager.OnAreaChanged(currentAreaIndex);
-        lastAreaIndex = currentAreaIndex;
-        isInitializedOnStart = true;
-    }
         private void ApplyEffect(int areaIndex, bool playSound)
         {
             if (playSound && AudioManager.Instance != null)
             {
                 AudioManager.Instance.PlaySE(SeType.Border);
-            }
-        }
-
-        private void UpdateAreaIndex()
-        {
-            if (drawBorderLine == null) return;
-            var borderData = drawBorderLine.GetBorderLineData();
-            if (borderData != null && borderData.IsActive)
-            {
-                lastAreaIndex = BorderLineCalculator.DetermineAreaIndex(
-                    borderData.P0, borderData.P1, transform.position
-                );
-                
             }
         }
     }

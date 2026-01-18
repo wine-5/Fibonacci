@@ -1,29 +1,64 @@
 using UnityEngine;
 using Fibonacci.InGame.Core;
+using Fibonacci.Event; // GameEvents を使用するために追加
 
 namespace Fibonacci.InGame.Player
 {
     /// <summary>
-    /// プレイヤーの全体制御と状態管理を司る司令塔（Controller）クラス。
-    /// ゲームフェーズに応じた動作の許可判定、PlayerMove（移動ロジック）のインスタンス管理、
-    /// エリア変更に伴う重力操作やUIとの連携など、プレイヤーに関する各コンポーネントの仲介役として機能します。
+    /// プレイヤーの全体制御と状態管理を司る司令塔クラス。
+    /// 効果選択フェーズ中の完全フリーズと、プレイ開始時の即時反映を制御します。
     /// </summary>
     public class PlayerController : MonoBehaviour
     {
         [Header("Settings")]
         [SerializeField] private float moveSpeed = 5f;
-        [SerializeField] private PlayerGravityLogic playerGravity;
         [SerializeField] private PlayerAnimationController animationController;
-
 
         private PlayerMove playerMove;
         private Rigidbody2D rb;
+        private PlayerCheck playerCheck; // 即時適用の通知用
         private readonly PlayerGravityLogic gravityLogic = new PlayerGravityLogic();
 
         void Awake()
         {
             rb = GetComponent<Rigidbody2D>();
+            playerCheck = GetComponent<PlayerCheck>();
             playerMove = new PlayerMove(rb, transform, animationController, moveSpeed);
+        }
+
+        private void OnEnable()
+        {
+            // フェーズ変更イベントを購読
+            GameEvents.OnPhaseChanged += HandlePhaseChanged;
+        }
+
+        private void OnDisable()
+        {
+            // メモリリーク防止のため購読解除
+            GameEvents.OnPhaseChanged -= HandlePhaseChanged;
+        }
+
+        /// <summary>
+        /// フェーズが切り替わった瞬間に呼ばれる
+        /// </summary>
+        private void HandlePhaseChanged(GamePhase newPhase)
+        {
+            if (newPhase == GamePhase.Playing)
+            {
+                // 1. 物理演算を再開（重力計算が有効になる）
+                rb.simulated = true;
+
+                // 2. 確定したばかりのAbilityManagerの内容を即座に反映
+                if (playerCheck != null)
+                {
+                    playerCheck.ForceCheck(); 
+                }
+            }
+            else if (newPhase == GamePhase.Drawing)
+            {
+                // 選択フェーズに戻った場合は再度フリーズ
+                rb.simulated = false;
+            }
         }
 
         /// <summary>
@@ -31,19 +66,27 @@ namespace Fibonacci.InGame.Player
         /// </summary>
         public void ChangeAreaEffect(int areaIndex)
         {
+            // 【重要】Playing中以外はAbilityManagerの変更を反映させない
+            if (GameManager.Instance == null || GameManager.Instance.CurrentPhase != GamePhase.Playing)
+            {
+                return;
+            }
+
             AbilityType ability = AbilityManager.Instance.GetAbilityAt(areaIndex);
             int gravityDir = (ability == AbilityType.GravityInvert) ? 1 : 0;
             gravityLogic.Execute(rb, this.transform, gravityDir);
-            
         }
 
         void FixedUpdate()
         {
-            if (GameManager.Instance == null || GameManager.Instance.CurrentPhase != GamePhase.Playing)
-            {
-                rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-                return;
-            }
+            if (GameManager.Instance == null) return;
+
+            // プレイ中かどうかに合わせて物理エンジンの稼働を切り替える
+            // これにより、選択フェーズ中は重力も入力も受け付けず完全にフリーズします
+            bool isPlaying = GameManager.Instance.CurrentPhase == GamePhase.Playing;
+            rb.simulated = isPlaying;
+
+            if (!isPlaying) return;
 
             playerMove.ExecutePhysicsUpdate();
         }
@@ -72,12 +115,20 @@ namespace Fibonacci.InGame.Player
             {
                 rb.linearVelocity = Vector2.zero;
                 rb.angularVelocity = 0f;
+                // リセット時の正位置（上向き）への回転を反映させるため一旦simulatedをONにする
+                rb.simulated = true;
             }
 
-            // リセット時は AbilityManager の状態に依存せず明示的に通常重力を適用する。
-            // Ability の再設定後は PlayerCheck 側で改めて ChangeAreaEffect が呼ばれる。
+            // 初期化時は常に「通常重力(0)」を適用
             gravityLogic.Execute(rb, this.transform, 0);
-            Debug.Log("<color=green>【PlayerController】</color> プレイヤーの全状態を正常にリセットしました。");
+
+            // リセット直後はDrawingフェーズのはずなので再度フリーズさせる
+            if (GameManager.Instance != null && GameManager.Instance.CurrentPhase != GamePhase.Playing)
+            {
+                rb.simulated = false;
+            }
+
+            Debug.Log("<color=green>【PlayerController】</color> プレイヤーの状態を正位置で初期化・フリーズしました。");
         }
 
         #endregion 
