@@ -1,28 +1,27 @@
 using UnityEngine;
+using Fibonacci.Event;
 
-namespace Fibonacci.InGame
+namespace Fibonacci.InGame.Core
 {
     public enum GamePhase
     {
         Drawing, // 線を引いている最中（これだけ発動）
         Playing  // ゲームプレイ中（プレイヤーが動き、判定が始まる）
     }
-
-    public class GameManager : MonoBehaviour
+    
+    /// <summary>
+    /// ゲーム全体の進行フェーズを管理するマネジャークラス。
+    /// Singleton基底クラスを継承することで、どこからでも GameManager.Instance でアクセス可能です。
+    /// </summary>
+    public class GameManager : Singleton<GameManager>
     {
-        public static GameManager Instance { get; private set; }
         public GamePhase CurrentPhase { get; private set; } = GamePhase.Drawing;
-
-        void Awake()
-        {
-            Instance = this;
-        }
 
         // 線を引き終わり、色塗りと効果選択が終わったらこれを呼ぶ
         public void StartGame()
         {
             CurrentPhase = GamePhase.Playing;
-            Fibonacci.Event.GameEvents.TriggerPhaseChanged(GamePhase.Playing);
+            GameEvents.TriggerPhaseChanged(GamePhase.Playing);
         }
 
         /// <summary>
@@ -31,7 +30,7 @@ namespace Fibonacci.InGame
         public void ResetPhase()
         {
             CurrentPhase = GamePhase.Drawing;
-            Fibonacci.Event.GameEvents.TriggerPhaseChanged(GamePhase.Drawing);
+            GameEvents.TriggerPhaseChanged(GamePhase.Drawing);
         }
     }
 }
