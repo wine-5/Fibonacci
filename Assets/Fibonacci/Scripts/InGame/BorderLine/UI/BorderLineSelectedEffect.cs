@@ -120,9 +120,9 @@ namespace Fibonacci.InGame.BorderLine.UI
                 drawBorderLine.LockInteraction();
             }
 
-            if (Fibonacci.InGame.Core.GameManager.Instance != null)
+            if (GameManager.Instance != null)
             {
-                Fibonacci.InGame.Core.GameManager.Instance.StartGame();
+                GameManager.Instance.StartGame();
             }
         }
     }
