@@ -203,6 +203,10 @@ PrefabInstance:
       propertyPath: goalSeName
       value: Goal
       objectReference: {fileID: 0}
+    - target: {fileID: 8716299294320923751, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8667137706381586179, guid: 9642415863345644999f100032ce848e, type: 3}
     m_RemovedGameObjects: []

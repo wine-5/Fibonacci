@@ -111,7 +111,7 @@ namespace Fibonacci.InGame
         {
             if (playSound && AudioManager.Instance != null)
             {
-                AudioManager.Instance.PlaySE(SeType.Border);
+                AudioManager.Instance.PlaySE(SeType.PowerUp);
             }
         }
     }
