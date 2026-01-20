@@ -15,6 +15,7 @@ namespace Fibonacci.InGame.Core
     /// </summary>
     public class GameManager : Singleton<GameManager>
     {
+        protected override bool UseDontDestroyOnLoad => false;
         public GamePhase CurrentPhase { get; private set; } = GamePhase.Drawing;
 
         // 線を引き終わり、色塗りと効果選択が終わったらこれを呼ぶ
