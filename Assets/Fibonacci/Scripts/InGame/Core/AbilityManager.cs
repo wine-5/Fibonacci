@@ -19,7 +19,7 @@ namespace Fibonacci.InGame.Core
     /// </summary>
     public class AbilityManager : Singleton<AbilityManager>
     {
-        protected override bool UseDontDestroyOnLoad => false;
+        protected override bool UseDontDestroyOnLoad => true;
         public const string ABILITY_ID_ZERO_GRAVITY = "ZeroGravity";
         public const string ABILITY_ID_GRAVITY = "Gravity";
 
