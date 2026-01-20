@@ -24,14 +24,15 @@ namespace Fibonacci.InGame.BorderLine
         [SerializeField] private bool extendLineToBounds = true;
         [SerializeField] private LineRenderer lineRenderer;
 
-        // --- [ADD] Color Map 設定 ---
         [Header("Color Map")]
         [SerializeField, Label("色を表示する板")] private SpriteRenderer displayRenderer;
         [SerializeField, Label("解像度")] private int textureResolution = 1024;
-        private BorderLineColorMap colorMap; 
-        public BorderLineColorMap GetColorMap() => colorMap;
-        // ----------------------------
 
+        private BorderLineColorMap colorMap;
+        private BorderLineDataBridge borderLineData;
+
+        public BorderLineDataBridge GetBorderLineData() => borderLineData;
+        public BorderLineColorMap GetColorMap() => colorMap;
         private Transform firstSelectedBall;
         private BorderLineSegmentRenderer lineDrawer;
         private BorderLineRegionDebugView regionDebugView;
@@ -67,16 +68,16 @@ namespace Fibonacci.InGame.BorderLine
 
             regionDebugView = new BorderLineRegionDebugView(transform, worldZ, markerTextSize, debugDrawDuration);
 
-            // --- [ADD] 初期化 ---
-            colorMap = new BorderLineColorMap(displayRenderer, worldZ, textureResolution);
+            borderLineData = new BorderLineDataBridge();
 
+            colorMap = new BorderLineColorMap(displayRenderer, worldZ, textureResolution);
             if (selectionHighlightView == null)
             {
                 selectionHighlightView = GetComponent<BorderLineSelectionHighlightView>();
             }
         }
 
-        
+
 
         private void OnEnable()
         {
@@ -225,6 +226,8 @@ namespace Fibonacci.InGame.BorderLine
                     hasCurrentPartition = true;
                     currentPartition = partition;
 
+                    borderLineData.SetLine(partition.Intersection0, partition.Intersection1);
+
                     lineDrawer.DrawSplitOrSegment(
                         firstSelectedBall.position,
                         clickedObject.position,
@@ -238,8 +241,12 @@ namespace Fibonacci.InGame.BorderLine
 
                     PartitionCreated?.Invoke(partition, cam);
 
-                    // --- [ADD] 色塗りの呼び出し ---
-                    colorMap.UpdateVisual(partition);
+                    colorMap.UpdateVisual(new BorderLineRegionSplitter.SplitResult
+                    {
+                        Rect = partition.Rect,
+                        Intersection0 = partition.Intersection0,
+                        Intersection1 = partition.Intersection1
+                    });
 
                     if (hideTargetsAfterSelection)
                     {
@@ -249,7 +256,7 @@ namespace Fibonacci.InGame.BorderLine
                     selectionHighlightView?.Clear();
                     firstSelectedBall = null;
                 }
-                
+
             }
         }
 
@@ -351,6 +358,7 @@ namespace Fibonacci.InGame.BorderLine
 
             lineDrawer?.Hide();
             regionDebugView?.Clear();
+            borderLineData?.Clear();
             colorMap?.ClearVisual();
 
             ShowTargetBalls();

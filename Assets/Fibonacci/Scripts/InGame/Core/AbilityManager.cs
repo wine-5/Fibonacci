@@ -1,0 +1,69 @@
+using System.Collections.Generic;
+using Fibonacci.Event;
+
+/// <summary>
+/// エリアに割り当てられるアビリティの種類を定義します。
+/// AbilityManagerと同じ名前空間に置くことで、参照エラーを防止します。
+/// </summary>
+public enum AbilityType
+{
+    None,
+    GravityInvert,
+}
+
+namespace Fibonacci.InGame.Core
+{
+    /// <summary>
+    /// 各エリアに割り振られたアビリティの状態を管理するクラス。
+    /// プロジェクト共通の Singleton 基底クラスを継承し、エリアごとの能力設定と保持を担当します。
+    /// </summary>
+    public class AbilityManager : Singleton<AbilityManager>
+    {
+        protected override bool UseDontDestroyOnLoad => false;
+        public const string ABILITY_ID_ZERO_GRAVITY = "ZeroGravity";
+        public const string ABILITY_ID_GRAVITY = "Gravity";
+
+        private readonly Dictionary<int, AbilityType> areaAbilities = new();
+
+        /// <summary>
+        /// 文字列IDからアビリティを判定し、指定されたエリアに登録します。
+        /// </summary>
+        public void SetAreaAbility(int areaIndex, string abilityId)
+        {
+            string id = abilityId.Trim();
+            areaAbilities[areaIndex] = ConvertIdToType(id);
+
+            // 能力が更新されたことを通知
+            GameEvents.TriggerAbilitiesUpdated();
+        }
+
+        /// <summary>
+        /// 指定されたエリアに現在割り当てられているアビリティを取得します。
+        /// </summary>
+        public AbilityType GetAbilityAt(int areaIndex)
+        {
+            return areaAbilities.TryGetValue(areaIndex, out var type) ? type : AbilityType.None;
+        }
+
+        /// <summary>
+        /// 保持しているすべてのエリア能力情報をクリアします。
+        /// </summary>
+        public void Reset()
+        {
+            areaAbilities.Clear();
+        }
+
+        /// <summary>
+        /// 文字列IDを内部で使用する列挙型 AbilityType に変換します。
+        /// </summary>
+        private AbilityType ConvertIdToType(string id)
+        {
+            return id switch
+            {
+                ABILITY_ID_ZERO_GRAVITY => AbilityType.GravityInvert,
+                ABILITY_ID_GRAVITY => AbilityType.GravityInvert,
+                _ => AbilityType.None
+            };
+        }
+    }
+}

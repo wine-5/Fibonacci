@@ -1,115 +1,72 @@
 using UnityEngine;
-using Fibonacci.InGame;
 
-namespace Fibonacci.Player
+namespace Fibonacci.InGame.Player
 {
     /// <summary>
-    /// プレイヤーの移動処理を管理するクラス
-    /// 物理的な移動、向き変更、接地判定のみを担当
+    /// プレイヤーの移動、物理挙動、および向きの制御に関する純粋な計算ロジックを管理するクラス。
+    /// Rigidbody2D を直接操作して速度を適用し、入力方向に基づいたキャラクターの回転処理を行います。
     /// </summary>
-    [RequireComponent(typeof(Rigidbody2D))]
-    public class PlayerMove : MonoBehaviour
+    public class PlayerMove
     {
-        [Header("移動設定")]
-        [SerializeField] private float moveSpeed = 5f;
+        private const float ROTATION_RIGHT = 0f;
+        private const float ROTATION_LEFT = 180f;
 
-        [Header("接地判定")]
-        [Tooltip("足元からの判定開始位置のオフセット")]
-        [SerializeField] private float groundCheckOffset = 0.5f;
-        [Tooltip("足元から地面までの判定距離")]
-        [SerializeField] private float rayDistance = 0.6f;
-        [Tooltip("接地判定のボックスサイズ")]
-        [SerializeField] private Vector2 groundCheckSize = new Vector2(0.8f, 0.1f);
-        [SerializeField] private LayerMask groundLayer;
-        [Header("参照設定")]
-        [SerializeField] private PlayerAnimationController animationController;
+        private readonly Rigidbody2D rb;
+        private readonly Transform transform;
+        private readonly PlayerAnimationController anim;
+        private readonly float moveSpeed;
+        private readonly Vector3 initialPosition;
 
-        // === プライベート変数 ===
-        private Rigidbody2D rb;
-        private Vector2 moveInput = Vector2.zero;
-        private bool isGrounded;
-        private Vector3 initialPosition;
+        /// <summary>
+        /// 現在の移動入力ベクトルを取得または設定します。
+        /// </summary>
+        public Vector2 MoveInput { get; set; }
 
-        public bool IsGrounded => isGrounded;
-
-        void Awake()
+        public PlayerMove(Rigidbody2D rb, Transform transform, PlayerAnimationController anim, float speed)
         {
-            rb = GetComponent<Rigidbody2D>();
+            this.rb = rb;
+            this.transform = transform;
+            this.anim = anim;
+            moveSpeed = speed;
             initialPosition = transform.position;
         }
 
-
-        void Update()
-        {
-            if (GameManager.Instance == null || GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
-        }
-
-        void FixedUpdate()
-        {
-            if (GameManager.Instance == null || GameManager.Instance.CurrentPhase != GamePhase.Playing)
-            {
-                // 入力による横移動を0にし、重力のみ働かせるか、完全に停止させる
-                rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-                return;
-            }
-
-            HandleMovement();
-        }
-
         /// <summary>
-        /// 入力を受け取って移動処理を行う
-        /// PlayerControllerから直接呼び出される
+        /// FixedUpdate タイミングで呼ばれ、水平方向の移動速度を適用し、
+        /// 入力方向に応じてキャラクターの向き（Y軸回転）を更新します。
         /// </summary>
-        public void OnMoveInput(Vector2 input)
+        public void ExecutePhysicsUpdate()
         {
-            moveInput = input;
-
-            if (animationController != null)
-            {
-                animationController.UpdateMoveAnimation(input);
-            }
-            else
-            {
-            }
-        }
-
-        /// <summary>
-        /// 横移動処理と向きの制御を行います。
-        /// </summary>
-        private void HandleMovement()
-        {
-            Vector2 targetVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
+            Vector2 targetVelocity = new Vector2(MoveInput.x * moveSpeed, rb.linearVelocity.y);
             rb.linearVelocity = targetVelocity;
 
-            // キャラクターの向きを制御
-            if (moveInput.x != 0)
+            if (MoveInput.x != 0)
             {
-                float yRotation = moveInput.x > 0 ? 0f : 180f;
+                float yRotation = MoveInput.x > 0 ? ROTATION_RIGHT : ROTATION_LEFT;
                 transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
             }
         }
 
         /// <summary>
-        /// BoxCastを使用して接地判定を行います。
+        /// 現在の移動入力状態をアニメーションコントローラーに通知し、歩行・待機アニメーションを更新します。
         /// </summary>
-        private bool CheckIsGrounded()
+        public void UpdateAnimation()
         {
-            Vector2 boxCenter = (Vector2)transform.position + Vector2.down * groundCheckOffset;
-            RaycastHit2D hit = Physics2D.BoxCast(boxCenter, groundCheckSize, 0f, Vector2.down, rayDistance, groundLayer);
-            return hit.collider != null;
+            if (anim != null)
+            {
+                anim.UpdateMoveAnimation(MoveInput);
+            }
         }
 
         /// <summary>
-        /// 初期位置にリセットし、速度をゼロにする
-        /// PlayerControllerから呼び出される
+        /// プレイヤーを初期配置座標に戻し、物理的な速度、回転、および入力を完全にリセットします。
         /// </summary>
         public void ResetPosition()
         {
             transform.position = initialPosition;
             rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;
-            moveInput = Vector2.zero;
+            MoveInput = Vector2.zero;
         }
-
     }
 }

@@ -1,49 +1,51 @@
-using System;
 using UnityEngine;
-using Fibonacci.InGame;
+using Fibonacci.InGame.Core;
 
-namespace Fibonacci.Player
+namespace Fibonacci.InGame.Player
 {
+    /// <summary>
+    /// プレイヤーキャラクターのアニメーション状態を制御するクラス。
+    /// 移動入力の値に基づいて Animator のパラメーターを更新し、
+    /// 待機状態と走行状態のアニメーション遷移を管理します。
+    /// </summary>
     public class PlayerAnimationController : MonoBehaviour
     {
         [SerializeField] private Animator animator;
-        // ★名前を "IsRunning" に統一
-        //private readonly int speedHash = Animator.StringToHash("IsRunning");
 
-        void Awake()
+        private void Awake()
         {
             if (animator == null)
+            {
                 animator = GetComponent<Animator>();
+            }
         }
 
-        void Start()
+        private void Start()
         {
-            // 開始時に強制的にアニメーションを待機(0)にする
             if (animator != null)
             {
                 animator.SetFloat("IsRunning", 0f);
             }
         }
 
-        void Update()
-        {
-            if (GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
-        }
-
+        /// <summary>
+        /// 移動入力ベクトルを受け取り、その入力強度（横方向の絶対値）をアニメーターに反映させます。
+        /// ゲームプレイ中でない場合は、強制的に停止状態のアニメーションへとリセットします。
+        /// </summary>
         public void UpdateMoveAnimation(Vector2 moveInput)
         {
             if (GameManager.Instance == null || GameManager.Instance.CurrentPhase != GamePhase.Playing)
             {
-                // 強制的に立ちポーズ（0）にする
-                if (animator != null) animator.SetFloat("IsRunning", 0f);
+                if (animator != null)
+                {
+                    animator.SetFloat("IsRunning", 0f);
+                }
                 return;
             }
 
             if (animator == null) return;
 
-            // 横移動の絶対値を計算
             float speed = Mathf.Abs(moveInput.x);
-            // Animatorのパラメーターを更新
             animator.SetFloat("IsRunning", speed);
         }
     }

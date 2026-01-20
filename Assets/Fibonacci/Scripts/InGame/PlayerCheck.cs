@@ -1,76 +1,117 @@
 using UnityEngine;
 using Fibonacci.InGame.BorderLine;
-using Fibonacci.Player;
+using Fibonacci.InGame.Player;
 using Fibonacci.Audio;
-using System.Linq;
+using Fibonacci.Event;
+using Fibonacci.InGame.Core;
 
-namespace Fibonacci.InGame.Player
+namespace Fibonacci.InGame
 {
+    /// <summary>
+    /// プレイヤーの現在位置を監視し、境界線によって分割されたエリア間の移動を検知します。
+    /// エリア変更に伴う能力の切り替え、入力設定の更新、および音響演出の発火を制御します。
+    /// </summary>
     public class PlayerCheck : MonoBehaviour
     {
-        [Header("References")]
+        [Header("参考コンポーネント")]
         [SerializeField] private DrawBorderLine drawBorderLine;
         [SerializeField] private PlayerController playerController;
+        [SerializeField] private PlayerInputManager playerInputManager;
 
         private int lastAreaIndex = -1;
         private bool isInitializedOnStart = false;
 
         private void Start()
         {
-            // 開始時のインデックスを記録
-            UpdateAreaIndex();
+            ExecuteAreaCheck(false);
         }
 
-        // ★ Update ではなく LateUpdate を使う
-        // これにより、他の全てのスクリプトのUpdate（データの確定）が終わった後に判定が走ります
-        void LateUpdate()
+        private void OnEnable()
         {
-            if (GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
+            GameEvents.OnRestart += OnGameRestart;
+            GameEvents.OnAbilitiesUpdated += OnAbilitiesUpdated;
+        }
 
+        private void OnDisable()
+        {
+            GameEvents.OnRestart -= OnGameRestart;
+            GameEvents.OnAbilitiesUpdated -= OnAbilitiesUpdated;
+        }
+
+        private void LateUpdate()
+        {
+            if (GameManager.Instance == null || GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
+
+            ExecuteAreaCheck(true);
+        }
+
+        /// <summary>
+        /// プレイヤーの状態（位置判定・効果適用）を強制的に再評価します。
+        /// 主にゲーム開始時、位置関係をリセットした直後に最新のエリア効果を即時反映させるために使用します。
+        /// </summary>
+        public void ForceCheck()
+        {
+            lastAreaIndex = -1;
+            isInitializedOnStart = false;
+            ExecuteAreaCheck(false);
+        }
+
+        /// <summary>
+        /// 現在のプレイヤー座標から所属エリアを計算し、前回判定時と異なるエリアにいる場合に効果を適用します。
+        /// 境界線の有効状態のチェック、エリアインデックスの算出、各種マネージャーへの通知を一括で行います。
+        /// </summary>
+        private void ExecuteAreaCheck(bool canPlaySound)
+        {
             if (drawBorderLine == null || playerController == null) return;
-            var colorMap = drawBorderLine.GetColorMap();
-            if (colorMap == null) return;
 
-            int currentAreaIndex = colorMap.GetAreaIndex(transform.position);
+            var borderData = drawBorderLine.GetBorderLineData();
+            if (borderData == null || !borderData.IsActive)
+            {
+                isInitializedOnStart = false;
+                return;
+            }
 
-            // 初回判定、またはエリアが変更された場合のみ実行
+            int currentAreaIndex = BorderLineCalculator.DetermineAreaIndex(
+                borderData.P0,
+                borderData.P1,
+                transform.position
+            );
+
             if (!isInitializedOnStart || currentAreaIndex != lastAreaIndex)
             {
-                ApplyEffect(currentAreaIndex, isInitializedOnStart);
+                playerController.ChangeAreaEffect(currentAreaIndex);
+
+                ApplyEffect(canPlaySound && isInitializedOnStart);
+
+                if (playerInputManager != null)
+                {
+                    playerInputManager.OnAreaChanged(currentAreaIndex);
+                }
+
                 lastAreaIndex = currentAreaIndex;
                 isInitializedOnStart = true;
             }
         }
 
-        private void ApplyEffect(int areaIndex, bool playSound)
+        private void OnGameRestart()
         {
-            // エリア移動時のみ音を鳴らす（初回判定時は鳴らさない）
-            if (playSound && areaIndex != lastAreaIndex && lastAreaIndex != -1)
-            {
-                if (AudioManager.Instance != null)
-                    AudioManager.Instance.PlaySE(SeType.Border);
-            }
+            lastAreaIndex = -1;
+            isInitializedOnStart = false;
+        }
 
-            // 重力状態の反映
-            if (areaIndex == 0 || areaIndex == 1)
+        private void OnAbilitiesUpdated()
+        {
+            if (GameManager.Instance != null && GameManager.Instance.CurrentPhase == GamePhase.Playing)
             {
-                playerController.OnAreaChanged(areaIndex);
-            }
-            else
-            {
-                playerController.ResetGravity();
+                ExecuteAreaCheck(false);
             }
         }
 
-        private void UpdateAreaIndex()
+        private void ApplyEffect(bool playSound)
         {
-            if (drawBorderLine != null)
+            if (playSound && AudioManager.Instance != null)
             {
-                var colorMap = drawBorderLine.GetColorMap();
-                if (colorMap != null)
-                {
-                    lastAreaIndex = colorMap.GetAreaIndex(transform.position);
-                }
+                AudioManager.Instance.PlaySE(SeType.Border);
             }
         }
     }

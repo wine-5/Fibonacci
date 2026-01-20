@@ -12,12 +12,10 @@ GameObject:
   - component: {fileID: 5614525305831489350}
   - component: {fileID: 1721923738563521551}
   - component: {fileID: 3863042611148735209}
-  - component: {fileID: 6308576299905643784}
   - component: {fileID: 5486953278519070287}
   - component: {fileID: 5904915179703420672}
   - component: {fileID: 7159209810321247350}
   - component: {fileID: 8270959238855892997}
-  - component: {fileID: 12305913256630118}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -172,26 +170,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &6308576299905643784
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7490017549848532587}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e28ee7e36eb6f843b0f45efc37e8b12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.Player.PlayerMove
-  moveSpeed: 5
-  groundCheckOffset: 0.5
-  rayDistance: 1.1
-  groundCheckSize: {x: 0.8, y: 0.1}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  animationController: {fileID: 0}
 --- !u!95 &5486953278519070287
 Animator:
   serializedVersion: 7
@@ -226,8 +204,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b81958ec003ace45a7044cdd1692090, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.Player.PlayerController
-  effectUI: {fileID: 0}
-  playerGravity: {fileID: 12305913256630118}
+  moveSpeed: 5
+  animationController: {fileID: 0}
 --- !u!114 &7159209810321247350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,15 +286,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.Player.PlayerCheck
   drawBorderLine: {fileID: 0}
   playerController: {fileID: 5904915179703420672}
---- !u!114 &12305913256630118
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7490017549848532587}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cac950abd6217e04fbf53e94bbf9e210, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.Player.PlayerGravity
+  playerInputManager: {fileID: 0}
