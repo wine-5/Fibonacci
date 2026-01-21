@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Fibonacci.InGame.Core.Gimmick
+namespace Fibonacci.InGame.Core.AreaGimmick
 {
     /// <summary>
     /// プレイヤーに対する重力操作の具体的な計算と適用ロジックを定義するクラス。

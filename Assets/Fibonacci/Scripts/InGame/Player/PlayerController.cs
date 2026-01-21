@@ -1,6 +1,6 @@
 using UnityEngine;
 using Fibonacci.InGame.Core;
-using Fibonacci.InGame.Core.Gimmick;
+using Fibonacci.InGame.Core.AreaGimmick;
 using Fibonacci.Event;
 
 namespace Fibonacci.InGame.Player

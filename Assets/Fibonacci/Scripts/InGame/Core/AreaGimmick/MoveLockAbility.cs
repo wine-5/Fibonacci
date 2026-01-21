@@ -1,7 +1,7 @@
 using UnityEngine;
 using Fibonacci.InGame.Player;
 
-namespace Fibonacci.InGame.Core.Gimmick
+namespace Fibonacci.InGame.Core.AreaGimmick
 {
     public class MoveLockAbility
     {
