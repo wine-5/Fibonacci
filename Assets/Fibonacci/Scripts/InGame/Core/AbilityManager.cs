@@ -9,6 +9,7 @@ public enum AbilityType
 {
     None,
     GravityInvert,
+    LowGravity,
     MoveLock,
     Heavy,
 }
@@ -24,6 +25,7 @@ namespace Fibonacci.InGame.Core
         protected override bool UseDontDestroyOnLoad => true;
         public const string ABILITY_ID_ZERO_GRAVITY = "ZeroGravity";
         public const string ABILITY_ID_GRAVITY = "Gravity";
+        public const string ABILITY_ID_LOW_GRAVITY = "LowGravity";
         public const string ABILITY_ID_MOVE_LOCK = "MoveLock";
         public const string ABILITY_ID_HEAVY_SLOW = "Heavy";
 
@@ -68,6 +70,7 @@ namespace Fibonacci.InGame.Core
                 ABILITY_ID_GRAVITY => AbilityType.GravityInvert,
                 ABILITY_ID_MOVE_LOCK => AbilityType.MoveLock,
                 ABILITY_ID_HEAVY_SLOW => AbilityType.Heavy,
+                ABILITY_ID_LOW_GRAVITY => AbilityType.LowGravity,
                 _ => AbilityType.None
             };
         }
