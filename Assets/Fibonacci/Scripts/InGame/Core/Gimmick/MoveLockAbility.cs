@@ -12,11 +12,11 @@ namespace Fibonacci.InGame.Core.Gimmick
         {
             if (isLocked)
             {
-                Debug.Log("移動ロック：演出ON");
+                // 移動ロック：演出ON
             }
             else
             {
-                Debug.Log("移動ロック：演出OFF");
+                // 移動ロック：演出OFF
             }
         }
     }
