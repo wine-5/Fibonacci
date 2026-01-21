@@ -7,20 +7,19 @@ namespace Fibonacci.InGame.Core.AreaGimmick
     /// ステートレス（状態を持たない）な設計により、外部から渡されたRigidbody2DとTransformに対して
     /// 重力方向の変更、速度のリセット、および見た目の反転処理を直接実行します。
     /// </summary>
+
+    [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(Transform))]
+
     public class GravityAbility
     {
-        public void Apply(Rigidbody2D rb, Transform trans, int areaIndex)
+        public void Apply(Rigidbody2D rb, Transform trans, bool isInverted, float baseScale = 1.0f)
         {
-            if (rb == null || trans == null) return;
-
-            float targetScale = (areaIndex == 1) ? -1.0f : 1.0f;
-
-            rb.gravityScale = targetScale;
-
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
+            float currentAbsScale = Mathf.Abs(rb.gravityScale);
+            rb.gravityScale = isInverted ? -currentAbsScale : currentAbsScale;
 
             Vector3 scale = trans.localScale;
-            scale.y = (targetScale < 0) ? -Mathf.Abs(scale.y) : Mathf.Abs(scale.y);
+            scale.y = (rb.gravityScale < 0) ? -Mathf.Abs(scale.y) : Mathf.Abs(scale.y);
             trans.localScale = scale;
         }
     }
