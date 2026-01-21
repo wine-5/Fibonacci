@@ -1,12 +1,13 @@
 using UnityEngine;
-
-public class SimpleRotator : MonoBehaviour
+namespace Fibonacci.InGame.Core.MapGimmick
 {
-    [SerializeField] private float rotationSpeed = 100f; // 1秒間の回転角度
-
-    void Update()
+    public class SimpleRotator : MonoBehaviour
     {
-        // 自機（Z軸）を中心に回転させる
-        transform.Rotate(0, 0, rotationSpeed * Time.deltaTime);
+        [SerializeField] private float rotationSpeed = 100f;
+
+        void Update()
+        {
+            transform.Rotate(0, 0, rotationSpeed * Time.deltaTime);
+        }
     }
 }
