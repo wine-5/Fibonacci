@@ -11,10 +11,10 @@ namespace Fibonacci.InGame.Player
         private const float ROTATION_RIGHT = 0f;
         private const float ROTATION_LEFT = 180f;
 
+        private float moveSpeed;
         private readonly Rigidbody2D rb;
         private readonly Transform transform;
         private readonly PlayerAnimationController anim;
-        private readonly float moveSpeed;
         private readonly Vector3 initialPosition;
 
         /// <summary>
@@ -45,6 +45,15 @@ namespace Fibonacci.InGame.Player
                 float yRotation = MoveInput.x > 0 ? ROTATION_RIGHT : ROTATION_LEFT;
                 transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
             }
+        }
+
+        /// <summary>
+        /// プレイヤーの移動速度を動的に変更します。
+        /// エリアギミックやアビリティによる鈍化・加速効果を適用する際に使用します。
+        /// </summary>
+        public void SetCurrentSpeed(float speed)
+        {
+            this.moveSpeed = speed;
         }
 
         /// <summary>
