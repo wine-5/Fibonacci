@@ -1,0 +1,12 @@
+プレイヤーの動きそのものを止めるので
+プレイヤーコントローラーの
+private void FixedUpdate()
+        {
+            bool isPlaying = GameManager.Instance.CurrentPhase == GamePhase.Playing;
+            rb.simulated = isPlaying;
+
+            if (!isPlaying) return;
+
+            playerMove.ExecutePhysicsUpdate();
+        }
+のExecutePhysicsUpdateをいじるべき

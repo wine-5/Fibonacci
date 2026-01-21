@@ -10,6 +10,8 @@ namespace Fibonacci.InGame.Player
     /// ゲームフェーズに応じた物理演算の切り替えや、エリア移動に伴う重力変化の実行、
     /// 移動入力の仲介などを一括して管理します。
     /// </summary>
+    [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(PlayerCheck))]
     public class PlayerController : MonoBehaviour
     {
         [Header("Settings")]
@@ -20,6 +22,8 @@ namespace Fibonacci.InGame.Player
         private Rigidbody2D rb;
         private PlayerCheck playerCheck;
         private readonly GravityAbility gravityLogic = new GravityAbility();
+        private readonly MoveLockAbility moveLockLogic = new MoveLockAbility();
+        private bool isMovementLocked = false;
 
         private void Awake()
         {
@@ -50,7 +54,7 @@ namespace Fibonacci.InGame.Player
 
                 if (playerCheck != null)
                 {
-                    playerCheck.ForceCheck(); 
+                    playerCheck.ForceCheck();
                 }
             }
             else if (newPhase == GamePhase.Drawing)
@@ -65,26 +69,28 @@ namespace Fibonacci.InGame.Player
         /// <param name="areaIndex">現在のプレイヤー位置に対応するエリア番号</param>
         public void ChangeAreaEffect(int areaIndex)
         {
-            if (GameManager.Instance == null || GameManager.Instance.CurrentPhase != GamePhase.Playing)
-            {
-                return;
-            }
+            if (GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
 
             AbilityType ability = AbilityManager.Instance.GetAbilityAt(areaIndex);
+
             int gravityDir = (ability == AbilityType.GravityInvert) ? 1 : 0;
             gravityLogic.Apply(rb, this.transform, gravityDir);
+
+            isMovementLocked = (ability == AbilityType.MoveLock);
+            moveLockLogic.Apply(this, isMovementLocked);
         }
 
         private void FixedUpdate()
         {
-            if (GameManager.Instance == null) return;
-
             bool isPlaying = GameManager.Instance.CurrentPhase == GamePhase.Playing;
             rb.simulated = isPlaying;
 
             if (!isPlaying) return;
 
-            playerMove.ExecutePhysicsUpdate();
+            if (!isMovementLocked)
+            {
+                playerMove.ExecutePhysicsUpdate();
+            }
         }
 
         /// <summary>
@@ -102,23 +108,17 @@ namespace Fibonacci.InGame.Player
         /// </summary>
         public void ResetPlayerState()
         {
-            if (playerMove != null)
-            {
-                playerMove.ResetPosition();
-                playerMove.MoveInput = Vector2.zero;
-                playerMove.UpdateAnimation();
-            }
+            playerMove.ResetPosition();
+            playerMove.MoveInput = Vector2.zero;
+            playerMove.UpdateAnimation();
 
-            if (rb != null)
-            {
-                rb.linearVelocity = Vector2.zero;
-                rb.angularVelocity = 0f;
-                rb.simulated = false;
-            }
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            rb.simulated = false;
 
             gravityLogic.Apply(rb, this.transform, 0);
 
-            if (GameManager.Instance != null && GameManager.Instance.CurrentPhase != GamePhase.Playing)
+            if (GameManager.Instance.CurrentPhase != GamePhase.Playing)
             {
                 rb.simulated = false;
             }
