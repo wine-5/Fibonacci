@@ -76,11 +76,11 @@ namespace Fibonacci.InGame.Player
             AbilityType ability = AbilityManager.Instance.GetAbilityAt(areaIndex);
 
             float baseScale = (ability == AbilityType.LowGravity) ? 0.2f : 1.0f;
-            bool isInverted = (ability == AbilityType.GravityInvert);
+            bool isInverted = ability == AbilityType.GravityInvert;
 
-            gravityLogic.Apply(rb, this.transform, isInverted, baseScale);
+            gravityLogic.Apply(rb, transform, isInverted, baseScale);
 
-            isMovementLocked = (ability == AbilityType.MoveLock);
+            isMovementLocked = ability == AbilityType.MoveLock;
             moveLockLogic.Apply(this, isMovementLocked);
 
             heavyLogic.Apply(rb, playerMove, ability == AbilityType.Heavy);
@@ -124,7 +124,7 @@ namespace Fibonacci.InGame.Player
             rb.angularVelocity = 0f;
             rb.simulated = false;
 
-            gravityLogic.Apply(rb, this.transform, false, 1.0f);
+            gravityLogic.Apply(rb, transform, false);
 
             if (GameManager.Instance.CurrentPhase != GamePhase.Playing)
             {

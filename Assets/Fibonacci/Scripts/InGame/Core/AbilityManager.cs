@@ -39,7 +39,6 @@ namespace Fibonacci.InGame.Core
             string id = abilityId.Trim();
             areaAbilities[areaIndex] = ConvertIdToType(id);
 
-            // 能力が更新されたことを通知
             GameEvents.TriggerAbilitiesUpdated();
         }
 

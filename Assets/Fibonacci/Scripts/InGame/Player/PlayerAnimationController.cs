@@ -11,6 +11,7 @@ namespace Fibonacci.InGame.Player
     public class PlayerAnimationController : MonoBehaviour
     {
         [SerializeField] private Animator animator;
+        private static readonly int PARAM_IS_RUNNING = Animator.StringToHash("IsRunning");
 
         private void Awake()
         {
@@ -24,7 +25,7 @@ namespace Fibonacci.InGame.Player
         {
             if (animator != null)
             {
-                animator.SetFloat("IsRunning", 0f);
+                animator.SetFloat(PARAM_IS_RUNNING, 0f);
             }
         }
 
@@ -38,7 +39,7 @@ namespace Fibonacci.InGame.Player
             {
                 if (animator != null)
                 {
-                    animator.SetFloat("IsRunning", 0f);
+                    animator.SetFloat(PARAM_IS_RUNNING, 0f);
                 }
                 return;
             }
@@ -46,7 +47,7 @@ namespace Fibonacci.InGame.Player
             if (animator == null) return;
 
             float speed = Mathf.Abs(moveInput.x);
-            animator.SetFloat("IsRunning", speed);
+            animator.SetFloat(PARAM_IS_RUNNING, speed);
         }
     }
 }
