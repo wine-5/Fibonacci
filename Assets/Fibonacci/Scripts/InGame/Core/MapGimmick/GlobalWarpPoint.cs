@@ -1,14 +1,16 @@
 using UnityEngine;
 
-
 namespace Fibonacci.InGame.Core.MapGimmick
 {
     [RequireComponent(typeof(Collider2D))]
     public class GlobalWarpPoint : MonoBehaviour
     {
+        private const float DEFAULT_COOLDOWN = 2.0f;
+
         [Header("ワープ設定")]
         [SerializeField] private Transform targetLocation;
-        [SerializeField] private float globalCooldownTime = 2.0f;
+        [SerializeField] private float globalCooldownTime = DEFAULT_COOLDOWN;
+        [SerializeField] private bool isExitOnly = false;
 
         [Header("演出設定")]
         [SerializeField] private bool maintainVelocity = false;
@@ -18,6 +20,8 @@ namespace Fibonacci.InGame.Core.MapGimmick
 
         private void OnTriggerEnter2D(Collider2D other)
         {
+            if (isExitOnly) return;
+
             if (other.CompareTag("Player") && Time.time >= _nextWarpAllowedTime)
             {
                 PerformWarp(other.gameObject);
