@@ -106,10 +106,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 409545cfde9151f4eabecbcfbdf74791, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.Core.MapGimmick.FallingFloor
-  requiredMass: 1
+  requiredMass: 2
   fallDelay: 0.5
   destroyDelay: 3
   respawnDelay: 2
+  floorAnimation:
+    shakeFrequency: 8
+    rotationAmount: 5
 --- !u!50 &2490883036899331237
 Rigidbody2D:
   serializedVersion: 5

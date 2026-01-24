@@ -17,6 +17,7 @@ namespace Fibonacci.InGame.Player
         [Header("Settings")]
         [SerializeField] private float moveSpeed = 5f;
         [SerializeField] private PlayerAnimationController animationController;
+        [SerializeField] private SpriteRenderer abilityDisplayRenderer;
 
         private PlayerMove playerMove;
         private Rigidbody2D rb;
@@ -75,16 +76,17 @@ namespace Fibonacci.InGame.Player
 
             AbilityType ability = AbilityManager.Instance.GetAbilityAt(areaIndex);
 
-            bool isInverted = ability == AbilityType.GravityInvert;
+            bool isGravityInverted = (ability == AbilityType.GravityInvert);
+            gravityLogic.Apply(rb, transform, isGravityInverted);
 
-            gravityLogic.Apply(rb, transform, isInverted);
-
-            isMovementLocked = ability == AbilityType.MoveLock;
-            moveLockLogic.Apply(this, isMovementLocked);
+            bool isMoveLocked = (ability == AbilityType.MoveLock);
+            this.isMovementLocked = isMoveLocked;
+            moveLockLogic.Apply(isMoveLocked, abilityDisplayRenderer);
 
             heavyLogic.Apply(rb, playerMove, ability == AbilityType.Heavy);
 
             lowGravityLogic.Apply(rb, ability == AbilityType.LowGravity);
+
         }
 
         private void FixedUpdate()

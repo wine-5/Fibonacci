@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 283fbe14df6f14846a46f227d9d93e0f, type: 3}
+  m_Name: AbilitySpriteSO
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.Core.AbilitySpriteSO
+  visuals:
+  - type: 3
+    icon: {fileID: 4303423874142921733, guid: 6ed38972fd0f4024c91aca33394d3cdd, type: 3}
+    effectColor: {r: 1, g: 0, b: 0, a: 0}

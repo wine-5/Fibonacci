@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Fibonacci.Event;
+using UnityEngine;
 
 /// <summary>
 /// エリアに割り当てられるアビリティの種類を定義します。
@@ -30,6 +31,47 @@ namespace Fibonacci.InGame.Core
         public const string ABILITY_ID_HEAVY_SLOW = "Heavy";
 
         private readonly Dictionary<int, AbilityType> areaAbilities = new();
+
+        [Header("Gimmick Settings")]
+        [SerializeField] private string targetTag = "SpecialGimmick";
+        private readonly List<GameObject> gimmickObjects = new();
+
+        [Header("Visual Data")]
+        [SerializeField] private AbilitySpriteSO abilitySpriteData;
+
+        private void Start()
+        {
+            RefreshGimmickCache();
+        }
+
+        public void RefreshGimmickCache()
+        {
+            gimmickObjects.Clear();
+            GameObject[] targets = GameObject.FindGameObjectsWithTag(targetTag);
+            gimmickObjects.AddRange(targets);
+        }
+
+        public void SetGimmicksActive(bool isActive)
+        {
+            foreach (var parentObj in gimmickObjects)
+            {
+                if (parentObj == null) continue;
+
+                foreach (Transform child in parentObj.transform)
+                {
+                    child.gameObject.SetActive(isActive);
+                }
+            }
+        }
+
+        /// <summary>
+        /// アビリティに応じたスプライトを取得します。
+        /// </summary>
+        public Sprite GetAbilitySprite(AbilityType type)
+        {
+            if (abilitySpriteData == null) return null;
+            return abilitySpriteData.GetSprite(type);
+        }
 
         /// <summary>
         /// 文字列IDからアビリティを判定し、指定されたエリアに登録します。
