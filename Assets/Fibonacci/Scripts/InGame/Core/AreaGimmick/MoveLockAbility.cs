@@ -4,9 +4,9 @@ namespace Fibonacci.InGame.Core.AreaGimmick
 {
     public class MoveLockAbility
     {
-        public void Apply(bool isLocked, UnityEngine.SpriteRenderer displayRenderer)
+        public void Apply(bool isLocked, int areaIndex, SpriteRenderer displayRenderer)
         {
-            AbilityManager.Instance.SetGimmicksActive(isLocked);
+            AbilityManager.Instance.SetGimmicksActive(areaIndex, isLocked);
 
 
             if (isLocked)
@@ -14,7 +14,7 @@ namespace Fibonacci.InGame.Core.AreaGimmick
                 Sprite targetSprite = AbilityManager.Instance.GetAbilitySprite(AbilityType.MoveLock);
 
                 displayRenderer.sprite = targetSprite;
-                displayRenderer.enabled = true; 
+                displayRenderer.enabled = true;
             }
             else
             {

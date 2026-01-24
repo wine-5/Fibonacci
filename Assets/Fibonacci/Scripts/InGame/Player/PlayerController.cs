@@ -63,6 +63,11 @@ namespace Fibonacci.InGame.Player
             else if (newPhase == GamePhase.Drawing)
             {
                 rb.simulated = false;
+
+                if (abilityDisplayRenderer != null) abilityDisplayRenderer.enabled = false;
+                isMovementLocked = false;
+
+                AbilityManager.Instance.Reset();
             }
         }
 
@@ -81,7 +86,7 @@ namespace Fibonacci.InGame.Player
 
             bool isMoveLocked = (ability == AbilityType.MoveLock);
             this.isMovementLocked = isMoveLocked;
-            moveLockLogic.Apply(isMoveLocked, abilityDisplayRenderer);
+            moveLockLogic.Apply(isMoveLocked, areaIndex, abilityDisplayRenderer);
 
             heavyLogic.Apply(rb, playerMove, ability == AbilityType.Heavy);
 

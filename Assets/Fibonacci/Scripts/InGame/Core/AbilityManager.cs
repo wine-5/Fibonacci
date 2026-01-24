@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Fibonacci.Event;
 using UnityEngine;
+using Fibonacci.InGame.Core.AreaGimmick;
 
 /// <summary>
 /// エリアに割り当てられるアビリティの種類を定義します。
@@ -51,7 +52,24 @@ namespace Fibonacci.InGame.Core
             gimmickObjects.AddRange(targets);
         }
 
-        public void SetGimmicksActive(bool isActive)
+        public void SetGimmicksActive(int areaIndex, bool isActive)
+        {
+            foreach (var parentObj in gimmickObjects)
+            {
+
+                var identifier = parentObj.GetComponent<AreaGimmickIdentifier>();
+
+                if (identifier != null && identifier.areaIndex != areaIndex)
+                {
+                    if (isActive) SetChildrenActive(parentObj, false);
+                    continue;
+                }
+
+                SetChildrenActive(parentObj, isActive);
+            }
+        }
+
+        public void AllGimmicksOff()
         {
             foreach (var parentObj in gimmickObjects)
             {
@@ -59,8 +77,16 @@ namespace Fibonacci.InGame.Core
 
                 foreach (Transform child in parentObj.transform)
                 {
-                    child.gameObject.SetActive(isActive);
+                    child.gameObject.SetActive(false);
                 }
+            }
+        }
+
+        private void SetChildrenActive(GameObject parent, bool active)
+        {
+            foreach (Transform child in parent.transform)
+            {
+                child.gameObject.SetActive(active);
             }
         }
 
@@ -98,6 +124,7 @@ namespace Fibonacci.InGame.Core
         public void Reset()
         {
             areaAbilities.Clear();
+            AllGimmicksOff();
         }
 
         /// <summary>
