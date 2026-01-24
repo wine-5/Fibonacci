@@ -13,7 +13,7 @@ namespace Fibonacci.InGame.Core.AreaGimmick
 
     public class GravityAbility
     {
-        public void Apply(Rigidbody2D rb, Transform trans, bool isInverted, float baseScale = 1.0f)
+        public void Apply(Rigidbody2D rb, Transform trans, bool isInverted)
         {
             float currentAbsScale = Mathf.Abs(rb.gravityScale);
             rb.gravityScale = isInverted ? -currentAbsScale : currentAbsScale;
