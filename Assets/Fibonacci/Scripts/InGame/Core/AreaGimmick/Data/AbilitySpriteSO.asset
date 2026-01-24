@@ -16,3 +16,6 @@ MonoBehaviour:
   - type: 3
     icon: {fileID: 4303423874142921733, guid: 6ed38972fd0f4024c91aca33394d3cdd, type: 3}
     effectColor: {r: 1, g: 0, b: 0, a: 0}
+  - type: 5
+    icon: {fileID: -909184209231543298, guid: e2b42ecdf887de146ada435603f4c95b, type: 3}
+    effectColor: {r: 1, g: 0, b: 0, a: 0}

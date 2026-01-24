@@ -26,6 +26,7 @@ namespace Fibonacci.InGame.Player
         private readonly MoveLockAbility moveLockLogic = new MoveLockAbility();
         private readonly HeavyAbility heavyLogic = new HeavyAbility();
         private readonly LowGravityAbility lowGravityLogic = new LowGravityAbility();
+        private readonly FireAbility fireLogic = new FireAbility();
         private bool isMovementLocked = false;
 
         private void Awake()
@@ -91,6 +92,8 @@ namespace Fibonacci.InGame.Player
             heavyLogic.Apply(rb, playerMove, ability == AbilityType.Heavy);
 
             lowGravityLogic.Apply(rb, ability == AbilityType.LowGravity);
+
+            fireLogic.Apply(ability == AbilityType.Fire, areaIndex, abilityDisplayRenderer);
 
         }
 

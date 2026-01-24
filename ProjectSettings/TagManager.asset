@@ -6,6 +6,8 @@ TagManager:
   tags:
   - LineTarget
   - SpecialGimmick
+  - IceGimmick
+  - FireGimmick
   layers:
   - Default
   - TransparentFX

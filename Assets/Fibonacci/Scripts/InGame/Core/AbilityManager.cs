@@ -14,6 +14,7 @@ public enum AbilityType
     LowGravity,
     MoveLock,
     Heavy,
+    Fire,
 }
 
 namespace Fibonacci.InGame.Core
@@ -30,11 +31,14 @@ namespace Fibonacci.InGame.Core
         public const string ABILITY_ID_LOW_GRAVITY = "LowGravity";
         public const string ABILITY_ID_MOVE_LOCK = "MoveLock";
         public const string ABILITY_ID_HEAVY_SLOW = "Heavy";
+        public const string ABILITY_ID_FIRE = "Fire";
 
         private readonly Dictionary<int, AbilityType> areaAbilities = new();
 
-        [Header("Gimmick Settings")]
-        [SerializeField] private string targetTag = "SpecialGimmick";
+        [Header("Gimmick Tags")]
+        [SerializeField] private string iceTag = "IceGimmick";
+        [SerializeField] private string fireTag = "FireGimmick";
+        [SerializeField] private string moveTag = "MovingGimmick";
         private readonly List<GameObject> gimmickObjects = new();
 
         [Header("Visual Data")]
@@ -48,36 +52,37 @@ namespace Fibonacci.InGame.Core
         public void RefreshGimmickCache()
         {
             gimmickObjects.Clear();
-            GameObject[] targets = GameObject.FindGameObjectsWithTag(targetTag);
-            gimmickObjects.AddRange(targets);
+            AddGimmicksByTag(iceTag);
+            AddGimmicksByTag(fireTag);
+            //AddGimmicksByTag(moveTag);
+        }
+
+        private void AddGimmicksByTag(string tag)
+        {
+            if (string.IsNullOrEmpty(tag)) return;
+            gimmickObjects.AddRange(GameObject.FindGameObjectsWithTag(tag));
         }
 
         public void SetGimmicksActive(int areaIndex, bool isActive)
         {
-            foreach (var parentObj in gimmickObjects)
-            {
-
-                var identifier = parentObj.GetComponent<AreaGimmickIdentifier>();
-
-                if (identifier != null && identifier.areaIndex != areaIndex)
-                {
-                    if (isActive) SetChildrenActive(parentObj, false);
-                    continue;
-                }
-
-                SetChildrenActive(parentObj, isActive);
-            }
+            FilterAndApply(areaIndex, iceTag, isActive);
         }
 
-        public void AllGimmicksOff()
+        public void SetGimmicksHidden(int areaIndex, bool isHidden)
+        {
+            FilterAndApply(areaIndex, fireTag, !isHidden);
+        }
+
+        private void FilterAndApply(int areaIndex, string tag, bool activeState)
         {
             foreach (var parentObj in gimmickObjects)
             {
-                if (parentObj == null) continue;
+                if (parentObj == null || !parentObj.CompareTag(tag)) continue;
 
-                foreach (Transform child in parentObj.transform)
+                var identifier = parentObj.GetComponent<AreaGimmickIdentifier>();
+                if (identifier != null && identifier.areaIndex == areaIndex)
                 {
-                    child.gameObject.SetActive(false);
+                    SetChildrenActive(parentObj, activeState);
                 }
             }
         }
@@ -87,6 +92,15 @@ namespace Fibonacci.InGame.Core
             foreach (Transform child in parent.transform)
             {
                 child.gameObject.SetActive(active);
+            }
+        }
+
+        public void AllGimmicksOff()
+        {
+            foreach (var parentObj in gimmickObjects)
+            {
+                if (parentObj == null) continue;
+                SetChildrenActive(parentObj, false);
             }
         }
 
@@ -139,6 +153,7 @@ namespace Fibonacci.InGame.Core
                 ABILITY_ID_MOVE_LOCK => AbilityType.MoveLock,
                 ABILITY_ID_HEAVY_SLOW => AbilityType.Heavy,
                 ABILITY_ID_LOW_GRAVITY => AbilityType.LowGravity,
+                ABILITY_ID_FIRE => AbilityType.Fire,
                 _ => AbilityType.None
             };
         }
