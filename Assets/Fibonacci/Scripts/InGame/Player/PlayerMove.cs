@@ -37,11 +37,10 @@ namespace Fibonacci.InGame.Player
         /// </summary>
         public void ExecutePhysicsUpdate()
         {
-            Vector2 targetVelocity = new Vector2(MoveInput.x * moveSpeed, rb.linearVelocity.y);
-            rb.linearVelocity = targetVelocity;
-
-            if (MoveInput.x != 0)
+            if (Mathf.Abs(MoveInput.x) > 0.01f)
             {
+                rb.linearVelocity = new Vector2(MoveInput.x * moveSpeed, rb.linearVelocity.y);
+
                 float yRotation = MoveInput.x > 0 ? ROTATION_RIGHT : ROTATION_LEFT;
                 transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
             }
@@ -53,7 +52,7 @@ namespace Fibonacci.InGame.Player
         /// </summary>
         public void SetCurrentSpeed(float speed)
         {
-            this.moveSpeed = speed;
+            moveSpeed = speed;
         }
 
         /// <summary>
