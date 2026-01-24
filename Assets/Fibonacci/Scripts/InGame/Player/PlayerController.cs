@@ -75,10 +75,9 @@ namespace Fibonacci.InGame.Player
 
             AbilityType ability = AbilityManager.Instance.GetAbilityAt(areaIndex);
 
-            float baseScale = (ability == AbilityType.LowGravity) ? 0.2f : 1.0f;
             bool isInverted = ability == AbilityType.GravityInvert;
 
-            gravityLogic.Apply(rb, transform, isInverted, baseScale);
+            gravityLogic.Apply(rb, transform, isInverted);
 
             isMovementLocked = ability == AbilityType.MoveLock;
             moveLockLogic.Apply(this, isMovementLocked);
