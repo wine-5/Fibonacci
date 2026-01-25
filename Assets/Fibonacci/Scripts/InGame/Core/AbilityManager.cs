@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Fibonacci.Event;
 using UnityEngine;
-using Fibonacci.InGame.Core.AreaGimmick;
+
 
 /// <summary>
 /// エリアに割り当てられるアビリティの種類を定義します。
@@ -35,88 +35,43 @@ namespace Fibonacci.InGame.Core
 
         private readonly Dictionary<int, AbilityType> areaAbilities = new();
 
-        [Header("Gimmick Tags")]
-        [SerializeField] private string iceTag = "IceGimmick";
-        [SerializeField] private string fireTag = "FireGimmick";
-        [SerializeField] private string moveTag = "MovingGimmick";
-        private readonly List<GameObject> gimmickObjects = new();
-
         [Header("Visual Data")]
         [SerializeField] private AbilitySpriteSO abilitySpriteData;
 
         private void Start()
         {
-            RefreshGimmickCache();
+            RestoreAllGimmicks();
         }
 
-        public void RefreshGimmickCache()
+        private void OnEnable()
         {
-            gimmickObjects.Clear();
-            AddGimmicksByTag(iceTag);
-            AddGimmicksByTag(fireTag);
-            //AddGimmicksByTag(moveTag);
+            GameEvents.OnRestart += RestoreAllGimmicks;
         }
 
-        private void AddGimmicksByTag(string tag)
+        private void OnDisable()
         {
-            if (string.IsNullOrEmpty(tag)) return;
-            gimmickObjects.AddRange(GameObject.FindGameObjectsWithTag(tag));
+            GameEvents.OnRestart -= OnGameRestart;
+        }
+
+        private void OnGameRestart()
+        {
+            RestoreAllGimmicks();
         }
 
         public void SetGimmicksActive(int areaIndex, bool isActive)
         {
-            FilterAndApply(areaIndex, iceTag, isActive);
-        }
-
-        public bool HasFireGimmickInArea(int areaIndex)
-        {
-            foreach (var gimmick in gimmickObjects)
-            {
-                if (gimmick == null) continue;
-
-                var identifier = gimmick.GetComponent<AreaGimmickIdentifier>();
-                if (gimmick.CompareTag("FireGimmick") && identifier != null && identifier.areaIndex == areaIndex)
-                {
-                    return true;
-                }
-            }
-            return false;
+            // GimmickVisibilityController側で完結するため空実装
         }
 
         public void SetGimmicksHidden(int areaIndex, bool isHidden)
         {
-            FilterAndApply(areaIndex, fireTag, !isHidden);
+            // GimmickVisibilityController側で完結するため空実装
         }
 
-        private void FilterAndApply(int areaIndex, string tag, bool activeState)
+        private void RestoreAllGimmicks()
         {
-            foreach (var parentObj in gimmickObjects)
-            {
-                if (parentObj == null || !parentObj.CompareTag(tag)) continue;
-
-                var identifier = parentObj.GetComponent<AreaGimmickIdentifier>();
-                if (identifier != null && identifier.areaIndex == areaIndex)
-                {
-                    SetChildrenActive(parentObj, activeState);
-                }
-            }
-        }
-
-        private void SetChildrenActive(GameObject parent, bool active)
-        {
-            foreach (Transform child in parent.transform)
-            {
-                child.gameObject.SetActive(active);
-            }
-        }
-
-        public void AllGimmicksOff()
-        {
-            foreach (var parentObj in gimmickObjects)
-            {
-                if (parentObj == null) continue;
-                SetChildrenActive(parentObj, false);
-            }
+            areaAbilities.Clear();
+            GameEvents.TriggerAbilitiesUpdated();
         }
 
         /// <summary>
@@ -152,8 +107,7 @@ namespace Fibonacci.InGame.Core
         /// </summary>
         public void Reset()
         {
-            areaAbilities.Clear();
-            AllGimmicksOff();
+            RestoreAllGimmicks();
         }
 
         /// <summary>

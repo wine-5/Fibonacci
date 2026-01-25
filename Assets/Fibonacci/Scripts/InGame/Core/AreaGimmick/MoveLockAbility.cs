@@ -9,7 +9,6 @@ namespace Fibonacci.InGame.Core.AreaGimmick
 
         public void Apply(Rigidbody2D rb, bool isLocked, int areaIndex, SpriteRenderer displayRenderer)
         {
-            AbilityManager.Instance.SetGimmicksActive(areaIndex, isLocked);
 
             if (isLocked)
             {

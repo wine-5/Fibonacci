@@ -10,7 +10,6 @@ namespace Fibonacci.InGame.Core.AreaGimmick
 
         public void Apply(bool isActive, int areaIndex, SpriteRenderer displayRenderer)
         {
-            AbilityManager.Instance.SetGimmicksHidden(areaIndex, isActive);
 
             if (isActive)
             {
@@ -32,7 +31,7 @@ namespace Fibonacci.InGame.Core.AreaGimmick
             }
 
             AbilityType currentAbility = AbilityManager.Instance.GetAbilityAt(currentAreaIndex);
-            bool isFiring = (currentAbility == AbilityType.Fire);
+            bool isFiring = currentAbility == AbilityType.Fire;
 
             if (isFiring)
             {
@@ -44,7 +43,6 @@ namespace Fibonacci.InGame.Core.AreaGimmick
                     
                     GameEvents.TriggerRestart();
                 }
-
             }
             else
             {
