@@ -68,6 +68,21 @@ namespace Fibonacci.InGame.Core
             FilterAndApply(areaIndex, iceTag, isActive);
         }
 
+        public bool HasFireGimmickInArea(int areaIndex)
+        {
+            foreach (var gimmick in gimmickObjects)
+            {
+                if (gimmick == null) continue;
+
+                var identifier = gimmick.GetComponent<AreaGimmickIdentifier>();
+                if (gimmick.CompareTag("FireGimmick") && identifier != null && identifier.areaIndex == areaIndex)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public void SetGimmicksHidden(int areaIndex, bool isHidden)
         {
             FilterAndApply(areaIndex, fireTag, !isHidden);

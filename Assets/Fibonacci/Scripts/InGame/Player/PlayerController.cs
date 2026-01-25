@@ -87,16 +87,14 @@ namespace Fibonacci.InGame.Player
 
             bool isMoveLocked = (ability == AbilityType.MoveLock);
             this.isMovementLocked = isMoveLocked;
-            moveLockLogic.Apply(rb,isMoveLocked, areaIndex, abilityDisplayRenderer);
+            moveLockLogic.Apply(rb, isMoveLocked, areaIndex, abilityDisplayRenderer);
 
-            heavyLogic.Apply(rb, playerMove, ability == AbilityType.Heavy);
+            heavyLogic.Apply(rb, playerMove, (ability == AbilityType.Heavy));
 
-            lowGravityLogic.Apply(rb, ability == AbilityType.LowGravity);
+            lowGravityLogic.Apply(rb, (ability == AbilityType.LowGravity));
 
-            fireLogic.Apply(ability == AbilityType.Fire, areaIndex, abilityDisplayRenderer);
-
+            fireLogic.Apply((ability == AbilityType.Fire), areaIndex, abilityDisplayRenderer);
         }
-
         private void FixedUpdate()
         {
             bool isPlaying = GameManager.Instance.CurrentPhase == GamePhase.Playing;
@@ -107,6 +105,11 @@ namespace Fibonacci.InGame.Player
             if (!isMovementLocked)
             {
                 playerMove.ExecutePhysicsUpdate();
+            }
+
+            if (playerCheck != null)
+            {
+                fireLogic.Tick(playerCheck.CurrentAreaIndex);
             }
         }
 

@@ -19,6 +19,7 @@ namespace Fibonacci.InGame
         [SerializeField] private PlayerInputManager playerInputManager;
 
         private int lastAreaIndex = -1;
+        public int CurrentAreaIndex => lastAreaIndex;
         private bool isInitializedOnStart = false;
 
         private void Start()
