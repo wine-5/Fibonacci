@@ -13,14 +13,10 @@ namespace Fibonacci.InGame.Core.AreaGimmick
             if (isLocked)
             {
                 rb.linearDamping = SlipperyDamping;
-
-                displayRenderer.sprite = AbilityManager.Instance.GetAbilitySprite(AbilityType.MoveLock);
-                displayRenderer.enabled = true;
             }
             else
             {
                 rb.linearDamping = NormalDamping;
-                displayRenderer.enabled = false;
             }
         }
     }

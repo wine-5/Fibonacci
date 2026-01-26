@@ -29,6 +29,8 @@ namespace Fibonacci.InGame.Core.MapGimmickGimmick
         {
             foreach (Transform child in transform)
             {
+                if (child.CompareTag("Player")) continue;
+                
                 if (child.gameObject.activeSelf != active)
                 {
                     child.gameObject.SetActive(active);

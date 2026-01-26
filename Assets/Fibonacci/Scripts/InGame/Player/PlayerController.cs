@@ -82,18 +82,32 @@ namespace Fibonacci.InGame.Player
 
             AbilityType ability = AbilityManager.Instance.GetAbilityAt(areaIndex);
 
-            bool isGravityInverted = (ability == AbilityType.GravityInvert);
+            bool isGravityInverted = ability == AbilityType.GravityInvert;
             gravityLogic.Apply(rb, transform, isGravityInverted);
 
-            bool isMoveLocked = (ability == AbilityType.MoveLock);
-            this.isMovementLocked = isMoveLocked;
+            bool isMoveLocked = ability == AbilityType.MoveLock;
+            isMovementLocked = isMoveLocked;
             moveLockLogic.Apply(rb, isMoveLocked, areaIndex, abilityDisplayRenderer);
 
-            heavyLogic.Apply(rb, playerMove, (ability == AbilityType.Heavy));
+            heavyLogic.Apply(rb, playerMove, ability == AbilityType.Heavy);
 
-            lowGravityLogic.Apply(rb, (ability == AbilityType.LowGravity));
+            lowGravityLogic.Apply(rb, ability == AbilityType.LowGravity);
 
-            fireLogic.Apply((ability == AbilityType.Fire), areaIndex, abilityDisplayRenderer);
+            fireLogic.Apply(ability == AbilityType.Fire, areaIndex, abilityDisplayRenderer);
+
+            if (abilityDisplayRenderer != null)
+            {
+                Sprite s = AbilityManager.Instance.GetAbilitySprite(ability);
+                if (s != null)
+                {
+                    abilityDisplayRenderer.sprite = s;
+                    abilityDisplayRenderer.enabled = true; 
+                }
+                else
+                {
+                    abilityDisplayRenderer.enabled = false; 
+                }
+            }
         }
         private void FixedUpdate()
         {
