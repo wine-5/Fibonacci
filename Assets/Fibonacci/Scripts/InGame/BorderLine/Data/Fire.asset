@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Fire
   m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.BorderLine.UI.BorderLineEffectDefinition
   id: Fire
-  icon: {fileID: 670804150163282626, guid: 8123182af98fb8147a7d6e6bf458ba4b, type: 3}
+  icon: {fileID: 21300000, guid: 06578da4e67aa8d4bb6fdf6bb517ce87, type: 3}

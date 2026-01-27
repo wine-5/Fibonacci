@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PowerUp
   m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.BorderLine.UI.BorderLineEffectDefinition
   id: PowerUp
-  icon: {fileID: 1314965101185929502, guid: cbc3de93d8c073148bfa4e9b375fe7f7, type: 3}
+  icon: {fileID: 21300000, guid: 82df698dc32fd074c83b37f8a53629c3, type: 3}
