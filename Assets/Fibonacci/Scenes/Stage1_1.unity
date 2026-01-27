@@ -139,6 +139,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: InGame
       objectReference: {fileID: 0}
+    - target: {fileID: 3347236534191068487, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: effectCatalog
+      value: 
+      objectReference: {fileID: 11400000, guid: 727150d9a59be55409b3ed438d5a88aa, type: 2}
+    - target: {fileID: 3581830702790540530, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3708983746114596251, guid: 9642415863345644999f100032ce848e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 40.66
@@ -183,6 +191,14 @@ PrefabInstance:
       propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6832308342231051713, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -48.96
+      objectReference: {fileID: 0}
+    - target: {fileID: 6832308342231051713, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.4
+      objectReference: {fileID: 0}
     - target: {fileID: 7021400571018210812, guid: 9642415863345644999f100032ce848e, type: 3}
       propertyPath: m_Parameters.textureMode
       value: 1
@@ -206,6 +222,10 @@ PrefabInstance:
     - target: {fileID: 8716299294320923751, guid: 9642415863345644999f100032ce848e, type: 3}
       propertyPath: m_TagString
       value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 8910074636121072251, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9095356416132029707, guid: 9642415863345644999f100032ce848e, type: 3}
       propertyPath: abilityDisplayRenderer
