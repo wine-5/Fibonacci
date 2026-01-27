@@ -11,6 +11,8 @@ namespace Fibonacci.InGame.Player
         private const float ROTATION_RIGHT = 0f;
         private const float ROTATION_LEFT = 180f;
 
+        private readonly LayerMask groundLayer;
+        private readonly float checkHeight = 0.1f;
         private float moveSpeed;
         private readonly Rigidbody2D rb;
         private readonly Transform transform;
@@ -22,11 +24,12 @@ namespace Fibonacci.InGame.Player
         /// </summary>
         public Vector2 MoveInput { get; set; }
 
-        public PlayerMove(Rigidbody2D rb, Transform transform, PlayerAnimationController anim, float speed)
+        public PlayerMove(Rigidbody2D rb, Transform transform, PlayerAnimationController anim, float speed, LayerMask groundLayer)
         {
             this.rb = rb;
             this.transform = transform;
             this.anim = anim;
+            this.groundLayer = groundLayer;
             moveSpeed = speed;
             initialPosition = transform.position;
         }
@@ -44,6 +47,18 @@ namespace Fibonacci.InGame.Player
                 float yRotation = MoveInput.x > 0 ? ROTATION_RIGHT : ROTATION_LEFT;
                 transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
             }
+        }
+
+        public void ExecuteJump(float force)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, force);
+        }
+
+        public void DrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Vector2 footPosition = (Vector2)transform.position + Vector2.down * 0.9f;
+            Gizmos.DrawWireCube(footPosition, new Vector2(0.5f, checkHeight));
         }
 
         /// <summary>
@@ -64,6 +79,13 @@ namespace Fibonacci.InGame.Player
             {
                 anim.UpdateMoveAnimation(MoveInput);
             }
+        }
+
+        public bool IsGrounded()
+        {
+            Vector2 footPosition = (Vector2)transform.position + Vector2.down * 0.9f;
+            Collider2D hit = Physics2D.OverlapBox(footPosition, new Vector2(0.5f, checkHeight), 0f, groundLayer);
+            return hit != null;
         }
 
         /// <summary>

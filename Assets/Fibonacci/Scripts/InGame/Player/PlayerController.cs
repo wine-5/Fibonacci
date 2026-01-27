@@ -16,8 +16,10 @@ namespace Fibonacci.InGame.Player
     {
         [Header("Settings")]
         [SerializeField] private float moveSpeed = 5f;
+        [SerializeField] private float jumpPower = 12f;
         [SerializeField] private PlayerAnimationController animationController;
         [SerializeField] private SpriteRenderer abilityDisplayRenderer;
+        [SerializeField] private LayerMask groundLayer;
 
         private PlayerMove playerMove;
         private Rigidbody2D rb;
@@ -28,13 +30,14 @@ namespace Fibonacci.InGame.Player
         private readonly LowGravityAbility lowGravityLogic = new LowGravityAbility();
         private readonly FireAbility fireLogic = new FireAbility();
         private readonly PowerUpAbility powerUpLogic = new PowerUpAbility();
+        private readonly JumpAbility jumpLogic = new JumpAbility();
         private bool isMovementLocked = false;
 
         private void Awake()
         {
             rb = GetComponent<Rigidbody2D>();
             playerCheck = GetComponent<PlayerCheck>();
-            playerMove = new PlayerMove(rb, transform, animationController, moveSpeed);
+            playerMove = new PlayerMove(rb, transform, animationController, moveSpeed, groundLayer);
         }
 
         private void OnEnable()
@@ -93,6 +96,9 @@ namespace Fibonacci.InGame.Player
             heavyLogic.Apply(rb, playerMove, ability == AbilityType.Heavy);
 
             lowGravityLogic.Apply(rb, ability == AbilityType.LowGravity);
+
+            jumpLogic.Apply(ability == AbilityType.Jump);
+
             powerUpLogic.Apply(rb, ability == AbilityType.PowerUp);
 
             fireLogic.Apply(ability == AbilityType.Fire, areaIndex, abilityDisplayRenderer);
@@ -103,11 +109,11 @@ namespace Fibonacci.InGame.Player
                 if (s != null)
                 {
                     abilityDisplayRenderer.sprite = s;
-                    abilityDisplayRenderer.enabled = true; 
+                    abilityDisplayRenderer.enabled = true;
                 }
                 else
                 {
-                    abilityDisplayRenderer.enabled = false; 
+                    abilityDisplayRenderer.enabled = false;
                 }
             }
         }
@@ -137,6 +143,20 @@ namespace Fibonacci.InGame.Player
         {
             playerMove.MoveInput = input;
             playerMove.UpdateAnimation();
+        }
+
+        public void OnJumpInput()
+        {
+            if (GameManager.Instance.CurrentPhase == GamePhase.Playing && jumpLogic.CanJump && playerMove.IsGrounded())
+                playerMove.ExecuteJump(jumpPower);
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (playerMove != null)
+            {
+                playerMove.DrawGizmos();
+            }
         }
 
         /// <summary>

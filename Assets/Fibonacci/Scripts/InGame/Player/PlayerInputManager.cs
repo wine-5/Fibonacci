@@ -41,6 +41,14 @@ namespace Fibonacci.InGame.Player
             }
         }
 
+        public void OnJump(InputAction.CallbackContext context)
+        {
+            if (context.started && playerController != null)
+            {
+                playerController.OnJumpInput();
+            }
+        }
+
         /// <summary>
         /// リスタートボタンの入力を検知し、システム全体へリスタートイベントを発火させます。
         /// </summary>

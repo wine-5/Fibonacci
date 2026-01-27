@@ -16,6 +16,7 @@ public enum AbilityType
     Heavy,
     Fire,
     PowerUp,
+    Jump,
 }
 
 namespace Fibonacci.InGame.Core
@@ -34,6 +35,7 @@ namespace Fibonacci.InGame.Core
         public const string ABILITY_ID_HEAVY_SLOW = "Heavy";
         public const string ABILITY_ID_FIRE = "Fire";
         public const string ABILITY_ID_POWER_UP = "PowerUp";
+        public const string ABILITY_ID_JUMP = "Jump";
 
         private readonly Dictionary<int, AbilityType> areaAbilities = new();
 
@@ -117,6 +119,7 @@ namespace Fibonacci.InGame.Core
                 ABILITY_ID_LOW_GRAVITY => AbilityType.LowGravity,
                 ABILITY_ID_FIRE => AbilityType.Fire,
                 ABILITY_ID_POWER_UP => AbilityType.PowerUp,
+                ABILITY_ID_JUMP => AbilityType.Jump,
                 
                 _ => AbilityType.None
             };
