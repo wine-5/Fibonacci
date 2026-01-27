@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbce18fe5ce929845a55ca81af4a938d, type: 3}
   m_Name: Jump
   m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.BorderLine.UI.BorderLineEffectDefinition
-  id: Fire
-  icon: {fileID: 670804150163282626, guid: 8123182af98fb8147a7d6e6bf458ba4b, type: 3}
+  id: Jump
+  icon: {fileID: 21300000, guid: af34cad9a50a94c42b0907fd58d6f99c, type: 3}
