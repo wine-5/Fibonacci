@@ -19,10 +19,12 @@ namespace Fibonacci.InGame.Player
         private readonly PlayerAnimationController anim;
         private readonly Vector3 initialPosition;
 
+
         /// <summary>
         /// 現在の移動入力ベクトルを取得または設定します。
         /// </summary>
         public Vector2 MoveInput { get; set; }
+        public bool IsSlippery { get; set; }
 
         public PlayerMove(Rigidbody2D rb, Transform transform, PlayerAnimationController anim, float speed, LayerMask groundLayer)
         {
@@ -46,6 +48,10 @@ namespace Fibonacci.InGame.Player
 
                 float yRotation = MoveInput.x > 0 ? ROTATION_RIGHT : ROTATION_LEFT;
                 transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
+            }
+            else if (!IsSlippery)
+            {
+                rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
             }
         }
 

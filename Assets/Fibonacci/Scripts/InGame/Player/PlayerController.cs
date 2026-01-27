@@ -91,6 +91,7 @@ namespace Fibonacci.InGame.Player
 
             bool isMoveLocked = ability == AbilityType.MoveLock;
             isMovementLocked = isMoveLocked;
+            playerMove.IsSlippery = isMoveLocked;
             moveLockLogic.Apply(rb, isMoveLocked, areaIndex, abilityDisplayRenderer);
 
             heavyLogic.Apply(rb, playerMove, ability == AbilityType.Heavy);
