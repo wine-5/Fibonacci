@@ -84,6 +84,9 @@ namespace Fibonacci.InGame.Player
         {
             if (GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
 
+            rb.mass = 1.0f;
+            playerMove.IsSlippery = false;
+
             AbilityType ability = AbilityManager.Instance.GetAbilityAt(areaIndex);
 
             bool isGravityInverted = ability == AbilityType.GravityInvert;
@@ -118,6 +121,7 @@ namespace Fibonacci.InGame.Player
                 }
             }
         }
+        
         private void FixedUpdate()
         {
             bool isPlaying = GameManager.Instance.CurrentPhase == GamePhase.Playing;
