@@ -1390,6 +1390,10 @@ PrefabInstance:
       propertyPath: effectCatalog
       value: 
       objectReference: {fileID: 11400000, guid: 23fd633fcbcd3804c8368e1adf4c2a09, type: 2}
+    - target: {fileID: 3581830702790540530, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3708983746114596251, guid: 9642415863345644999f100032ce848e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
