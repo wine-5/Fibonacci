@@ -163,6 +163,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -270
       objectReference: {fileID: 0}
+    - target: {fileID: 2396154113632668492, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
+      propertyPath: targetScene
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708921975167912492, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1b2d3e96ba9a6ed4ca2ce4bf2d692d6c, type: 3}
     - target: {fileID: 2972869884769114797, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
       propertyPath: m_LocalScale.x
       value: 4.9021
@@ -175,6 +183,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 270
       objectReference: {fileID: 0}
+    - target: {fileID: 3025551246343198388, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3e4a91af2fe55cc4f9860319657ebcde, type: 3}
     - target: {fileID: 3431434439909445966, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -255,9 +267,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3497830370668828223, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
+      propertyPath: m_Color.a
+      value: 0.74509805
+      objectReference: {fileID: 0}
     - target: {fileID: 4321266713564795655, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
       propertyPath: m_Name
       value: GameSelect
+      objectReference: {fileID: 0}
+    - target: {fileID: 4677008496910538768, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
+      propertyPath: m_text
+      value: '2-1
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 4846436363843513415, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
       propertyPath: m_LocalScale.x
@@ -271,9 +293,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -270
       objectReference: {fileID: 0}
+    - target: {fileID: 5949453194058019839, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
+      propertyPath: targetScene
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6057078624504818495, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
       propertyPath: targetScene
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6095654158914522237, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a957e05052daf8a409428c14549651a2, type: 3}
+    - target: {fileID: 6158335970846758642, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
+      propertyPath: m_text
+      value: 2-2
       objectReference: {fileID: 0}
     - target: {fileID: 6593449283310577699, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -286,6 +320,14 @@ PrefabInstance:
     - target: {fileID: 6593449283310577699, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
       propertyPath: m_LocalPosition.z
       value: -666
+      objectReference: {fileID: 0}
+    - target: {fileID: 6949868293269582777, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f6affe99266e40a4f8dac3199021c825, type: 3}
+    - target: {fileID: 8432468678762762860, guid: b0578671f7a4ca6498bafbc12bfd790c, type: 3}
+      propertyPath: m_Color.a
+      value: 0.74509805
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
