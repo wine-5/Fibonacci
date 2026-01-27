@@ -15,6 +15,7 @@ public enum AbilityType
     MoveLock,
     Heavy,
     Fire,
+    PowerUp,
 }
 
 namespace Fibonacci.InGame.Core
@@ -32,6 +33,7 @@ namespace Fibonacci.InGame.Core
         public const string ABILITY_ID_MOVE_LOCK = "MoveLock";
         public const string ABILITY_ID_HEAVY_SLOW = "Heavy";
         public const string ABILITY_ID_FIRE = "Fire";
+        public const string ABILITY_ID_POWER_UP = "PowerUp";
 
         private readonly Dictionary<int, AbilityType> areaAbilities = new();
 
@@ -58,15 +60,6 @@ namespace Fibonacci.InGame.Core
             RestoreAllGimmicks();
         }
 
-        public void SetGimmicksActive(int areaIndex, bool isActive)
-        {
-            // GimmickVisibilityController側で完結するため空実装
-        }
-
-        public void SetGimmicksHidden(int areaIndex, bool isHidden)
-        {
-            // GimmickVisibilityController側で完結するため空実装
-        }
 
         private void RestoreAllGimmicks()
         {
@@ -123,6 +116,8 @@ namespace Fibonacci.InGame.Core
                 ABILITY_ID_HEAVY_SLOW => AbilityType.Heavy,
                 ABILITY_ID_LOW_GRAVITY => AbilityType.LowGravity,
                 ABILITY_ID_FIRE => AbilityType.Fire,
+                ABILITY_ID_POWER_UP => AbilityType.PowerUp,
+                
                 _ => AbilityType.None
             };
         }
