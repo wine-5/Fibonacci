@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.Core.AbilitySpriteSO
   visuals:
   - type: 3
-    icon: {fileID: 4303423874142921733, guid: 6ed38972fd0f4024c91aca33394d3cdd, type: 3}
-    effectColor: {r: 1, g: 0, b: 0, a: 0}
+    icon: {fileID: 4366178942990776957, guid: 5a448cc07b6e09343924bf933b0cb70e, type: 3}
+    effectColor: {r: 1, g: 1, b: 1, a: 0.34509805}
   - type: 5
     icon: {fileID: -909184209231543298, guid: e2b42ecdf887de146ada435603f4c95b, type: 3}
-    effectColor: {r: 1, g: 0, b: 0, a: 0}
+    effectColor: {r: 1, g: 0, b: 0, a: 0.3764706}
