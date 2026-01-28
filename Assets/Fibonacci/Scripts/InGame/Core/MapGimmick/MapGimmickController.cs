@@ -18,7 +18,7 @@ namespace Fibonacci.InGame.Core.MapGimmickGimmick
 
             AbilityType currentAbility = AbilityManager.Instance.GetAbilityAt(areaIndex);
 
-            bool isMatched = (currentAbility == targetAbility);
+            bool isMatched = currentAbility == targetAbility;
 
             bool shouldBeActive = activeWhenMatched ? isMatched : !isMatched;
 
