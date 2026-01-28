@@ -58,9 +58,12 @@ namespace Fibonacci.InGame.Core
 
         /// <summary>
         /// アビリティに応じたスプライトを取得します。
-        /// </summary>
         public Sprite GetAbilitySprite(AbilityType type)
         {
+            if (abilitySpriteData == null)
+            {
+                return null;
+            }
             return abilitySpriteData.GetSprite(type);
         }
 
