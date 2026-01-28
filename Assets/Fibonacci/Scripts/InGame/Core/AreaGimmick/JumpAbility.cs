@@ -13,12 +13,12 @@ namespace Fibonacci.InGame.Core.AreaGimmick
 
         /// <summary>
         /// ジャンプ許可状態を更新します。
+        /// エリア外に出た場合はジャンプ不可状態にリセットします。
         /// </summary>
         public void Apply(bool isActive)
         {
-            if (!isActive) return;
-
-            CanJump = true;
+            // ルールに従い、引数の状態をそのままプロパティに反映させる
+            CanJump = isActive;
         }
     }
 }
