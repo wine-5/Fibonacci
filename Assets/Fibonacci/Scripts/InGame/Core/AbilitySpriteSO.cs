@@ -31,7 +31,6 @@ namespace Fibonacci.InGame.Core
         /// </summary>
         public Sprite GetSprite(AbilityType type)
         {
-            // キャッシュが空の場合のみ構築する（isInitializedフラグを廃止し、カウントで判定）
             if (spriteCache.Count == 0 && visuals.Count > 0)
             {
                 RebuildCache();
