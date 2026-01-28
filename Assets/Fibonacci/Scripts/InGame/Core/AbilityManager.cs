@@ -2,10 +2,8 @@ using System.Collections.Generic;
 using Fibonacci.Event;
 using UnityEngine;
 
-
 /// <summary>
 /// エリアに割り当てられるアビリティの種類を定義します。
-/// AbilityManagerと同じ名前空間に置くことで、参照エラーを防止します。
 /// </summary>
 public enum AbilityType
 {
@@ -28,6 +26,7 @@ namespace Fibonacci.InGame.Core
     public class AbilityManager : Singleton<AbilityManager>
     {
         protected override bool UseDontDestroyOnLoad => true;
+
         public const string ABILITY_ID_ZERO_GRAVITY = "ZeroGravity";
         public const string ABILITY_ID_GRAVITY = "Gravity";
         public const string ABILITY_ID_LOW_GRAVITY = "LowGravity";
@@ -54,19 +53,7 @@ namespace Fibonacci.InGame.Core
 
         private void OnDisable()
         {
-            GameEvents.OnRestart -= OnGameRestart;
-        }
-
-        private void OnGameRestart()
-        {
-            RestoreAllGimmicks();
-        }
-
-
-        private void RestoreAllGimmicks()
-        {
-            areaAbilities.Clear();
-            GameEvents.TriggerAbilitiesUpdated();
+            GameEvents.OnRestart -= RestoreAllGimmicks;
         }
 
         /// <summary>
@@ -74,7 +61,6 @@ namespace Fibonacci.InGame.Core
         /// </summary>
         public Sprite GetAbilitySprite(AbilityType type)
         {
-            if (abilitySpriteData == null) return null;
             return abilitySpriteData.GetSprite(type);
         }
 
@@ -94,7 +80,7 @@ namespace Fibonacci.InGame.Core
         /// </summary>
         public AbilityType GetAbilityAt(int areaIndex)
         {
-            return areaAbilities.TryGetValue(areaIndex, out var type) ? type : AbilityType.None;
+            return areaAbilities.TryGetValue(areaIndex, out AbilityType type) ? type : AbilityType.None;
         }
 
         /// <summary>
@@ -103,6 +89,15 @@ namespace Fibonacci.InGame.Core
         public void Reset()
         {
             RestoreAllGimmicks();
+        }
+
+        /// <summary>
+        /// すべてのアビリティ情報をリセットし、更新通知を発行します。
+        /// </summary>
+        private void RestoreAllGimmicks()
+        {
+            areaAbilities.Clear();
+            GameEvents.TriggerAbilitiesUpdated();
         }
 
         /// <summary>
@@ -120,7 +115,6 @@ namespace Fibonacci.InGame.Core
                 ABILITY_ID_FIRE => AbilityType.Fire,
                 ABILITY_ID_POWER_UP => AbilityType.PowerUp,
                 ABILITY_ID_JUMP => AbilityType.Jump,
-                
                 _ => AbilityType.None
             };
         }
