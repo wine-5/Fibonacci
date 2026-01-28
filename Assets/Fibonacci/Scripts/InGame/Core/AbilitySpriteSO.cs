@@ -19,20 +19,32 @@ namespace Fibonacci.InGame.Core
         {
             public AbilityType type;
             public Sprite icon;
+            public Color effectColor;
         }
 
         [SerializeField] private List<AbilityVisual> visuals;
 
         private readonly Dictionary<AbilityType, Sprite> spriteCache = new Dictionary<AbilityType, Sprite>();
-        private bool isInitialized = false;
+
+        /// <summary>
+        /// 指定されたアビリティタイプに対応するアイコンスプライトを取得します。
+        /// </summary>
+        public Sprite GetSprite(AbilityType type)
+        {
+            // キャッシュが空の場合のみ構築する（isInitializedフラグを廃止し、カウントで判定）
+            if (spriteCache.Count == 0 && visuals.Count > 0)
+            {
+                RebuildCache();
+            }
+
+            return spriteCache.TryGetValue(type, out Sprite sprite) ? sprite : null;
+        }
 
         /// <summary>
         /// リスト構造の視覚情報を Dictionary にキャッシュし、検索効率を最適化します。
         /// </summary>
-        private void InitializeCache()
+        private void RebuildCache()
         {
-            if (isInitialized) return;
-
             spriteCache.Clear();
             foreach (AbilityVisual visual in visuals)
             {
@@ -41,17 +53,14 @@ namespace Fibonacci.InGame.Core
                     spriteCache.Add(visual.type, visual.icon);
                 }
             }
-            isInitialized = true;
         }
 
         /// <summary>
-        /// 指定されたアビリティタイプに対応するアイコンスプライトを取得します。
+        /// エディタ上で値が変更された際にキャッシュをクリアし、次回の取得時に最新の情報が反映されるようにします。
         /// </summary>
-        public Sprite GetSprite(AbilityType type)
+        private void OnValidate()
         {
-            InitializeCache();
-
-            return spriteCache.TryGetValue(type, out Sprite sprite) ? sprite : null;
+            spriteCache.Clear();
         }
     }
 }
