@@ -77,7 +77,7 @@ namespace Fibonacci.InGame.Player
 
             if (AbilityManager.Instance != null)
             {
-                AbilityManager.Instance.Reset();
+                AbilityManager.Instance.ResetAbilities();
             }
 
             EffectIdArea0 = "";

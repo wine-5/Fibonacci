@@ -1,12 +1,11 @@
 using Fibonacci.Event;
-using UnityEngine;
 
 namespace Fibonacci.InGame.Core
 {
     public enum GamePhase
     {
-        Drawing, // 線を引いている最中（これだけ発動）
-        Playing  // ゲームプレイ中（プレイヤーが動き、判定が始まる）
+        Drawing, 
+        Playing 
     }
 
     /// <summary>
@@ -21,16 +20,13 @@ namespace Fibonacci.InGame.Core
 
         protected override void Awake()
         {
-            base.Awake(); // シングルトンの初期化
+            base.Awake(); 
 
-            // 新しいシーン（同じステージの再来含む）が始まったら、
-            // 前回のエリア効果をクリアする
             if (AbilityManager.Instance != null)
             {
-                AbilityManager.Instance.Reset();
+                AbilityManager.Instance.ResetAbilities();
             }
         }
-        // 線を引き終わり、色塗りと効果選択が終わったらこれを呼ぶ
         public void StartGame()
         {
             CurrentPhase = GamePhase.Playing;

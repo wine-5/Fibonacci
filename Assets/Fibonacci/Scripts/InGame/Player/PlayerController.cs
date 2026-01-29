@@ -70,7 +70,7 @@ namespace Fibonacci.InGame.Player
                 abilityDisplayRenderer.enabled = false;
                 isMovementLocked = false;
                 fireLogic.Reset();
-                AbilityManager.Instance.Reset();
+                AbilityManager.Instance.ResetAbilities();
             }
         }
 

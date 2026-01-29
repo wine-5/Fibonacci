@@ -20,104 +20,93 @@ public enum AbilityType
 namespace Fibonacci.InGame.Core
 {
     /// <summary>
-    /// 各エリアに割り振られたアビリティの状態を管理するクラス。
-    /// プロジェクト共通の Singleton 基底クラスを継承し、エリアごとの能力設定と保持を担当します。
+    /// 各エリアに割り振られたアビリティの状態を管理するシングルトンクラス。
+    /// ステージ内のアビリティ配置情報を保持し、更新を通知します。
     /// </summary>
     public class AbilityManager : Singleton<AbilityManager>
     {
+        // シーンを跨いで保持するが、シーンロード時に適切に初期化する必要がある
         protected override bool UseDontDestroyOnLoad => true;
 
-        public const string ABILITY_ID_ZERO_GRAVITY = "ZeroGravity";
-        public const string ABILITY_ID_GRAVITY = "Gravity";
-        public const string ABILITY_ID_LOW_GRAVITY = "LowGravity";
-        public const string ABILITY_ID_MOVE_LOCK = "MoveLock";
-        public const string ABILITY_ID_HEAVY_SLOW = "Heavy";
-        public const string ABILITY_ID_FIRE = "Fire";
-        public const string ABILITY_ID_POWER_UP = "PowerUp";
-        public const string ABILITY_ID_JUMP = "Jump";
+        private const string ID_GRAVITY = "Gravity";
+        private const string ID_LOW_GRAVITY = "LowGravity";
+        private const string ID_MOVE_LOCK = "MoveLock";
+        private const string ID_HEAVY = "Heavy";
+        private const string ID_FIRE = "Fire";
+        private const string ID_POWER_UP = "PowerUp";
+        private const string ID_JUMP = "Jump";
 
         private readonly Dictionary<int, AbilityType> areaAbilities = new();
 
         [Header("Visual Data")]
         [SerializeField] private AbilitySpriteSO abilitySpriteData;
 
-        private void Start()
-        {
-            RestoreAllGimmicks();
-        }
-
         private void OnEnable()
         {
-            GameEvents.OnRestart += RestoreAllGimmicks;
+            UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+            GameEvents.OnRestart += ClearAllAbilities;
         }
 
         private void OnDisable()
         {
-            GameEvents.OnRestart -= RestoreAllGimmicks;
+            UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
+            GameEvents.OnRestart -= ClearAllAbilities;
         }
 
         /// <summary>
-        /// アビリティに応じたスプライトを取得します。
+        /// 引数の Scene を完全修飾名にして、名前空間の衝突を回避します
+        /// </summary>
+        private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
+        {
+            ClearAllAbilities();
+        }
+
         public Sprite GetAbilitySprite(AbilityType type)
         {
-            if (abilitySpriteData == null)
-            {
-                return null;
-            }
-            return abilitySpriteData.GetSprite(type);
+            return abilitySpriteData != null ? abilitySpriteData.GetSprite(type) : null;
         }
 
-        /// <summary>
-        /// 文字列IDからアビリティを判定し、指定されたエリアに登録します。
-        /// </summary>
         public void SetAreaAbility(int areaIndex, string abilityId)
         {
             string id = abilityId.Trim();
             areaAbilities[areaIndex] = ConvertIdToType(id);
-
             GameEvents.TriggerAbilitiesUpdated();
         }
 
-        /// <summary>
-        /// 指定されたエリアに現在割り当てられているアビリティを取得します。
-        /// </summary>
         public AbilityType GetAbilityAt(int areaIndex)
         {
             return areaAbilities.TryGetValue(areaIndex, out AbilityType type) ? type : AbilityType.None;
         }
 
         /// <summary>
-        /// 保持しているすべてのエリア能力情報をクリアします。
+        /// 外部（PlayerController等）から明示的にリセットを行うための公開メソッド。
         /// </summary>
-        public void Reset()
+        public void ResetAbilities()
         {
-            RestoreAllGimmicks();
+            ClearAllAbilities();
         }
 
         /// <summary>
-        /// すべてのアビリティ情報をリセットし、更新通知を発行します。
+        /// 全てのアビリティ情報を削除し、システム全体に通知します。
         /// </summary>
-        private void RestoreAllGimmicks()
+        private void ClearAllAbilities()
         {
             areaAbilities.Clear();
             GameEvents.TriggerAbilitiesUpdated();
         }
 
-        /// <summary>
-        /// 文字列IDを内部で使用する列挙型 AbilityType に変換します。
-        /// </summary>
         private AbilityType ConvertIdToType(string id)
         {
             return id switch
             {
-                ABILITY_ID_ZERO_GRAVITY => AbilityType.GravityInvert,
-                ABILITY_ID_GRAVITY => AbilityType.GravityInvert,
-                ABILITY_ID_MOVE_LOCK => AbilityType.MoveLock,
-                ABILITY_ID_HEAVY_SLOW => AbilityType.Heavy,
-                ABILITY_ID_LOW_GRAVITY => AbilityType.LowGravity,
-                ABILITY_ID_FIRE => AbilityType.Fire,
-                ABILITY_ID_POWER_UP => AbilityType.PowerUp,
-                ABILITY_ID_JUMP => AbilityType.Jump,
+                ID_GRAVITY => AbilityType.GravityInvert,
+                "ZeroGravity" => AbilityType.GravityInvert, 
+                ID_MOVE_LOCK => AbilityType.MoveLock,
+                ID_HEAVY => AbilityType.Heavy,
+                ID_LOW_GRAVITY => AbilityType.LowGravity,
+                ID_FIRE => AbilityType.Fire,
+                ID_POWER_UP => AbilityType.PowerUp,
+                ID_JUMP => AbilityType.Jump,
                 _ => AbilityType.None
             };
         }
