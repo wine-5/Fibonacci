@@ -4,7 +4,6 @@ namespace Fibonacci.InGame.Player
 {
     /// <summary>
     /// プレイヤーの移動、物理挙動、および向きの制御に関する純粋な計算ロジックを管理するクラス。
-    /// Rigidbody2D を直接操作して速度を適用し、入力方向に基づいたキャラクターの回転処理を行います。
     /// </summary>
     public class PlayerMove
     {
@@ -24,14 +23,7 @@ namespace Fibonacci.InGame.Player
         
         private float moveSpeed;
 
-        /// <summary>
-        /// 現在の移動入力ベクトルを取得または設定します。
-        /// </summary>
         public Vector2 MoveInput { get; set; }
-
-        /// <summary>
-        /// 滑りやすい床の状態かどうかを取得または設定します。
-        /// </summary>
         public bool IsSlippery { get; set; }
 
         public PlayerMove(Rigidbody2D rb, Transform transform, PlayerAnimationController anim, float speed, LayerMask groundLayer)
@@ -46,79 +38,68 @@ namespace Fibonacci.InGame.Player
         }
 
         /// <summary>
-        /// 水平方向の移動速度を適用し、入力方向に応じてキャラクターの向きを更新します。
+        /// 物理更新のメイン処理。各責務ごとのサブメソッドを呼び出します。
         /// </summary>
         public void ExecutePhysicsUpdate()
         {
-            if (Mathf.Abs(MoveInput.x) > MOVE_THRESHOLD)
+            ApplyHorizontalMovement();
+            ApplyRotation();
+        }
+
+        /// <summary>
+        /// 水平方向の速度を適用します。入力がないかつ滑り状態でなければ停止させます。
+        /// </summary>
+        private void ApplyHorizontalMovement()
+        {
+            bool hasInput = Mathf.Abs(MoveInput.x) > MOVE_THRESHOLD;
+
+            if (hasInput)
             {
                 rb.linearVelocity = new Vector2(MoveInput.x * moveSpeed, rb.linearVelocity.y);
-
-                float yRotation = MoveInput.x > 0 ? ROTATION_RIGHT : ROTATION_LEFT;
-                transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
-                return;
             }
-
-            if (!IsSlippery)
+            else if (!IsSlippery)
             {
                 rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
             }
         }
 
         /// <summary>
-        /// 指定された力でジャンプ処理を実行します。
+        /// 移動入力に基づいてキャラクターの向きを更新します。
         /// </summary>
+        private void ApplyRotation()
+        {
+            if (Mathf.Abs(MoveInput.x) <= MOVE_THRESHOLD) return;
+
+            float yRotation = MoveInput.x > 0 ? ROTATION_RIGHT : ROTATION_LEFT;
+            transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
+        }
+
         public void ExecuteJump(float force)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, force);
         }
 
-        /// <summary>
-        /// 接地判定用のデバッグギズモを描画します。
-        /// </summary>
-        public void DrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Vector2 footPosition = (Vector2)transform.position + Vector2.down * GROUND_CHECK_OFFSET_Y;
-            Gizmos.DrawWireCube(footPosition, new Vector2(GROUND_CHECK_WIDTH, GROUND_CHECK_HEIGHT));
-        }
-
-        /// <summary>
-        /// プレイヤーの移動速度を動的に変更します。
-        /// </summary>
-        public void SetCurrentSpeed(float speed)
-        {
-            moveSpeed = speed;
-        }
-
-        /// <summary>
-        /// 現在の移動入力状態をアニメーションコントローラーに通知します。
-        /// </summary>
-        public void UpdateAnimation()
-        {
-            anim.UpdateMoveAnimation(MoveInput);
-        }
-
-        /// <summary>
-        /// 足元のコライダを検知して接地状態を判定します。
-        /// </summary>
         public bool IsGrounded()
         {
-            Vector2 footPosition = (Vector2)transform.position + Vector2.down * GROUND_CHECK_OFFSET_Y;
+            Vector2 footPosition = GetFootPosition();
             return Physics2D.OverlapBox(footPosition, new Vector2(GROUND_CHECK_WIDTH, GROUND_CHECK_HEIGHT), 0f, groundLayer);
         }
 
-        /// <summary>
-        /// 移動速度をデフォルト値にリセットします。
-        /// </summary>
-        public void ResetSpeed()
+        public void DrawGizmos()
         {
-            moveSpeed = defaultSpeed;
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(GetFootPosition(), new Vector2(GROUND_CHECK_WIDTH, GROUND_CHECK_HEIGHT));
         }
 
-        /// <summary>
-        /// プレイヤーの位置、物理速度、入力を初期状態にリセットします。
-        /// </summary>
+        private Vector2 GetFootPosition()
+        {
+            return (Vector2)transform.position + Vector2.down * GROUND_CHECK_OFFSET_Y;
+        }
+
+        public void SetCurrentSpeed(float speed) => moveSpeed = speed;
+        public void ResetSpeed() => moveSpeed = defaultSpeed;
+        public void UpdateAnimation() => anim.UpdateMoveAnimation(MoveInput);
+
         public void ResetPosition()
         {
             transform.position = initialPosition;
