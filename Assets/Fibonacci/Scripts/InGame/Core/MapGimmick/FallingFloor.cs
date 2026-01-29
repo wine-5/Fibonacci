@@ -24,7 +24,7 @@ namespace Fibonacci.InGame.Core.MapGimmick
         private Quaternion startRotation;
         private bool isFalling = false;
         private Collider2D col;
-        private new SpriteRenderer renderer;
+        private SpriteRenderer spriteRenderer;
 
         private WaitForSeconds cachedFallDelay;
         private WaitForSeconds cachedDestroyDelay;
@@ -34,7 +34,7 @@ namespace Fibonacci.InGame.Core.MapGimmick
         {
             rb = GetComponent<Rigidbody2D>();
             col = GetComponent<Collider2D>();
-            renderer = GetComponent<SpriteRenderer>();
+            spriteRenderer = GetComponent<SpriteRenderer>();
 
             startPosition = transform.position;
             startRotation = transform.rotation;
@@ -67,7 +67,7 @@ namespace Fibonacci.InGame.Core.MapGimmick
             transform.position = startPosition;
             transform.rotation = startRotation;
 
-            renderer.enabled = true;
+            spriteRenderer.enabled = true;
             col.enabled = true;
 
             floorAnimation.Initialize(transform);
@@ -96,7 +96,7 @@ namespace Fibonacci.InGame.Core.MapGimmick
             rb.bodyType = RigidbodyType2D.Dynamic;
 
             yield return cachedDestroyDelay;
-            renderer.enabled = false;
+            spriteRenderer.enabled = false;
             col.enabled = false;
             rb.bodyType = RigidbodyType2D.Kinematic;
             rb.linearVelocity = Vector2.zero;
