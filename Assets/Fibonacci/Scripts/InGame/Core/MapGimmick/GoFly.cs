@@ -1,4 +1,5 @@
 using UnityEngine;
+using Fibonacci.InGame.Player;
 
 namespace Fibonacci.InGame.Core.MapGimmick
 {
@@ -9,7 +10,6 @@ namespace Fibonacci.InGame.Core.MapGimmick
     [RequireComponent(typeof(Collider2D))]
     public class GoFly : MonoBehaviour
     {
-        private const string PLAYER_TAG = "Player";
         private const float DIRECTION_THRESHOLD = 0f;
 
         [Header("吹っ飛ばし設定")]
@@ -22,12 +22,9 @@ namespace Fibonacci.InGame.Core.MapGimmick
         private Vector2 cachedBaseVector;
         private bool isVectorCached = false;
 
-        /// <summary>
-        /// プレイヤーの接触を検知し、射出処理を開始します。
-        /// </summary>
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (!other.CompareTag(PLAYER_TAG)) return;
+            if (!other.CompareTag(GameConstants.TAG_PLAYER)) return;
 
             Launch(other.gameObject);
         }
@@ -47,16 +44,16 @@ namespace Fibonacci.InGame.Core.MapGimmick
                 isVectorCached = true;
             }
 
-            float moveDirection = rb.linearVelocity.x >= DIRECTION_THRESHOLD ? 1f : -1f;
+            float moveDirection = rb.linearVelocity.x >= DIRECTION_THRESHOLD 
+                ? GameConstants.DIRECTION_RIGHT 
+                : GameConstants.DIRECTION_LEFT;
+
             Vector2 finalLaunchVector = new Vector2(cachedBaseVector.x * moveDirection, cachedBaseVector.y);
 
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
             rb.AddForce(finalLaunchVector * launchForce, ForceMode2D.Impulse);
         }
 
-        /// <summary>
-        /// インスペクターで値が変更された際、キャッシュされたベクトルをリセットします。
-        /// </summary>
         private void OnValidate()
         {
             isVectorCached = false;
