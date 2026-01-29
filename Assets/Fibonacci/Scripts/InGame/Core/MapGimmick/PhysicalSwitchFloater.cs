@@ -19,9 +19,6 @@ namespace Fibonacci.InGame.Core.MapGimmick
         [Header("反応するレイヤー")]
         [SerializeField] private LayerMask detectionLayer = ~0; 
 
-        [Header("スイッチの設定")]
-        [SerializeField] private bool debugMode = false;
-
         private Vector3 startPosition;
         private Vector3 goalPosition;
         
@@ -52,10 +49,10 @@ namespace Fibonacci.InGame.Core.MapGimmick
         /// </summary>
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (((1 << other.gameObject.layer) & detectionLayer) == 0) return;
+            int layerMask = 1 << other.gameObject.layer;
+            if ((layerMask & detectionLayer) == 0) return;
 
             onSwitchObjects.Add(other);
-
         }
 
         /// <summary>
@@ -63,7 +60,7 @@ namespace Fibonacci.InGame.Core.MapGimmick
         /// </summary>
         private void OnTriggerExit2D(Collider2D other)
         {
-            if (!onSwitchObjects.Remove(other)) return;
+            onSwitchObjects.Remove(other);
         }
     }
 }
