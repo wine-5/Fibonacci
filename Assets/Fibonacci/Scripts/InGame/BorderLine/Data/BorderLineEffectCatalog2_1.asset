@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e2667a39ad9e144dbeeab94d4706070, type: 3}
-  m_Name: BorderLineEffectCatalog
+  m_Name: BorderLineEffectCatalog2_1
   m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.BorderLine.UI.BorderLineEffectCatalog
   effects:
-  - {fileID: 11400000, guid: c18eeb0da51e81f4a8fe136f00e2425b, type: 2}
-  - {fileID: 11400000, guid: d4f18c064938ae2499613165fb24a634, type: 2}
+  - {fileID: 11400000, guid: 66bafcdf0c3318c42b95be1a3e3f51ba, type: 2}
+  - {fileID: 11400000, guid: 3b2ab1fac94f6d94abea02ff3ff10dea, type: 2}

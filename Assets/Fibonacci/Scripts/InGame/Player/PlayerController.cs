@@ -1,31 +1,48 @@
 using UnityEngine;
 using Fibonacci.InGame.Core;
-using Fibonacci.InGame.Core.Gimmick;
+using Fibonacci.InGame.Core.AreaGimmick;
 using Fibonacci.Event;
 
 namespace Fibonacci.InGame.Player
 {
     /// <summary>
     /// プレイヤーの全体制御と状態管理を司る司令塔クラス。
-    /// ゲームフェーズに応じた物理演算の切り替えや、エリア移動に伴う重力変化の実行、
-    /// 移動入力の仲介などを一括して管理します。
+    /// 各種アビリティから受け取った計算結果を物理演算や移動ロジックに適用します。
     /// </summary>
+    [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(PlayerCheck))]
     public class PlayerController : MonoBehaviour
     {
         [Header("Settings")]
         [SerializeField] private float moveSpeed = 5f;
+        [SerializeField] private float jumpPower = 12f;
         [SerializeField] private PlayerAnimationController animationController;
+        [SerializeField] private SpriteRenderer abilityDisplayRenderer;
+        [SerializeField] private LayerMask groundLayer;
+
+        private const float DEFAULT_MASS = 1.0f;
+        private const float DEFAULT_DAMPING = 0f;
+        private const float DEFAULT_GRAVITY_SCALE = 1.0f;
 
         private PlayerMove playerMove;
         private Rigidbody2D rb;
         private PlayerCheck playerCheck;
-        private readonly GravityAbility gravityLogic = new GravityAbility();
+
+        private readonly GravityAbility gravityLogic = new();
+        private readonly MoveLockAbility moveLockLogic = new();
+        private readonly HeavyAbility heavyLogic = new();
+        private readonly LowGravityAbility lowGravityLogic = new();
+        private readonly FireAbility fireLogic = new();
+        private readonly PowerUpAbility powerUpLogic = new();
+        private readonly JumpAbility jumpLogic = new();
+        
+        private bool isMovementLocked = false;
 
         private void Awake()
         {
             rb = GetComponent<Rigidbody2D>();
             playerCheck = GetComponent<PlayerCheck>();
-            playerMove = new PlayerMove(rb, transform, animationController, moveSpeed);
+            playerMove = new PlayerMove(rb, transform, animationController, moveSpeed, groundLayer);
         }
 
         private void OnEnable()
@@ -38,90 +55,169 @@ namespace Fibonacci.InGame.Player
             GameEvents.OnPhaseChanged -= HandlePhaseChanged;
         }
 
-        /// <summary>
-        /// ゲームフェーズの変更通知を受け取り、物理シミュレーションの有効・無効を切り替えます。
-        /// プレイ開始時には位置判定を強制更新し、最新のエリア効果を即座に反映させます。
-        /// </summary>
         private void HandlePhaseChanged(GamePhase newPhase)
         {
             if (newPhase == GamePhase.Playing)
             {
                 rb.simulated = true;
-
-                if (playerCheck != null)
-                {
-                    playerCheck.ForceCheck(); 
-                }
-            }
-            else if (newPhase == GamePhase.Drawing)
-            {
-                rb.simulated = false;
-            }
-        }
-
-        /// <summary>
-        /// 所属エリアのインデックスに基づいて、プレイヤーに適用される重力反転などの能力を実行します。
-        /// </summary>
-        /// <param name="areaIndex">現在のプレイヤー位置に対応するエリア番号</param>
-        public void ChangeAreaEffect(int areaIndex)
-        {
-            if (GameManager.Instance == null || GameManager.Instance.CurrentPhase != GamePhase.Playing)
-            {
+                playerCheck.ForceCheck();
                 return;
             }
 
+            if (newPhase == GamePhase.Drawing)
+            {
+                rb.simulated = false;
+                abilityDisplayRenderer.enabled = false;
+                isMovementLocked = false;
+                fireLogic.Reset();
+                AbilityManager.Instance.ResetAbilities();
+            }
+        }
+
+        public void ChangeAreaEffect(int areaIndex)
+        {
+            if (GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
+
+            ResetToDefaultState();
+
             AbilityType ability = AbilityManager.Instance.GetAbilityAt(areaIndex);
-            int gravityDir = (ability == AbilityType.GravityInvert) ? 1 : 0;
-            gravityLogic.Apply(rb, this.transform, gravityDir);
+
+            ApplyAbilities(ability);
+            UpdateAbilityVisual(ability);
+        }
+
+        private void ResetToDefaultState()
+        {
+            rb.mass = DEFAULT_MASS;
+            rb.linearDamping = DEFAULT_DAMPING;
+            rb.gravityScale = DEFAULT_GRAVITY_SCALE;
+            
+            Vector3 scale = transform.localScale;
+            scale.y = Mathf.Abs(scale.y);
+            transform.localScale = scale;
+
+            playerMove.ResetSpeed();
+            playerMove.IsSlippery = false;
+            isMovementLocked = false;
+        }
+
+        /// <summary>
+        /// 全てのアビリティ適用処理を統括します。
+        /// </summary>
+        private void ApplyAbilities(AbilityType ability)
+        {
+            ApplyHeavy(ability);
+            ApplyLowGravity(ability);
+            ApplyPowerUp(ability);
+            ApplyGravityInvert(ability);
+            ApplyMoveLock(ability);
+            jumpLogic.Apply(ability == AbilityType.Jump);
+        }
+
+        private void ApplyHeavy(AbilityType ability)
+        {
+            var effect = heavyLogic.GetAppliedValues(ability == AbilityType.Heavy);
+            if (effect.HasValue)
+            {
+                rb.mass = effect.Value.mass;
+                playerMove.SetCurrentSpeed(effect.Value.speed);
+            }
+        }
+
+        private void ApplyLowGravity(AbilityType ability)
+        {
+            var drag = lowGravityLogic.GetAppliedDrag(ability == AbilityType.LowGravity);
+            if (drag.HasValue) rb.linearDamping = drag.Value;
+        }
+
+        private void ApplyPowerUp(AbilityType ability)
+        {
+            var mass = powerUpLogic.GetAppliedMass(ability == AbilityType.PowerUp);
+            if (mass.HasValue) rb.mass = mass.Value;
+        }
+
+        private void ApplyGravityInvert(AbilityType ability)
+        {
+            var effect = gravityLogic.GetAppliedScales(DEFAULT_GRAVITY_SCALE, ability == AbilityType.GravityInvert);
+            rb.gravityScale = effect.gravityScale;
+
+            Vector3 localScale = transform.localScale;
+            localScale.y = Mathf.Abs(localScale.y) * effect.visualScaleY;
+            transform.localScale = localScale;
+        }
+
+        private void ApplyMoveLock(AbilityType ability)
+        {
+            var damping = moveLockLogic.GetAppliedDamping(ability == AbilityType.MoveLock);
+            if (damping.HasValue)
+            {
+                rb.linearDamping = damping.Value;
+                isMovementLocked = true;
+                playerMove.IsSlippery = true;
+            }
+        }
+
+        private void UpdateAbilityVisual(AbilityType ability)
+        {
+            Sprite abilitySprite = AbilityManager.Instance.GetAbilitySprite(ability);
+            bool hasSprite = abilitySprite != null;
+            
+            abilityDisplayRenderer.sprite = abilitySprite;
+            abilityDisplayRenderer.enabled = hasSprite;
         }
 
         private void FixedUpdate()
         {
-            if (GameManager.Instance == null) return;
+            if (GameManager.Instance.CurrentPhase != GamePhase.Playing)
+            {
+                rb.simulated = false;
+                return;
+            }
 
-            bool isPlaying = GameManager.Instance.CurrentPhase == GamePhase.Playing;
-            rb.simulated = isPlaying;
+            rb.simulated = true;
 
-            if (!isPlaying) return;
+            if (!isMovementLocked)
+            {
+                playerMove.ExecutePhysicsUpdate();
+            }
 
-            playerMove.ExecutePhysicsUpdate();
+            AbilityType currentAbility = AbilityManager.Instance.GetAbilityAt(playerCheck.CurrentAreaIndex);
+            if (fireLogic.Tick(currentAbility == AbilityType.Fire, Time.fixedDeltaTime))
+            {
+                GameEvents.TriggerRestart();
+            }
         }
 
-        /// <summary>
-        /// 外部の入力管理クラスから移動ベクトルを受け取り、移動ロジックとアニメーションに反映させます。
-        /// </summary>
-        /// <param name="input">移動方向と強さを示すベクトル</param>
         public void SetMoveInput(Vector2 input)
         {
             playerMove.MoveInput = input;
             playerMove.UpdateAnimation();
         }
 
-        /// <summary>
-        /// プレイヤーの位置、速度、重力方向、および入力状態を初期状態にリセットします。
-        /// </summary>
+        public void OnJumpInput()
+        {
+            if (GameManager.Instance.CurrentPhase == GamePhase.Playing && jumpLogic.CanJump && playerMove.IsGrounded())
+            {
+                playerMove.ExecuteJump(jumpPower);
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            playerMove?.DrawGizmos();
+        }
+
         public void ResetPlayerState()
         {
-            if (playerMove != null)
-            {
-                playerMove.ResetPosition();
-                playerMove.MoveInput = Vector2.zero;
-                playerMove.UpdateAnimation();
-            }
+            playerMove.ResetPosition();
+            playerMove.MoveInput = Vector2.zero;
+            playerMove.UpdateAnimation();
 
-            if (rb != null)
-            {
-                rb.linearVelocity = Vector2.zero;
-                rb.angularVelocity = 0f;
-                rb.simulated = false;
-            }
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            rb.simulated = false;
 
-            gravityLogic.Apply(rb, this.transform, 0);
-
-            if (GameManager.Instance != null && GameManager.Instance.CurrentPhase != GamePhase.Playing)
-            {
-                rb.simulated = false;
-            }
+            ResetToDefaultState();
         }
     }
 }

@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e2667a39ad9e144dbeeab94d4706070, type: 3}
+  m_Name: BorderLineEffectCatalog1_1
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.BorderLine.UI.BorderLineEffectCatalog
+  effects:
+  - {fileID: 11400000, guid: c18eeb0da51e81f4a8fe136f00e2425b, type: 2}
+  - {fileID: 11400000, guid: d4f18c064938ae2499613165fb24a634, type: 2}

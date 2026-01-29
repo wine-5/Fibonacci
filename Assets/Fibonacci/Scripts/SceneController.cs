@@ -1,95 +1,122 @@
-using UnityEngine;
 using UnityEngine.SceneManagement;
+using Fibonacci.Event;
 
 namespace Fibonacci.Scene
 {
-/// <summary>
-/// ゲーム内のシーン名を定義するenum
-/// </summary>
-public enum SceneName
-{
-    Title,
-    StageSelect,
-    Stage1_1,
-    Stage1_2,
-    Stage2_1,
-    Stage2_2,
-    Clear,
-    InGameF
-}
-
-/// <summary>
-/// シーン遷移を管理するSingletonクラス
-/// Titleシーンで一度生成されれば、他のシーンでも利用可能
-/// </summary>
-public class SceneController : Singleton<SceneController>
-{
-    protected override bool UseDontDestroyOnLoad => true;
-
     /// <summary>
-    /// 現在のステージ情報
+    /// ゲーム内のシーン名を定義するenum
     /// </summary>
-    public SceneName CurrentStage { get; private set; } = SceneName.Title;
-
-    /// <summary>
-    /// enumで指定されたシーンに切り替え
-    /// </summary>
-    /// <param name="sceneName">遷移先のシーン</param>
-    public void LoadScene(SceneName sceneName)
+    public enum SceneName
     {
-        CurrentStage = sceneName;
-        string sceneNameStr = sceneName.ToString();
-        SceneManager.LoadScene(sceneNameStr);
+        Title,
+        StageSelect,
+        Stage1_1,
+        Stage1_2,
+        Stage2_1,
+        Stage2_2,
+        Clear,
+        InGameF
     }
 
     /// <summary>
-    /// 次のステージに進む
+    /// シーン遷移を管理するSingletonクラス
+    /// Titleシーンで一度生成されれば、他のシーンでも利用可能
     /// </summary>
-    public void LoadNextStage()
+    public class SceneController : Singleton<SceneController>
     {
-        SceneName nextStage = GetNextStage(CurrentStage);
-        if (nextStage != SceneName.Clear)
+        protected override bool UseDontDestroyOnLoad => true;
+
+        /// <summary>
+        /// 現在のステージ情報
+        /// </summary>
+        public SceneName CurrentStage { get; private set; } = SceneName.Title;
+
+        /// <summary>
+        /// enumで指定されたシーンに切り替え
+        /// </summary>
+        /// <param name="sceneName">遷移先のシーン</param>
+        public void LoadScene(SceneName sceneName)
         {
-            LoadScene(nextStage);
+            CurrentStage = sceneName;
+            string sceneNameStr = sceneName.ToString();
+            SceneManager.LoadScene(sceneNameStr);
         }
-        else
-        {
-            LoadScene(SceneName.Clear);
-        }
-    }
 
-    /// <summary>
-    /// 指定したステージの次のステージを取得
-    /// </summary>
-    /// <param name="currentStage">現在のステージ</param>
-    /// <returns>次のステージ、最後の場合はClear</returns>
-    private SceneName GetNextStage(SceneName currentStage)
-    {
-        switch (currentStage)
+        private void OnEnable()
         {
-            case SceneName.Stage1_1:
-                return SceneName.Stage1_2;
-            case SceneName.Stage1_2:
-                return SceneName.Stage2_1;
-            case SceneName.Stage2_1:
-                return SceneName.Stage2_2;
-            case SceneName.Stage2_2:
-                return SceneName.Clear;
-            default:
-                return SceneName.Clear;
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+        /// <summary>
+        /// シーンが読み込まれるたびに実行される
+        /// </summary>
+        /// 
+        private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
+        {
+            GameEvents.TriggerRestart();
+        }
+
+        /// <summary>
+        /// 手動リスタート（Rキーなど）が呼ばれた時の処理
+        /// </summary>
+        private void HandleRestart()
+        {
+            LoadScene(CurrentStage);
+        }
+
+
+        /// <summary>
+        /// 次のステージに進む
+        /// </summary>
+        public void LoadNextStage()
+        {
+            SceneName nextStage = GetNextStage(CurrentStage);
+            if (nextStage != SceneName.Clear)
+            {
+                LoadScene(nextStage);
+            }
+            else
+            {
+                LoadScene(SceneName.Clear);
+            }
+        }
+
+        /// <summary>
+        /// 指定したステージの次のステージを取得
+        /// </summary>
+        /// <param name="currentStage">現在のステージ</param>
+        /// <returns>次のステージ、最後の場合はClear</returns>
+        private SceneName GetNextStage(SceneName currentStage)
+        {
+            switch (currentStage)
+            {
+                case SceneName.Stage1_1:
+                    return SceneName.Stage1_2;
+                case SceneName.Stage1_2:
+                    return SceneName.Stage2_1;
+                case SceneName.Stage2_1:
+                    return SceneName.Stage2_2;
+                case SceneName.Stage2_2:
+                    return SceneName.Clear;
+                default:
+                    return SceneName.Clear;
+            }
+        }
+
+        /// <summary>
+        /// 現在のステージがゲームステージかどうかを判定
+        /// </summary>
+        /// <returns>ゲームステージの場合true</returns>
+        public bool IsGameStage()
+        {
+            return CurrentStage == SceneName.Stage1_1 ||
+                    CurrentStage == SceneName.Stage1_2 ||
+                    CurrentStage == SceneName.Stage2_1 ||
+                    CurrentStage == SceneName.Stage2_2;
         }
     }
-
-    /// <summary>
-    /// 現在のステージがゲームステージかどうかを判定
-    /// </summary>
-    /// <returns>ゲームステージの場合true</returns>
-    public bool IsGameStage()
-    {
-        return CurrentStage == SceneName.Stage1_1 || 
-                CurrentStage == SceneName.Stage1_2 || 
-                CurrentStage == SceneName.Stage2_1 || 
-                CurrentStage == SceneName.Stage2_2;
-    }
-}
 }

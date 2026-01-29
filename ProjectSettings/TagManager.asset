@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 3
   tags:
   - LineTarget
+  - SpecialGimmick
+  - IceGimmick
+  - FireGimmick
   layers:
   - Default
   - TransparentFX
