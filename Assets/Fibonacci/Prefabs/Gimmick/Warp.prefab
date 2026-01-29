@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 3813938135695481014}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.8661399, y: 2.04, z: -103.45855}
+  m_LocalPosition: {x: 1.19, y: 3.89, z: 0}
   m_LocalScale: {x: 0.32, y: 0.32, z: 0.32}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -61,7 +61,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: -876546973899608171, guid: 406ce6061c7383a459b2cb7d6f476dde, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -144,8 +144,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Main.Gimmick.GlobalWarpPoint
   targetLocation: {fileID: 1246451637631990620}
   globalCooldownTime: 2
+  isExitOnly: 0
   maintainVelocity: 0
-  warpEffect: {fileID: 0}
 --- !u!114 &4577099110549073209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,7 +221,7 @@ Transform:
   m_GameObject: {fileID: 7880967303981497459}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.88614, y: -2.69, z: -103.45855}
+  m_LocalPosition: {x: -7.08, y: 3.52, z: 0}
   m_LocalScale: {x: 0.32, y: 0.32, z: 0.32}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -253,7 +253,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: -876546973899608171, guid: 406ce6061c7383a459b2cb7d6f476dde, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -336,8 +336,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Main.Gimmick.GlobalWarpPoint
   targetLocation: {fileID: 2119686691388310883}
   globalCooldownTime: 2
+  isExitOnly: 0
   maintainVelocity: 0
-  warpEffect: {fileID: 0}
 --- !u!114 &5568041057285671805
 MonoBehaviour:
   m_ObjectHideFlags: 0

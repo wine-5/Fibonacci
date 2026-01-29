@@ -1533,38 +1533,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1017559750313431026, guid: 571263c79b5255240bff2848dc442414, type: 3}
-      propertyPath: isExitOnly
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1246451637631990620, guid: 571263c79b5255240bff2848dc442414, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -7.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 1246451637631990620, guid: 571263c79b5255240bff2848dc442414, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.52
-      objectReference: {fileID: 0}
-    - target: {fileID: 1246451637631990620, guid: 571263c79b5255240bff2848dc442414, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1528637161520492554, guid: 571263c79b5255240bff2848dc442414, type: 3}
-      propertyPath: isExitOnly
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2119686691388310883, guid: 571263c79b5255240bff2848dc442414, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1.19
-      objectReference: {fileID: 0}
-    - target: {fileID: 2119686691388310883, guid: 571263c79b5255240bff2848dc442414, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.89
-      objectReference: {fileID: 0}
-    - target: {fileID: 2119686691388310883, guid: 571263c79b5255240bff2848dc442414, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6149533451100833922, guid: 571263c79b5255240bff2848dc442414, type: 3}
       propertyPath: m_Name
       value: Warp
