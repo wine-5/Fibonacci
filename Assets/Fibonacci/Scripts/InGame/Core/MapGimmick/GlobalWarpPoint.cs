@@ -13,11 +13,11 @@ namespace Fibonacci.InGame.Core.MapGimmick
         private const float DEFAULT_COOLDOWN = 2.0f;
 
         [Header("ワープ設定")]
-        [SerializeField,] private Transform targetLocation;
+        [SerializeField] private Transform targetLocation;
         [SerializeField] private float globalCooldownTime = DEFAULT_COOLDOWN;
         [SerializeField] private bool isExitOnly = false;
         [SerializeField] private bool maintainVelocity = false;
-
+        //クールタイム共有用のstatic
         private static float nextWarpAllowedTime = 0f;
 
         /// <summary>

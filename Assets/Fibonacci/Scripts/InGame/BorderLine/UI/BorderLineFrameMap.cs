@@ -12,7 +12,7 @@ namespace Fibonacci.InGame.BorderLine.UI
         private const float FRAME_WIDTH = 0.25f;
         private const float APPROX_THRESHOLD = 0.0001f;
         private const float PIVOT_CENTER = 0.5f;
-        private const float MIN_HEIGHT = 1.0f;
+        private const int MIN_HEIGHT = 1;
 
         private readonly SpriteRenderer displayRenderer;
         private readonly float worldZ;
@@ -37,7 +37,7 @@ namespace Fibonacci.InGame.BorderLine.UI
 
             Rect rect = split.Rect;
             int width = resolution;
-            int height = Mathf.Max((int)MIN_HEIGHT, Mathf.RoundToInt(resolution * (rect.height / rect.width)));
+            int height = Mathf.Max(MIN_HEIGHT, Mathf.RoundToInt(resolution * (rect.height / rect.width)));
 
             if (currentTexture == null || currentTexture.width != width || currentTexture.height != height)
             {
