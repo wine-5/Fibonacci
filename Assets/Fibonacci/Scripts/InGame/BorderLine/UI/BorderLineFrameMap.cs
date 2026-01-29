@@ -11,6 +11,8 @@ namespace Fibonacci.InGame.BorderLine.UI
     {
         private const float FRAME_WIDTH = 0.25f;
         private const float APPROX_THRESHOLD = 0.0001f;
+        private const float PIVOT_CENTER = 0.5f;
+        private const float MIN_HEIGHT = 1.0f;
 
         private readonly SpriteRenderer displayRenderer;
         private readonly float worldZ;
@@ -35,7 +37,7 @@ namespace Fibonacci.InGame.BorderLine.UI
 
             Rect rect = split.Rect;
             int width = resolution;
-            int height = Mathf.Max(1, Mathf.RoundToInt(resolution * (rect.height / rect.width)));
+            int height = Mathf.Max((int)MIN_HEIGHT, Mathf.RoundToInt(resolution * (rect.height / rect.width)));
 
             if (currentTexture == null || currentTexture.width != width || currentTexture.height != height)
             {
@@ -127,11 +129,12 @@ namespace Fibonacci.InGame.BorderLine.UI
             if (displayRenderer.sprite != null) Object.Destroy(displayRenderer.sprite);
 
             float dynamicPPU = width / rect.width;
+            Vector2 pivot = new Vector2(PIVOT_CENTER, PIVOT_CENTER);
 
             displayRenderer.sprite = Sprite.Create(
                 currentTexture,
                 new Rect(0, 0, width, height),
-                new Vector2(0.5f, 0.5f),
+                pivot,
                 dynamicPPU
             );
 
