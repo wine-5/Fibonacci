@@ -6,7 +6,7 @@ namespace Fibonacci.InGame.Core.AreaGimmick
     /// </summary>
     public class FireAbility
     {
-        private const float LIMIT_TIME = 5.0f;
+        private const float LIMIT_TIME = 4.0f;
         
         private float timer = 0f;
 
