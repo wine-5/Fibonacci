@@ -5,7 +5,7 @@ namespace Fibonacci.InGame.Core.MapGimmick
 {
     /// <summary>
     /// 特定の質量を持つオブジェクトが接触している間のみ移動可能になる押しブロック。
-    /// 条件を満たさない場合は物理的に固定され、パズルの障害物として機能します。
+    /// 入力イベントを最小限に抑えるため、衝突の開始と終了時のみ状態判定を行います。
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
     public class PushBlock : MonoBehaviour
@@ -15,6 +15,7 @@ namespace Fibonacci.InGame.Core.MapGimmick
 
         private Rigidbody2D rb;
         private Vector3 initialPosition;
+        private bool isPushable = false;
 
         private void Awake()
         {
@@ -49,30 +50,30 @@ namespace Fibonacci.InGame.Core.MapGimmick
             rb.angularVelocity = 0f;
 
             rb.simulated = true;
+            isPushable = false;
             LockBlock();
         }
 
         /// <summary>
-        /// 接触しているオブジェクトの質量を判定し、条件を満たせばロックを解除します。
+        /// オブジェクトが接触した際、質量条件を満たしていれば移動制限を解除します。
         /// </summary>
-        private void OnCollisionStay2D(Collision2D collision)
+        private void OnCollisionEnter2D(Collision2D collision)
         {
-            Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
+            Rigidbody2D otherRb = collision.gameObject.GetComponent<Rigidbody2D>();
             
-            if (playerRb != null && playerRb.mass >= requiredMass)
+            if (otherRb != null && otherRb.mass >= requiredMass)
             {
+                isPushable = true;
                 UnlockBlock();
-                return;
             }
-
-            LockBlock();
         }
 
         /// <summary>
-        /// オブジェクトが離れた際、ブロックを固定します。
+        /// オブジェクトが離れた際、移動を禁止します。
         /// </summary>
         private void OnCollisionExit2D(Collision2D collision)
         {
+            isPushable = false;
             LockBlock();
         }
 
@@ -87,7 +88,7 @@ namespace Fibonacci.InGame.Core.MapGimmick
         }
 
         /// <summary>
-        /// 回転のみを固定し、移動を許可します。
+        /// 回転のみを固定し、水平・垂直移動を許可します。
         /// </summary>
         private void UnlockBlock()
         {
