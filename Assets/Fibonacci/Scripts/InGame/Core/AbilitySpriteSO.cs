@@ -6,14 +6,10 @@ namespace Fibonacci.InGame.Core
 {
     /// <summary>
     /// 各アビリティに対応するスプライトやビジュアルエフェクトの情報を保持する ScriptableObject クラス。
-    /// ゲーム内でアビリティの視覚的表現を一元管理し、UI表示やエフェクト生成に利用されます。
     /// </summary>
     [CreateAssetMenu(fileName = "AbilitySpriteSO", menuName = "Fibonacci/AbilitySpriteSO")]
     public class AbilitySpriteSO : ScriptableObject
     {
-        /// <summary>
-        /// アビリティの種類に応じた視覚情報を定義する構造体。
-        /// </summary>
         [Serializable]
         public struct AbilityVisual
         {
@@ -24,7 +20,16 @@ namespace Fibonacci.InGame.Core
 
         [SerializeField] private List<AbilityVisual> visuals;
 
-        private readonly Dictionary<AbilityType, Sprite> spriteCache = new Dictionary<AbilityType, Sprite>();
+        private readonly Dictionary<AbilityType, Sprite> spriteCache = new();
+
+        /// <summary>
+        /// オブジェクトがロードされた際にキャッシュを構築します。
+        /// ScriptableObjectのライフサイクルにおいて、Awakeよりも安定して呼ばれる初期化タイミングです。
+        /// </summary>
+        private void OnEnable()
+        {
+            RebuildCache();
+        }
 
         /// <summary>
         /// 指定されたアビリティタイプに対応するアイコンスプライトを取得します。
@@ -55,11 +60,12 @@ namespace Fibonacci.InGame.Core
         }
 
         /// <summary>
-        /// エディタ上で値が変更された際にキャッシュをクリアし、次回の取得時に最新の情報が反映されるようにします。
+        /// エディタ上で値が変更された際にキャッシュを更新し、最新の情報を反映させます。
         /// </summary>
         private void OnValidate()
         {
-            spriteCache.Clear();
+            // エディタ実行中でない場合でも、インスペクターの変更を即座に反映
+            RebuildCache();
         }
     }
 }
