@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 using NaughtyAttributes;
 using System;
 using Fibonacci.Event;
-using Fibonacci.InGame.BorderLine.UI;    
+using Fibonacci.InGame.BorderLine.UI;
 
 namespace Fibonacci.InGame.BorderLine
 {
@@ -32,12 +32,20 @@ namespace Fibonacci.InGame.BorderLine
         [SerializeField, Label("枠線を表示する板")] private SpriteRenderer frameDisplayRenderer;
         [SerializeField, Label("枠線解解像度")] private int frameResolution = 512;
 
+        [Header("Selection Highlight")]
+        [SerializeField, Label("1つ目選択のハイライト表示")] private BorderLineSelectionHighlightView selectionHighlightView;
+
+        [Header("Region Debug")]
+        [SerializeField, Label("領域の数字デバッグ")] private bool showRegionMarkers = true;
+        [SerializeField, Label("領域の囲いデバッグ")] private bool drawRegionOutlines = true;
+        [SerializeField] private float debugDrawDuration = 2f;
+        [SerializeField] private float markerTextSize = 0.25f;
+
         private BorderLineColorMap colorMap;
         private BorderLineFrameMap frameMap;
         private BorderLineDataBridge borderLineData;
 
         public BorderLineDataBridge GetBorderLineData() => borderLineData;
-        public BorderLineColorMap GetColorMap() => colorMap;
         private Transform firstSelectedBall;
         private BorderLineSegmentRenderer lineDrawer;
         private BorderLineRegionDebugView regionDebugView;
@@ -52,14 +60,7 @@ namespace Fibonacci.InGame.BorderLine
 
         public float WorldZ => worldZ;
 
-        [Header("Selection Highlight")]
-        [SerializeField, Label("1つ目選択のハイライト表示")] private BorderLineSelectionHighlightView selectionHighlightView;
 
-        [Header("Region Debug")]
-        [SerializeField, Label("領域の数字デバッグ")] private bool showRegionMarkers = true;
-        [SerializeField, Label("領域の囲いデバッグ")] private bool drawRegionOutlines = true;
-        [SerializeField] private float debugDrawDuration = 2f;
-        [SerializeField] private float markerTextSize = 0.25f;
 
         private void Awake()
         {
@@ -196,7 +197,7 @@ namespace Fibonacci.InGame.BorderLine
             return new Vector2(world.x, world.y);
         }
 
-        void CheckSelection(Vector2 screenPos)
+        private void CheckSelection(Vector2 screenPos)
         {
             if (interactionLocked) return;
 
