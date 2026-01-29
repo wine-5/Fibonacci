@@ -1,26 +1,22 @@
-using UnityEngine;
-using Fibonacci.InGame.Player;
-
 namespace Fibonacci.InGame.Core.AreaGimmick
 {
     /// <summary>
-    /// プレイヤーの重量を増加させ、移動速度を低下させるギミックを制御するクラス。
-    /// 特定のエリアにおいて物理的な重さと操作の鈍さを提供します。
+    /// プレイヤーの重量増加と速度低下の計算ロジックを管理するクラス。
+    /// 自身で値を適用せず、計算結果のみを返すことで他クラスとの依存関係を排除しています。
     /// </summary>
     public class HeavyAbility
     {
-        private const float HeavyMass = 5.0f;
-        private const float SlowSpeed = 2.0f;
+        private const float HEAVY_MASS = 5.0f;
+        private const float SLOW_SPEED = 2.0f;
 
         /// <summary>
-        /// 重重量状態を Rigidbody2D および移動制御クラスに適用します。
+        /// 重重量状態が有効な場合、適用すべき物理パラメーターを返します。
         /// </summary>
-        public void Apply(Rigidbody2D rb, PlayerMove playerMove, bool isHeavy)
+        public (float mass, float speed)? GetAppliedValues(bool isHeavy)
         {
-            if (!isHeavy) return;
+            if (!isHeavy) return null;
 
-            rb.mass = HeavyMass;
-            playerMove.SetCurrentSpeed(SlowSpeed);
+            return (HEAVY_MASS, SLOW_SPEED);
         }
     }
 }

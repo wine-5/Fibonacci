@@ -1,23 +1,21 @@
-using UnityEngine;
-
 namespace Fibonacci.InGame.Core.AreaGimmick
 {
     /// <summary>
     /// プレイヤーの物理的な干渉力を強化するロジックを管理するクラス。
-    /// 質量を一時的に増加させることで、重量オブジェクトを押し出す能力を提供します。
+    /// 自身で値を適用せず、計算結果としての質量のみを返すことで疎結合な設計を維持します。
     /// </summary>
     public class PowerUpAbility
     {
-        private const float POWERUPMASS = 2.0f;
+        private const float POWER_UP_MASS = 2.0f;
 
         /// <summary>
-        /// パワーアップ状態に応じた質量を Rigidbody2D に適用します。
+        /// パワーアップ状態が有効な場合、適用すべき質量を返します。
         /// </summary>
-        public void Apply(Rigidbody2D rb, bool isPowerUp)
+        public float? GetAppliedMass(bool isPowerUp)
         {
-            if (!isPowerUp) return;
+            if (!isPowerUp) return null;
 
-            rb.mass = POWERUPMASS;
+            return POWER_UP_MASS;
         }
     }
 }

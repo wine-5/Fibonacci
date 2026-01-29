@@ -1,27 +1,21 @@
-using UnityEngine;
-
 namespace Fibonacci.InGame.Core.AreaGimmick
 {
     /// <summary>
-    /// プレイヤーの移動慣性を制御し、滑りやすさを変更するクラス。
-    /// 特定のエリアにおいて Rigidbody2D の空気抵抗（linearDamping）を調整し、
-    /// 氷の上を滑るような操作感を提供します。
+    /// プレイヤーの移動慣性を制御し、滑りやすさを変更するためのロジックを管理するクラス。
+    /// 自身で値を適用せず、計算結果のみを返すことで疎結合な設計を維持します。
     /// </summary>
     public class MoveLockAbility
     {
-        /// <summary>滑りやすい状態の空気抵抗値</summary>
-        private const float SlipperyDamping = 0.05f;
+        private const float SLIPPERY_DAMPING = 0.05f;
 
         /// <summary>
-        /// 移動慣性の状態を Rigidbody2D に適用します。
+        /// 移動慣性の状態（滑る状態）が有効な場合、適用すべき空気抵抗値を返します。
         /// </summary>
-        /// <param name="rb">制御対象の Rigidbody2D</param>
-        /// <param name="isLocked">慣性移動が有効（滑る状態）かどうか</param>
-        public void Apply(Rigidbody2D rb, bool isLocked)
+        public float? GetAppliedDamping(bool isLocked)
         {
-            if (!isLocked) return;
+            if (!isLocked) return null;
 
-            rb.linearDamping = SlipperyDamping;
+            return SLIPPERY_DAMPING;
         }
     }
 }
