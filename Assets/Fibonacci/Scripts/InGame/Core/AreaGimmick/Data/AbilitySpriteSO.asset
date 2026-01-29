@@ -24,7 +24,7 @@ MonoBehaviour:
     effectColor: {r: 1, g: 0, b: 0, a: 0}
   - type: 1
     icon: {fileID: 21300000, guid: 06578da4e67aa8d4bb6fdf6bb517ce87, type: 3}
-    effectColor: {r: 1, g: 0, b: 0, a: 0}
+    effectColor: {r: 0, g: 0, b: 0, a: 0}
   - type: 2
     icon: {fileID: 21300000, guid: 06578da4e67aa8d4bb6fdf6bb517ce87, type: 3}
     effectColor: {r: 1, g: 0, b: 0, a: 0}
@@ -35,5 +35,8 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: 06578da4e67aa8d4bb6fdf6bb517ce87, type: 3}
     effectColor: {r: 1, g: 0, b: 0, a: 0}
   - type: 0
+    icon: {fileID: 21300000, guid: 06578da4e67aa8d4bb6fdf6bb517ce87, type: 3}
+    effectColor: {r: 1, g: 0, b: 0, a: 0}
+  - type: 5
     icon: {fileID: 21300000, guid: 06578da4e67aa8d4bb6fdf6bb517ce87, type: 3}
     effectColor: {r: 1, g: 0, b: 0, a: 0}

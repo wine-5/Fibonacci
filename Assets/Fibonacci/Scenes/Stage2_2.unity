@@ -171,7 +171,6 @@ MonoBehaviour:
   detectionLayer:
     serializedVersion: 2
     m_Bits: 4294967295
-  debugMode: 0
 --- !u!212 &29819306
 SpriteRenderer:
   serializedVersion: 2
@@ -518,7 +517,6 @@ MonoBehaviour:
   globalCooldownTime: 2
   isExitOnly: 0
   maintainVelocity: 0
-  warpEffect: {fileID: 0}
 --- !u!58 &56574879
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1988,7 +1986,6 @@ MonoBehaviour:
   detectionLayer:
     serializedVersion: 2
     m_Bits: 4294967295
-  debugMode: 0
 --- !u!212 &719172674
 SpriteRenderer:
   serializedVersion: 2
@@ -2464,7 +2461,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2841,7 +2838,6 @@ MonoBehaviour:
   detectionLayer:
     serializedVersion: 2
     m_Bits: 4294967295
-  debugMode: 0
 --- !u!212 &1711499522
 SpriteRenderer:
   serializedVersion: 2
@@ -3199,7 +3195,6 @@ MonoBehaviour:
   globalCooldownTime: 2
   isExitOnly: 0
   maintainVelocity: 0
-  warpEffect: {fileID: 0}
 --- !u!58 &1843995320
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -198,7 +198,6 @@ MonoBehaviour:
   globalCooldownTime: 0
   isExitOnly: 0
   maintainVelocity: 0
-  warpEffect: {fileID: 0}
 --- !u!58 &268598838
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -509,7 +508,6 @@ MonoBehaviour:
   globalCooldownTime: 2
   isExitOnly: 1
   maintainVelocity: 0
-  warpEffect: {fileID: 0}
 --- !u!61 &615085968
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1195,7 +1193,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1238,7 +1236,6 @@ MonoBehaviour:
   globalCooldownTime: 2
   isExitOnly: 0
   maintainVelocity: 0
-  warpEffect: {fileID: 0}
 --- !u!61 &1243819494
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1444,7 +1441,6 @@ MonoBehaviour:
   globalCooldownTime: 0
   isExitOnly: 0
   maintainVelocity: 0
-  warpEffect: {fileID: 0}
 --- !u!58 &1885447751
 CircleCollider2D:
   m_ObjectHideFlags: 0
