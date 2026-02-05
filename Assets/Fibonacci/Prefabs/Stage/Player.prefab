@@ -205,7 +205,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.Player.PlayerController
   moveSpeed: 5
+  jumpPower: 12
   animationController: {fileID: 0}
+  abilityDisplayRenderer: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &7159209810321247350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,6 +272,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 6dc7372c-9a0e-484c-9e13-390d2441bd14
     m_ActionName: 'Player/Restart[/Keyboard/r]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: deabdb41-e3c0-487b-be58-799244e8e8f2
+    m_ActionName: 'Player/Menu[/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
