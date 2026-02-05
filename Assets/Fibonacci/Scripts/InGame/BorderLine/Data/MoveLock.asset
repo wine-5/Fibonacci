@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.BorderLine.UI.BorderLineEffectDefinition
   id: MoveLock
   icon: {fileID: 21300000, guid: 76952e4230e9f64449b82d0a55755ade, type: 3}
+  description: "\u6C34\u3092\u51CD\u3089\u305B\u308B\u3088\uFF01\n\u4F53\u3082\u51CD\u308B\u3088\uFF01"
