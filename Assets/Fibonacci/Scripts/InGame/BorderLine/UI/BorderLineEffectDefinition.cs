@@ -7,8 +7,11 @@ namespace Fibonacci.InGame.BorderLine.UI
     {
         [SerializeField] private string id;
         [SerializeField] private Sprite icon;
-
+        [TextArea(3, 10)] 
+        [SerializeField] private string description;
+        
         public string Id => id;
         public Sprite Icon => icon;
+        public string Description => description;
     }
 }

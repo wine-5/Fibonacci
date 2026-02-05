@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
 using UnityEngine.EventSystems;
+using Fibonacci.Utilities;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem.UI;
 #endif
@@ -276,6 +277,10 @@ namespace Fibonacci.InGame.BorderLine.UI
                 btnImg.sprite = def.Icon;
                 btnImg.type = Image.Type.Simple;
                 btnImg.color = Color.white;
+                btnImg.raycastTarget = true;
+
+                var trigger = btnGo.AddComponent<TooltipTrigger>();
+                trigger.SetDefinition(def);
 
                 var btn = btnGo.AddComponent<Button>();
                 int capturedFrameIndex = frameIndex;
