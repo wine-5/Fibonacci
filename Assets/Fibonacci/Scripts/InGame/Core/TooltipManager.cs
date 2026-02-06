@@ -12,7 +12,7 @@ namespace Fibonacci.InGame.Core
         /// <summary>
         /// 各シーンのCanvasに配置されたUIオブジェクトを参照するため、シーン間での保持は行わない。
         /// </summary>
-        protected override bool UseDontDestroyOnLoad => true;
+        protected override bool UseDontDestroyOnLoad => false;
 
         [Header("UI References")]
         [SerializeField] private RectTransform tooltipRect;
@@ -82,6 +82,16 @@ namespace Fibonacci.InGame.Core
         {
             Vector2 mousePos = Mouse.current.position.ReadValue();
             tooltipRect.position = mousePos + offset;
+        }
+
+        protected override void OnDestroy()
+        {
+            // base.OnDestroy() が Singleton 側で isDestroying = true を
+            // 処理している場合は呼び出し、その後に null で上書きします。
+            if (instance == this)
+            {
+                instance = null;
+            }
         }
     }
 }

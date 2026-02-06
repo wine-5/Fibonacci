@@ -7,7 +7,7 @@ using UnityEngine;
 /// <typeparam name="T">Singletonにするクラスの型</typeparam>
 public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    private static T instance;
+    protected static T instance;
     private static readonly object lockObject = new object();
     private static bool isDestroying = false;
 
