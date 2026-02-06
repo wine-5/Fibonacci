@@ -12,7 +12,7 @@ namespace Fibonacci.InGame.Core
         /// <summary>
         /// 各シーンのCanvasに配置されたUIオブジェクトを参照するため、シーン間での保持は行わない。
         /// </summary>
-        protected override bool UseDontDestroyOnLoad => false;
+        protected override bool UseDontDestroyOnLoad => true;
 
         [Header("UI References")]
         [SerializeField] private RectTransform tooltipRect;
