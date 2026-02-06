@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5836244967604057194}
   - component: {fileID: 5786952931780234861}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TooltipManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 643309605441237876}
   - component: {fileID: 1599372369658361703}
   - component: {fileID: 2807063620223731332}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: TooltipPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 4055080654455385665}
   - component: {fileID: 2611546438337204907}
   - component: {fileID: 2854994087521744491}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: DescriptionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -300,7 +300,7 @@ GameObject:
   - component: {fileID: 3057763682322849907}
   - component: {fileID: 4110686536645666927}
   - component: {fileID: 9178327165994480205}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: TooltipPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
