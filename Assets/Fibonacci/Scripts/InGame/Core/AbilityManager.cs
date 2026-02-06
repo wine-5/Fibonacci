@@ -68,6 +68,10 @@ namespace Fibonacci.InGame.Core
 
         public void SetAreaAbility(int areaIndex, string abilityId)
         {
+            if (TooltipManager.HasInstance)
+            {
+                TooltipManager.Instance.Hide();
+            }
             string id = abilityId.Trim();
             areaAbilities[areaIndex] = ConvertIdToType(id);
             GameEvents.TriggerAbilitiesUpdated();
