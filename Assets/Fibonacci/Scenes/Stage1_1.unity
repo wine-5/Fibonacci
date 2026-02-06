@@ -771,6 +771,20 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
+--- !u!114 &991730163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: UI/Point
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_ActionId: 32b35790-4ed0-4e9a-aa41-69ac6d629449
 --- !u!114 &1344219408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -854,6 +868,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5786952931780234861, guid: 98d50bea3c9db5e499f1db32c7d92751, type: 3}
+      propertyPath: pointActionReference
+      value: 
+      objectReference: {fileID: 991730163}
     - target: {fileID: 6163291450467710788, guid: 98d50bea3c9db5e499f1db32c7d92751, type: 3}
       propertyPath: m_Pivot.x
       value: 0

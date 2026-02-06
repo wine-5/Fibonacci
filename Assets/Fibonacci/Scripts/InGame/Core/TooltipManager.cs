@@ -18,10 +18,14 @@ namespace Fibonacci.InGame.Core
         [SerializeField] private RectTransform tooltipRect;
         [SerializeField] private TextMeshProUGUI descriptionText;
 
+        [Header("Input Settings")]
+        [SerializeField] private InputActionReference pointActionReference; // UIマップのPointアクションを割り当てる
+
         [Header("Settings")]
         [SerializeField] private Vector2 offset = new(15f, 15f);
 
         private GameObject tooltipGo;
+        private InputAction pointAction;
 
         /// <summary>
         /// インスタンス生成時の初期化処理。
@@ -34,6 +38,22 @@ namespace Fibonacci.InGame.Core
             if (tooltipRect == null) return;
 
             tooltipGo = tooltipRect.gameObject;
+
+            // 指摘に基づき、InputActionを取得
+            if (pointActionReference != null)
+            {
+                pointAction = pointActionReference.action;
+            }
+        }
+
+        private void OnEnable()
+        {
+            pointAction?.Enable();
+        }
+
+        private void OnDisable()
+        {
+            pointAction?.Disable();
         }
 
         /// <summary>
@@ -76,18 +96,19 @@ namespace Fibonacci.InGame.Core
         }
 
         /// <summary>
-        /// マウスの現在位置を読み取り、オフセットを加算して表示位置を更新する。
+        /// InputActionから現在位置を読み取り、オフセットを加算して表示位置を更新する。
         /// </summary>
         private void UpdatePosition()
         {
-            Vector2 mousePos = Mouse.current.position.ReadValue();
+            if (tooltipRect == null || pointAction == null) return;
+
+            // Mouse.current ではなく pointAction から値を読み取る
+            Vector2 mousePos = pointAction.ReadValue<Vector2>();
             tooltipRect.position = mousePos + offset;
         }
 
         protected override void OnDestroy()
         {
-            // base.OnDestroy() が Singleton 側で isDestroying = true を
-            // 処理している場合は呼び出し、その後に null で上書きします。
             if (instance == this)
             {
                 instance = null;
