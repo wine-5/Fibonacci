@@ -35,7 +35,7 @@ namespace Fibonacci.InGame.Player
         private readonly FireAbility fireLogic = new();
         private readonly PowerUpAbility powerUpLogic = new();
         private readonly JumpAbility jumpLogic = new();
-        
+
         private bool isMovementLocked = false;
 
         private void Awake()
@@ -91,7 +91,7 @@ namespace Fibonacci.InGame.Player
             rb.mass = DEFAULT_MASS;
             rb.linearDamping = DEFAULT_DAMPING;
             rb.gravityScale = DEFAULT_GRAVITY_SCALE;
-            
+
             Vector3 scale = transform.localScale;
             scale.y = Mathf.Abs(scale.y);
             transform.localScale = scale;
@@ -161,14 +161,14 @@ namespace Fibonacci.InGame.Player
         {
             Sprite abilitySprite = AbilityManager.Instance.GetAbilitySprite(ability);
             bool hasSprite = abilitySprite != null;
-            
+
             abilityDisplayRenderer.sprite = abilitySprite;
             abilityDisplayRenderer.enabled = hasSprite;
         }
 
         private void FixedUpdate()
         {
-            if (GameManager.Instance.CurrentPhase != GamePhase.Playing)
+            if (GameManager.Instance == null || GameManager.Instance.CurrentPhase != GamePhase.Playing)
             {
                 rb.simulated = false;
                 return;
@@ -181,10 +181,13 @@ namespace Fibonacci.InGame.Player
                 playerMove.ExecutePhysicsUpdate();
             }
 
-            AbilityType currentAbility = AbilityManager.Instance.GetAbilityAt(playerCheck.CurrentAreaIndex);
-            if (fireLogic.Tick(currentAbility == AbilityType.Fire, Time.fixedDeltaTime))
+            if (AbilityManager.Instance != null)
             {
-                GameEvents.TriggerRestart();
+                AbilityType currentAbility = AbilityManager.Instance.GetAbilityAt(playerCheck.CurrentAreaIndex);
+                if (fireLogic.Tick(currentAbility == AbilityType.Fire, Time.fixedDeltaTime))
+                {
+                    GameEvents.TriggerRestart();
+                }
             }
         }
 
