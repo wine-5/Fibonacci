@@ -10,6 +10,8 @@ namespace Fibonacci.Utilities
     /// </summary>
     public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
+        [SerializeField] private TooltipManager tooltipManager; // インスペクターからアタッチ
+
         private BorderLineEffectDefinition definition;
 
         /// <summary>
@@ -27,9 +29,14 @@ namespace Fibonacci.Utilities
         /// <param name="eventData">イベントデータ</param>
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (definition == null) return;
+            if (tooltipManager == null)
+            {
+                tooltipManager =FindAnyObjectByType<TooltipManager>();
+            }
 
-            TooltipManager.Instance.Show(definition.Description);
+            if (definition == null || tooltipManager == null) return;
+
+            tooltipManager.Show(definition.Description);
         }
 
         /// <summary>
@@ -38,9 +45,8 @@ namespace Fibonacci.Utilities
         /// <param name="eventData">イベントデータ</param>
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (!TooltipManager.HasInstance) return;
-
-            TooltipManager.Instance.Hide();
+            if (tooltipManager == null) return;
+            tooltipManager.Hide();
         }
     }
 }

@@ -619,6 +619,24 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a492b85cd8ffa264391390ad9fcd50bb, type: 3}
+--- !u!1 &588403426 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5046921863285550760, guid: 9642415863345644999f100032ce848e, type: 3}
+  m_PrefabInstance: {fileID: 866279873}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &588403427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 588403426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 009f7799eb2e52d4ebdc6073ebb585ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.Utilities.TooltipTrigger
+  tooltipManager: {fileID: 835872288}
 --- !u!1 &615085966
 GameObject:
   m_ObjectHideFlags: 0
@@ -854,6 +872,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5786952931780234861, guid: 98d50bea3c9db5e499f1db32c7d92751, type: 3}
+      propertyPath: pointActionReference
+      value: 
+      objectReference: {fileID: 2009304668}
     - target: {fileID: 6163291450467710788, guid: 98d50bea3c9db5e499f1db32c7d92751, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -947,6 +969,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98d50bea3c9db5e499f1db32c7d92751, type: 3}
+--- !u!114 &835872288 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5786952931780234861, guid: 98d50bea3c9db5e499f1db32c7d92751, type: 3}
+  m_PrefabInstance: {fileID: 835872287}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88951776339f6624b89b75e29340b086, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.Core.TooltipManager
+--- !u!1 &845730307
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 845730309}
+  - component: {fileID: 845730308}
+  m_Layer: 0
+  m_Name: AbilityManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &845730308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 845730307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e09ae6c903e77cd4c930eb7ec09cadb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.Core.AbilityManager
+  abilitySpriteData: {fileID: 11400000, guid: b1b87250267df784d8db3d59b53ee46b, type: 2}
+  tooltipManager: {fileID: 835872288}
+--- !u!4 &845730309
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 845730307}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.1240234, y: 0, z: -12.001953}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &856116852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1161,6 +1240,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 736504437244547592, guid: 9642415863345644999f100032ce848e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1046991373}
+    - targetCorrespondingSourceObject: {fileID: 5046921863285550760, guid: 9642415863345644999f100032ce848e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 588403427}
   m_SourcePrefab: {fileID: 100100000, guid: 9642415863345644999f100032ce848e, type: 3}
 --- !u!1 &866279874 stripped
 GameObject:
@@ -2014,6 +2096,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d52187eca8c3cd469acbe6b3a4e5f0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.Player.PlayerInputManager
+--- !u!114 &2009304668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: UI/Point
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_ActionId: 32b35790-4ed0-4e9a-aa41-69ac6d629449
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2023,3 +2119,4 @@ SceneRoots:
   - {fileID: 653471194}
   - {fileID: 835872287}
   - {fileID: 388502577}
+  - {fileID: 845730309}
