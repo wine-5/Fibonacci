@@ -5,9 +5,6 @@ using UnityEngine.UI;
 
 namespace Fibonacci.InGame.Core
 {
-    /// <summary>
-    /// ゲームの進行状態（フェーズ）。
-    /// </summary>
     public enum GamePhase
     {
         Drawing,
@@ -17,30 +14,26 @@ namespace Fibonacci.InGame.Core
 
     /// <summary>
     /// ゲーム全体の進行状態、フェーズ遷移、およびメニュー操作を統括するマネージャー。
-    /// 各シーンのメニューボタンを自動検索して機能を割り当てる。
     /// </summary>
     public class GameManager : Singleton<GameManager>
     {
-        protected override bool UseDontDestroyOnLoad => false;
+        protected override bool UseDontDestroyOnLoad => true;
 
         public GamePhase CurrentPhase { get; private set; } = GamePhase.Drawing;
 
         private GamePhase previousPhase;
-        private GameObject pauseMenuRoot;
 
-        private const string PAUSE_MENU_NAME = "PauseMenuRoot";
-        private const string RESUME_BUTTON_NAME = "ResumeButton";
-        private const string TITLE_BUTTON_NAME = "TitleButton";
-        private const string QUIT_BUTTON_NAME = "QuitButton";
+        [Header("UI References")]
+        [SerializeField] private GameObject pauseMenuRoot;
+        [SerializeField] private Button resumeButton;
+        [SerializeField] private Button titleButton;
+        [SerializeField] private Button quitButton;
 
         protected override void Awake()
         {
             base.Awake();
-
-            if (AbilityManager.Instance != null)
-            {
-                AbilityManager.Instance.ResetAbilities();
-            }
+            AbilityManager.Instance.ResetAbilities();
+            SetupButtons();
         }
 
         private void OnEnable()
@@ -55,16 +48,21 @@ namespace Fibonacci.InGame.Core
 
         private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
         {
-            FindPauseMenuAndSetupButtons();
             ResetPhase();
             Time.timeScale = 1f;
+            if (pauseMenuRoot != null)
+            {
+                pauseMenuRoot.SetActive(false);
+            }
         }
 
         /// <summary>
-        /// メニュー画面の表示/非表示を切り替える。
+        /// メニュー画面の表示・非表示を切り替える。
         /// </summary>
         public void TogglePause()
         {
+            if (pauseMenuRoot == null) return;
+
             if (CurrentPhase == GamePhase.Paused)
             {
                 ResumeGame();
@@ -75,25 +73,19 @@ namespace Fibonacci.InGame.Core
         }
 
         /// <summary>
-        /// 現在のステージを最初からやり直す。
-        /// </summary>
-        public void RestartStage()
-        {
-            Time.timeScale = 1f;
-            SceneController.Instance.LoadScene(SceneController.Instance.CurrentStage);
-        }
-
-        /// <summary>
-        /// タイトル画面へ戻る。
+        /// タイトル画面へ遷移する。
         /// </summary>
         public void BackToTitle()
         {
             Time.timeScale = 1f;
-            SceneController.Instance.LoadScene(SceneName.Title);
+            if (SceneController.Instance != null)
+            {
+                SceneController.Instance.LoadScene(SceneName.Title);
+            }
         }
 
         /// <summary>
-        /// アプリケーションを完全に終了する。
+        /// アプリケーションを終了する。
         /// </summary>
         public void QuitGame()
         {
@@ -104,49 +96,44 @@ namespace Fibonacci.InGame.Core
 #endif
         }
 
+        /// <summary>
+        /// ゲーム（アクションフェーズ）を開始する。
+        /// </summary>
         public void StartGame()
         {
             SetPhase(GamePhase.Playing);
         }
 
+        /// <summary>
+        /// ゲームの状態を初期状態（お絵かきフェーズ）にリセットする。
+        /// </summary>
         public void ResetPhase()
         {
             SetPhase(GamePhase.Drawing);
         }
 
         /// <summary>
-        /// メニューRootを探し、その子要素にあるボタンに機能を自動登録する。
+        /// インスペクターで設定された各ボタンにリスナーを登録する。
         /// </summary>
-        private void FindPauseMenuAndSetupButtons()
+        private void SetupButtons()
         {
-            pauseMenuRoot = GameObject.Find(PAUSE_MENU_NAME);
-
-            if (pauseMenuRoot == null) return;
-
-            SetupButtonListener(RESUME_BUTTON_NAME, TogglePause);
-            SetupButtonListener(TITLE_BUTTON_NAME, BackToTitle);
-            SetupButtonListener(QUIT_BUTTON_NAME, QuitGame);
-
-            pauseMenuRoot.SetActive(false);
-        }
-
-        /// <summary>
-        /// メニューRoot配下から名前を指定してボタンを検索し、クリックイベントを登録する。
-        /// 階層が深くても（ButtonContainerの中など）見つけることが可能。
-        /// </summary>
-        private void SetupButtonListener(string buttonName, UnityEngine.Events.UnityAction action)
-        {
-            Button btn = null;
-            foreach (var b in pauseMenuRoot.GetComponentsInChildren<Button>(true))
+            if (resumeButton != null)
             {
-                if (b.name == buttonName)
-                {
-                    btn = b;
-                    break;
-                }
+                resumeButton.onClick.RemoveAllListeners();
+                resumeButton.onClick.AddListener(TogglePause);
             }
-            btn.onClick.RemoveAllListeners();
-            btn.onClick.AddListener(action);
+
+            if (titleButton != null)
+            {
+                titleButton.onClick.RemoveAllListeners();
+                titleButton.onClick.AddListener(BackToTitle);
+            }
+
+            if (quitButton != null)
+            {
+                quitButton.onClick.RemoveAllListeners();
+                quitButton.onClick.AddListener(QuitGame);
+            }
         }
 
         private void PauseGame()
