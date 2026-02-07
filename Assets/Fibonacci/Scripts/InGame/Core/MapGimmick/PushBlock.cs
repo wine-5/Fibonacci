@@ -16,6 +16,7 @@ namespace Fibonacci.InGame.Core.MapGimmick
         private Rigidbody2D rb;
         private Vector3 initialPosition;
         private bool isPushable = false;
+        private bool isInitialized = false;
 
         private void Awake()
         {
@@ -25,6 +26,7 @@ namespace Fibonacci.InGame.Core.MapGimmick
         private void Start()
         {
             initialPosition = transform.position;
+            isInitialized = true;
             LockBlock();
         }
 
@@ -43,15 +45,16 @@ namespace Fibonacci.InGame.Core.MapGimmick
         /// </summary>
         private void ResetBlock()
         {
-            rb.simulated = false;
+            if (!isInitialized) return;
 
             transform.position = initialPosition;
             rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;
 
-            rb.simulated = true;
             isPushable = false;
             LockBlock();
+
+            gameObject.SetActive(true);
         }
 
         /// <summary>
@@ -60,7 +63,7 @@ namespace Fibonacci.InGame.Core.MapGimmick
         private void OnCollisionEnter2D(Collision2D collision)
         {
             Rigidbody2D otherRb = collision.gameObject.GetComponent<Rigidbody2D>();
-            
+
             if (otherRb != null && otherRb.mass >= requiredMass)
             {
                 isPushable = true;

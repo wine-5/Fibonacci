@@ -40,6 +40,8 @@ namespace Fibonacci.InGame.Core
 
         [Header("Visual Data")]
         [SerializeField] private AbilitySpriteSO abilitySpriteData;
+        [Header("UI References")]
+        [SerializeField] private TooltipManager tooltipManager;
 
         private void OnEnable()
         {
@@ -59,6 +61,7 @@ namespace Fibonacci.InGame.Core
         private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
         {
             ClearAllAbilities();
+            tooltipManager =FindAnyObjectByType<TooltipManager>();
         }
 
         public Sprite GetAbilitySprite(AbilityType type)
@@ -68,6 +71,7 @@ namespace Fibonacci.InGame.Core
 
         public void SetAreaAbility(int areaIndex, string abilityId)
         {
+            tooltipManager.Hide();
             string id = abilityId.Trim();
             areaAbilities[areaIndex] = ConvertIdToType(id);
             GameEvents.TriggerAbilitiesUpdated();
@@ -100,7 +104,7 @@ namespace Fibonacci.InGame.Core
             return id switch
             {
                 ID_GRAVITY => AbilityType.GravityInvert,
-                "ZeroGravity" => AbilityType.GravityInvert, 
+                "ZeroGravity" => AbilityType.GravityInvert,
                 ID_MOVE_LOCK => AbilityType.MoveLock,
                 ID_HEAVY => AbilityType.Heavy,
                 ID_LOW_GRAVITY => AbilityType.LowGravity,

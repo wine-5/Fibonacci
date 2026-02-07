@@ -2179,6 +2179,58 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.03
       objectReference: {fileID: 0}
+    - target: {fileID: 5517424177560606333, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5517424177560606333, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_ActionEvents.Array.data[3].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5517424177560606333, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5517424177560606333, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_ActionEvents.Array.data[3].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5517424177560606333, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1963897851}
+    - target: {fileID: 5517424177560606333, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_ActionEvents.Array.data[3].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1963897851}
+    - target: {fileID: 5517424177560606333, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_ActionEvents.Array.data[3].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5517424177560606333, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnRestart
+      objectReference: {fileID: 0}
+    - target: {fileID: 5517424177560606333, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 5517424177560606333, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_ActionEvents.Array.data[3].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 5517424177560606333, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_ActionEvents.Array.data[3].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Fibonacci.InGame.Player.PlayerInputManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5517424177560606333, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5517424177560606333, guid: 9642415863345644999f100032ce848e, type: 3}
+      propertyPath: m_ActionEvents.Array.data[3].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6474912205062253020, guid: 9642415863345644999f100032ce848e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -19.4
@@ -2243,7 +2295,39 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 736504437244547592, guid: 9642415863345644999f100032ce848e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 359218503}
+    - targetCorrespondingSourceObject: {fileID: 5046921863285550760, guid: 9642415863345644999f100032ce848e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1963897853}
   m_SourcePrefab: {fileID: 100100000, guid: 9642415863345644999f100032ce848e, type: 3}
+--- !u!114 &1963897851 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6035969105161919717, guid: 9642415863345644999f100032ce848e, type: 3}
+  m_PrefabInstance: {fileID: 1963897850}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d52187eca8c3cd469acbe6b3a4e5f0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.Player.PlayerInputManager
+--- !u!1 &1963897852 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5046921863285550760, guid: 9642415863345644999f100032ce848e, type: 3}
+  m_PrefabInstance: {fileID: 1963897850}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1963897853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963897852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 009f7799eb2e52d4ebdc6073ebb585ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.Utilities.TooltipTrigger
+  tooltipManager: {fileID: 0}
 --- !u!1 &2008515404
 GameObject:
   m_ObjectHideFlags: 0

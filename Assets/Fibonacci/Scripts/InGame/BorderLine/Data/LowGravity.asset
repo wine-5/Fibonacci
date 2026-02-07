@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Fibonacci.InGame.BorderLine.UI.BorderLineEffectDefinition
   id: LowGravity
   icon: {fileID: 21300000, guid: 4a181bb7e26e4a446821a37c0b6bb1be, type: 3}
+  description: "\u3075\u308F\u3075\u308F\u843D\u3061\u308B\u3088\uFF01"

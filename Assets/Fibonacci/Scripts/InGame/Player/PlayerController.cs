@@ -35,7 +35,7 @@ namespace Fibonacci.InGame.Player
         private readonly FireAbility fireLogic = new();
         private readonly PowerUpAbility powerUpLogic = new();
         private readonly JumpAbility jumpLogic = new();
-        
+
         private bool isMovementLocked = false;
 
         private void Awake()
@@ -57,6 +57,8 @@ namespace Fibonacci.InGame.Player
 
         private void HandlePhaseChanged(GamePhase newPhase)
         {
+            if (newPhase == GamePhase.Paused) return;
+
             if (newPhase == GamePhase.Playing)
             {
                 rb.simulated = true;
@@ -70,16 +72,23 @@ namespace Fibonacci.InGame.Player
                 abilityDisplayRenderer.enabled = false;
                 isMovementLocked = false;
                 fireLogic.Reset();
-                AbilityManager.Instance.ResetAbilities();
+                if (AbilityManager.Instance != null)
+                {
+                    AbilityManager.Instance.ResetAbilities();
+                }
             }
         }
 
+        /// <summary>
+        /// 進入したエリアの効果をプレイヤーに適用する。
+        /// </summary>
         public void ChangeAreaEffect(int areaIndex)
         {
-            if (GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
+            if (GameManager.Instance == null || GameManager.Instance.CurrentPhase != GamePhase.Playing) return;
 
             ResetToDefaultState();
 
+            if (AbilityManager.Instance == null) return;
             AbilityType ability = AbilityManager.Instance.GetAbilityAt(areaIndex);
 
             ApplyAbilities(ability);
@@ -91,7 +100,7 @@ namespace Fibonacci.InGame.Player
             rb.mass = DEFAULT_MASS;
             rb.linearDamping = DEFAULT_DAMPING;
             rb.gravityScale = DEFAULT_GRAVITY_SCALE;
-            
+
             Vector3 scale = transform.localScale;
             scale.y = Mathf.Abs(scale.y);
             transform.localScale = scale;
@@ -101,9 +110,6 @@ namespace Fibonacci.InGame.Player
             isMovementLocked = false;
         }
 
-        /// <summary>
-        /// 全てのアビリティ適用処理を統括します。
-        /// </summary>
         private void ApplyAbilities(AbilityType ability)
         {
             ApplyHeavy(ability);
@@ -159,16 +165,17 @@ namespace Fibonacci.InGame.Player
 
         private void UpdateAbilityVisual(AbilityType ability)
         {
+            if (AbilityManager.Instance == null) return;
             Sprite abilitySprite = AbilityManager.Instance.GetAbilitySprite(ability);
             bool hasSprite = abilitySprite != null;
-            
+
             abilityDisplayRenderer.sprite = abilitySprite;
             abilityDisplayRenderer.enabled = hasSprite;
         }
 
         private void FixedUpdate()
         {
-            if (GameManager.Instance.CurrentPhase != GamePhase.Playing)
+            if (GameManager.Instance == null || GameManager.Instance.CurrentPhase != GamePhase.Playing)
             {
                 rb.simulated = false;
                 return;
@@ -181,21 +188,32 @@ namespace Fibonacci.InGame.Player
                 playerMove.ExecutePhysicsUpdate();
             }
 
-            AbilityType currentAbility = AbilityManager.Instance.GetAbilityAt(playerCheck.CurrentAreaIndex);
-            if (fireLogic.Tick(currentAbility == AbilityType.Fire, Time.fixedDeltaTime))
+            if (AbilityManager.Instance != null)
             {
-                GameEvents.TriggerRestart();
+                AbilityType currentAbility = AbilityManager.Instance.GetAbilityAt(playerCheck.CurrentAreaIndex);
+                if (fireLogic.Tick(currentAbility == AbilityType.Fire, Time.fixedDeltaTime))
+                {
+                    GameEvents.TriggerRestart();
+                }
             }
         }
 
+        /// <summary>
+        /// 入力系から受け取った移動ベクトルをセットする。
+        /// </summary>
         public void SetMoveInput(Vector2 input)
         {
             playerMove.MoveInput = input;
             playerMove.UpdateAnimation();
         }
 
+        /// <summary>
+        /// ジャンプ入力実行時の処理。
+        /// </summary>
         public void OnJumpInput()
         {
+            if (GameManager.Instance == null) return;
+
             if (GameManager.Instance.CurrentPhase == GamePhase.Playing && jumpLogic.CanJump && playerMove.IsGrounded())
             {
                 playerMove.ExecuteJump(jumpPower);
@@ -207,6 +225,9 @@ namespace Fibonacci.InGame.Player
             playerMove?.DrawGizmos();
         }
 
+        /// <summary>
+        /// プレイヤーの位置、物理、および状態を初期状態にリセットする。
+        /// </summary>
         public void ResetPlayerState()
         {
             playerMove.ResetPosition();

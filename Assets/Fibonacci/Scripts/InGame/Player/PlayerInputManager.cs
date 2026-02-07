@@ -6,11 +6,11 @@ using Fibonacci.InGame.Core;
 namespace Fibonacci.InGame.Player
 {
     /// <summary>
-    /// 入力デバイスからの信号をゲーム内コマンドへ変換する管理クラス。
-    /// リスタート時には司令塔として、ゲームフェーズ、能力、プレイヤー状態を初期化します。
+    /// 入力デバイスからの信号をゲーム内コマンドへ変換し、プレイヤーやゲーム進行の制御を行う管理クラス。
     /// </summary>
     public class PlayerInputManager : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField] private PlayerController playerController;
 
         public string EffectIdArea0 { get; private set; } = "";
@@ -29,36 +29,49 @@ namespace Fibonacci.InGame.Player
         }
 
         /// <summary>
-        /// 移動入力を検知し、プレイヤーコントローラーへベクトルを伝達します。
+        /// 移動入力を検知し、プレイヤーコントローラーへベクトルを伝達する。
         /// </summary>
         public void OnMove(InputAction.CallbackContext context)
         {
+            if (playerController == null) return;
             playerController.SetMoveInput(context.ReadValue<Vector2>());
         }
 
         /// <summary>
-        /// ジャンプ入力を検知し、コントローラーへ通知します。
+        /// ジャンプ入力を検知し、コントローラーへ通知する。
         /// </summary>
         public void OnJump(InputAction.CallbackContext context)
         {
-            if (!context.started) return;
+            if (playerController == null || !context.started) return;
             
             playerController.OnJumpInput();
         }
 
         /// <summary>
-        /// リスタートボタンの入力を検知し、システム全体へリスタートイベントを発火させます。
+        /// リスタートボタンの入力を検知し、システム全体へリスタートイベントを発火させる。
         /// </summary>
         public void OnRestart(InputAction.CallbackContext context)
         {
-            if (context.started)
+            if (!context.started) return;
+            
+            GameEvents.TriggerRestart();
+        }
+
+        /// <summary>
+        /// メニューボタン（Esc等）の入力を検知し、ポーズ状態を切り替える。
+        /// </summary>
+        public void OnMenu(InputAction.CallbackContext context)
+        {
+            if (!context.started) return;
+
+            if (GameManager.HasInstance)
             {
-                GameEvents.TriggerRestart();
+                GameManager.Instance.TogglePause();
             }
         }
 
         /// <summary>
-        /// 所属エリアの変更を記録します。
+        /// 所属エリアの変更を記録する。
         /// </summary>
         public void OnAreaChanged(int newAreaIndex)
         {
@@ -66,26 +79,28 @@ namespace Fibonacci.InGame.Player
         }
 
         /// <summary>
-        /// システム全体のリスタート要求に応じ、関連するマネージャーとオブジェクトを初期設定に戻します。
+        /// リスタート要求に応じ、関連するマネージャーとオブジェクトを初期状態に戻す。
         /// </summary>
         private void OnGameRestart()
         {
-            if (GameManager.Instance != null)
+            if (GameManager.HasInstance)
             {
                 GameManager.Instance.ResetPhase();
             }
 
-            if (AbilityManager.Instance != null)
+            if (AbilityManager.HasInstance)
             {
                 AbilityManager.Instance.ResetAbilities();
             }
 
             EffectIdArea0 = "";
             EffectIdArea1 = "";
-
-            playerController.ResetPlayerState();
-
             lastAreaIndex = -1;
+
+            if (playerController != null)
+            {
+                playerController.ResetPlayerState();
+            }
         }
     }
 }
