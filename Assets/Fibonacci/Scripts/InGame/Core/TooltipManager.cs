@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
+using Fibonacci.Event;
 
 namespace Fibonacci.InGame.Core
 {
@@ -37,11 +38,13 @@ namespace Fibonacci.InGame.Core
         private void OnEnable()
         {
             pointAction?.Enable();
+            GameEvents.OnRestart += Hide;
         }
 
         private void OnDisable()
         {
             pointAction?.Disable();
+            GameEvents.OnRestart -= Hide;
         }
 
         private void Start()
